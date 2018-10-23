@@ -4,8 +4,8 @@
   "description": "React HOC used to give a React component data from an Appframe data object",
   "main": "dist/data-object-connect.umd.js",
   "scripts": {
-    "build-dev": "npx rollup --config rollup.dev.js",
-    "build-prod": "npx rollup --config rollup.prod.js",
+    "build-dev": "node --experimental-modules rollup.dev.mjs",
+    "build-prod": "node --experimental-modules rollup.prod.mjs",
     "publish-dev": "npx appframe publish --config appframe.dev.js",
     "publish-prod": "npx appframe publish --config appframe.prod.js"
   },
@@ -22,12 +22,14 @@
   "license": "MIT",
   "devDependencies": {
     "@babel/core": "^7.1.2",
+    "@babel/plugin-proposal-class-properties": "^7.1.0",
     "@babel/preset-env": "^7.1.0",
     "@babel/preset-react": "^7.0.0",
     "@bjornarvh/appframe-cli": "^1.0.1",
     "dotenv": "^6.1.0",
     "rollup": "^0.66.6",
     "rollup-plugin-babel": "^4.0.3",
+    "rollup-plugin-babel-minify": "^6.1.1",
     "rollup-plugin-uglify-es": "0.0.1"
   }
 }

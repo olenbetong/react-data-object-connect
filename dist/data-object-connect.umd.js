@@ -26,6 +26,21 @@
     return Constructor;
   }
 
+  function _defineProperty(obj, key, value) {
+    if (key in obj) {
+      Object.defineProperty(obj, key, {
+        value: value,
+        enumerable: true,
+        configurable: true,
+        writable: true
+      });
+    } else {
+      obj[key] = value;
+    }
+
+    return obj;
+  }
+
   function _extends() {
     _extends = Object.assign || function (target) {
       for (var i = 1; i < arguments.length; i++) {
@@ -91,6 +106,8 @@
     return _assertThisInitialized(self);
   }
 
+  var events = ['AllowDeleteChanged', 'AllowUpdateChanged', 'AllowInsertChanged', 'SaveFailed', 'PartialDataLoaded', 'DataLoadFailed', 'FieldChanged', 'RecordCreated', 'RecordRefreshed', 'RecordDeleting', 'RecordDeleted', 'AfterSave', 'BeforeLoad', 'BeforeSave', 'CancelEdit', 'CurrentIndexChanged', 'DataLoaded', 'DirtyChanged'];
+
   var dataObjectConnect = function dataObjectConnect(dataObject) {
     var currentRowOnly = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
     return function connect(WrappedComponent) {
@@ -105,26 +122,156 @@
           _classCallCheck(this, connector);
 
           _this = _possibleConstructorReturn(this, _getPrototypeOf(connector).call(this, props));
-          _this.handleAllowDeleteChanged = _this.handleAllowDeleteChanged.bind(_assertThisInitialized(_assertThisInitialized(_this)));
-          _this.handleAllowUpdateChanged = _this.handleAllowUpdateChanged.bind(_assertThisInitialized(_assertThisInitialized(_this)));
-          _this.handleAllowInsertChanged = _this.handleAllowInsertChanged.bind(_assertThisInitialized(_assertThisInitialized(_this)));
-          _this.handleSaveFailed = _this.handleSaveFailed.bind(_assertThisInitialized(_assertThisInitialized(_this)));
-          _this.handlePartialDataLoaded = _this.handlePartialDataLoaded.bind(_assertThisInitialized(_assertThisInitialized(_this)));
-          _this.handleDataLoadFailed = _this.handleDataLoadFailed.bind(_assertThisInitialized(_assertThisInitialized(_this)));
-          _this.handleFieldChanged = _this.handleFieldChanged.bind(_assertThisInitialized(_assertThisInitialized(_this)));
-          _this.handleRecordCreated = _this.handleRecordCreated.bind(_assertThisInitialized(_assertThisInitialized(_this)));
-          _this.handleRecordRefreshed = _this.handleRecordRefreshed.bind(_assertThisInitialized(_assertThisInitialized(_this)));
-          _this.handleRecordDeleting = _this.handleRecordDeleting.bind(_assertThisInitialized(_assertThisInitialized(_this)));
-          _this.handleRecordDeleted = _this.handleRecordDeleted.bind(_assertThisInitialized(_assertThisInitialized(_this)));
-          _this.handleAfterSave = _this.handleAfterSave.bind(_assertThisInitialized(_assertThisInitialized(_this)));
-          _this.handleBeforeSave = _this.handleBeforeSave.bind(_assertThisInitialized(_assertThisInitialized(_this)));
-          _this.handleBeforeLoad = _this.handleBeforeLoad.bind(_assertThisInitialized(_assertThisInitialized(_this)));
-          _this.handleCancelEdit = _this.handleCancelEdit.bind(_assertThisInitialized(_assertThisInitialized(_this)));
-          _this.handleCurrentIndexChanged = _this.handleCurrentIndexChanged.bind(_assertThisInitialized(_assertThisInitialized(_this)));
-          _this.handleDataLoaded = _this.handleDataLoaded.bind(_assertThisInitialized(_assertThisInitialized(_this)));
-          _this.handleDirtyChanged = _this.handleDirtyChanged.bind(_assertThisInitialized(_assertThisInitialized(_this)));
-          _this.setFieldValue = _this.setFieldValue.bind(_assertThisInitialized(_assertThisInitialized(_this)));
-          _this.setFieldValues = _this.setFieldValues.bind(_assertThisInitialized(_assertThisInitialized(_this)));
+
+          _defineProperty(_assertThisInitialized(_assertThisInitialized(_this)), "updateData", function () {
+            var otherState = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+
+            if (currentRowOnly) {
+              var record = dataObject.currentRow();
+
+              _this.setState(Object.assign(record, otherState));
+            } else {
+              var data = dataObject.getData();
+              var current = dataObject.currentRow();
+
+              _this.setState(Object.assign({
+                current: current,
+                data: data
+              }, otherState));
+            }
+          });
+
+          _defineProperty(_assertThisInitialized(_assertThisInitialized(_this)), "handleAllowDeleteChanged", function (allowed) {
+            _this.setState({
+              canDelete: allowed
+            });
+          });
+
+          _defineProperty(_assertThisInitialized(_assertThisInitialized(_this)), "handleAllowUpdateChanged", function (allowed) {
+            _this.setState({
+              canUpdate: allowed
+            });
+          });
+
+          _defineProperty(_assertThisInitialized(_assertThisInitialized(_this)), "handleAllowInsertChanged", function (allowed) {
+            _this.setState({
+              canInsert: allowed
+            });
+          });
+
+          _defineProperty(_assertThisInitialized(_assertThisInitialized(_this)), "handleSaveFailed", function () {
+            _this.setState({
+              saveFailed: true
+            });
+          });
+
+          _defineProperty(_assertThisInitialized(_assertThisInitialized(_this)), "handlePartialDataLoaded", function () {});
+
+          _defineProperty(_assertThisInitialized(_assertThisInitialized(_this)), "handleDataLoadFailed", function (loadError) {
+            if (loadError) {
+              _this.setState({
+                isLoading: false,
+                loadError: loadError
+              });
+            } else {
+              _this.setState({
+                isLoading: false
+              });
+            }
+          });
+
+          _defineProperty(_assertThisInitialized(_assertThisInitialized(_this)), "handleFieldChanged", function () {
+            _this.updateData();
+          });
+
+          _defineProperty(_assertThisInitialized(_assertThisInitialized(_this)), "handleRecordCreated", function () {
+            _this.updateData();
+          });
+
+          _defineProperty(_assertThisInitialized(_assertThisInitialized(_this)), "handleRecordRefreshed", function () {
+            _this.updateData();
+          });
+
+          _defineProperty(_assertThisInitialized(_assertThisInitialized(_this)), "handleRecordDeleting", function () {
+            _this.setState({
+              isDeleting: true
+            });
+          });
+
+          _defineProperty(_assertThisInitialized(_assertThisInitialized(_this)), "handleRecordDeleted", function () {
+            _this.updateData({
+              isDeleting: false
+            });
+          });
+
+          _defineProperty(_assertThisInitialized(_assertThisInitialized(_this)), "handleAfterSave", function () {
+            _this.updateData({
+              isSaving: false
+            });
+          });
+
+          _defineProperty(_assertThisInitialized(_assertThisInitialized(_this)), "handleBeforeLoad", function () {
+            _this.setState({
+              isLoading: true
+            });
+          });
+
+          _defineProperty(_assertThisInitialized(_assertThisInitialized(_this)), "handleBeforeSave", function () {
+            _this.setState({
+              isSaving: true,
+              saveFailed: false
+            });
+          });
+
+          _defineProperty(_assertThisInitialized(_assertThisInitialized(_this)), "handleCancelEdit", function () {
+            _this.updateData({
+              isSaving: false
+            });
+          });
+
+          _defineProperty(_assertThisInitialized(_assertThisInitialized(_this)), "handleCurrentIndexChanged", function (currentIndex) {
+            if (currentRowOnly) {
+              _this.updateData();
+            } else {
+              _this.updateData();
+
+              _this.setState({
+                currentIndex: currentIndex
+              });
+            }
+          });
+
+          _defineProperty(_assertThisInitialized(_assertThisInitialized(_this)), "handleDataLoaded", function () {
+            _this.updateData({
+              isLoading: false,
+              isSaving: false,
+              isDeleting: false,
+              saveFailed: false
+            });
+          });
+
+          _defineProperty(_assertThisInitialized(_assertThisInitialized(_this)), "handleDirtyChanged", function () {
+            _this.setState({
+              isDirty: dataObject.isDirty()
+            });
+          });
+
+          _defineProperty(_assertThisInitialized(_assertThisInitialized(_this)), "setFieldValue", function (name, value) {
+            dataObject.currentRow(name, value);
+
+            _this.updateData();
+          });
+
+          _defineProperty(_assertThisInitialized(_assertThisInitialized(_this)), "setFieldValues", function (fields) {
+            for (var field in fields) {
+              if (fields.hasOwnProperty(field)) {
+                dataObject.currentRow(field, fields[field]);
+              }
+            }
+
+            _this.updateData();
+          });
+
           var initialState = {};
 
           if (currentRowOnly) {
@@ -173,47 +320,20 @@
         _createClass(connector, [{
           key: "componentDidMount",
           value: function componentDidMount() {
-            dataObject.attachEvent('onAllowDeleteChanged', this.handleAllowDeleteChanged);
-            dataObject.attachEvent('onAllowUpdateChanged', this.handleAllowUpdateChanged);
-            dataObject.attachEvent('onAllowInsertChanged', this.handleAllowInsertChanged);
-            dataObject.attachEvent('onSaveFailed', this.handleSaveFailed);
-            dataObject.attachEvent('onPartialDataLoaded', this.handlePartialDataLoaded);
-            dataObject.attachEvent('onDataLoadFailed', this.handleDataLoadFailed);
-            dataObject.attachEvent('onFieldChanged', this.handleFieldChanged);
-            dataObject.attachEvent('onRecordCreated', this.handleRecordCreated);
-            dataObject.attachEvent('onRecordRefreshed', this.handleRecordRefreshed);
-            dataObject.attachEvent('onRecordDeleting', this.handleRecordDeleting);
-            dataObject.attachEvent('onRecordDeleted', this.handleRecordDeleted);
-            dataObject.attachEvent('onAfterSave', this.handleAfterSave);
-            dataObject.attachEvent('onBeforeLoad', this.handleBeforeLoad);
-            dataObject.attachEvent('onBeforeSave', this.handleBeforeSave);
-            dataObject.attachEvent('onCancelEdit', this.handleCancelEdit);
-            dataObject.attachEvent('onCurrentIndexChanged', this.handleCurrentIndexChanged);
-            dataObject.attachEvent('onDataLoaded', this.handleDataLoaded);
-            dataObject.attachEvent('onDirtyChanged', this.handleDirtyChanged);
+            for (var _i = 0; _i < events.length; _i++) {
+              var event = events[_i];
+              dataObject.attachEvent('on' + event, this['handle' + event]);
+            }
+
             this.updateData();
           }
         }, {
           key: "componentWillUnmount",
           value: function componentWillUnmount() {
-            dataObject.detachEvent('onAllowDeleteChanged', this.handleAllowDeleteChanged);
-            dataObject.detachEvent('onAllowUpdateChanged', this.handleAllowUpdateChanged);
-            dataObject.detachEvent('onAllowInsertChanged', this.handleAllowInsertChanged);
-            dataObject.detachEvent('onSaveFailed', this.handleSaveFailed);
-            dataObject.detachEvent('onPartialDataLoaded', this.handlePartialDataLoaded);
-            dataObject.detachEvent('onDataLoadFailed', this.handleDataLoadFailed);
-            dataObject.detachEvent('onFieldChanged', this.handleFieldChanged);
-            dataObject.detachEvent('onRecordCreated', this.handleRecordCreated);
-            dataObject.detachEvent('onRecordRefreshed', this.handleRecordRefreshed);
-            dataObject.detachEvent('onRecordDeleting', this.handleRecordDeleting);
-            dataObject.detachEvent('onRecordDeleted', this.handleRecordDeleted);
-            dataObject.detachEvent('onAfterSave', this.handleAfterSave);
-            dataObject.detachEvent('onBeforeLoad', this.handleBeforeLoad);
-            dataObject.detachEvent('onBeforeSave', this.handleBeforeSave);
-            dataObject.detachEvent('onCancelEdit', this.handleCancelEdit);
-            dataObject.detachEvent('onCurrentIndexChanged', this.handleCurrentIndexChanged);
-            dataObject.detachEvent('onDataLoaded', this.handleDataLoaded);
-            dataObject.detachEvent('onDirtyChanged', this.handleDirtyChanged);
+            for (var _i2 = 0; _i2 < events.length; _i2++) {
+              var event = events[_i2];
+              dataObject.detachEvent('on' + event, this['handle' + event]);
+            }
           }
         }, {
           key: "cancelEdit",
@@ -252,157 +372,6 @@
             });
           }
         }, {
-          key: "updateData",
-          value: function updateData() {
-            var otherState = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
-
-            if (currentRowOnly) {
-              var record = dataObject.currentRow();
-              this.setState(Object.assign(record, otherState));
-            } else {
-              var data = dataObject.getData();
-              var current = dataObject.currentRow();
-              this.setState(Object.assign({
-                current: current,
-                data: data
-              }, otherState));
-            }
-          }
-        }, {
-          key: "handleAllowDeleteChanged",
-          value: function handleAllowDeleteChanged(allowed) {
-            this.setState({
-              canDelete: allowed
-            });
-          }
-        }, {
-          key: "handleAllowUpdateChanged",
-          value: function handleAllowUpdateChanged(allowed) {
-            this.setState({
-              canUpdate: allowed
-            });
-          }
-        }, {
-          key: "handleAllowInsertChanged",
-          value: function handleAllowInsertChanged(allowed) {
-            this.setState({
-              canInsert: allowed
-            });
-          }
-        }, {
-          key: "handleSaveFailed",
-          value: function handleSaveFailed() {
-            this.setState({
-              saveFailed: true
-            });
-          }
-        }, {
-          key: "handlePartialDataLoaded",
-          value: function handlePartialDataLoaded() {}
-        }, {
-          key: "handleDataLoadFailed",
-          value: function handleDataLoadFailed(loadError) {
-            if (loadError) {
-              this.setState({
-                isLoading: false,
-                loadError: loadError
-              });
-            } else {
-              this.setState({
-                isLoading: false
-              });
-            }
-          }
-        }, {
-          key: "handleFieldChanged",
-          value: function handleFieldChanged(_ref) {
-            var name = _ref.name,
-                value = _ref.value;
-            this.updateData();
-          }
-        }, {
-          key: "handleRecordCreated",
-          value: function handleRecordCreated() {
-            this.updateData();
-          }
-        }, {
-          key: "handleRecordRefreshed",
-          value: function handleRecordRefreshed() {
-            this.updateData();
-          }
-        }, {
-          key: "handleRecordDeleting",
-          value: function handleRecordDeleting() {
-            this.setState({
-              isDeleting: true
-            });
-          }
-        }, {
-          key: "handleRecordDeleted",
-          value: function handleRecordDeleted() {
-            this.updateData({
-              isDeleting: false
-            });
-          }
-        }, {
-          key: "handleAfterSave",
-          value: function handleAfterSave() {
-            this.updateData({
-              isSaving: false
-            });
-          }
-        }, {
-          key: "handleBeforeLoad",
-          value: function handleBeforeLoad() {
-            this.setState({
-              isLoading: true
-            });
-          }
-        }, {
-          key: "handleBeforeSave",
-          value: function handleBeforeSave() {
-            this.setState({
-              isSaving: true,
-              saveFailed: false
-            });
-          }
-        }, {
-          key: "handleCancelEdit",
-          value: function handleCancelEdit() {
-            this.updateData({
-              isSaving: false
-            });
-          }
-        }, {
-          key: "handleCurrentIndexChanged",
-          value: function handleCurrentIndexChanged(currentIndex) {
-            if (currentRowOnly) {
-              this.updateData();
-            } else {
-              this.updateData();
-              this.setState({
-                currentIndex: currentIndex
-              });
-            }
-          }
-        }, {
-          key: "handleDataLoaded",
-          value: function handleDataLoaded() {
-            this.updateData({
-              isLoading: false,
-              isSaving: false,
-              isDeleting: false,
-              saveFailed: false
-            });
-          }
-        }, {
-          key: "handleDirtyChanged",
-          value: function handleDirtyChanged() {
-            this.setState({
-              isDirty: dataObject.isDirty()
-            });
-          }
-        }, {
           key: "refreshData",
           value: function refreshData(callback) {
             return new Promise(function (resolve) {
@@ -427,23 +396,6 @@
                 });
               });
             });
-          }
-        }, {
-          key: "setFieldValue",
-          value: function setFieldValue(name, value) {
-            dataObject.currentRow(name, value);
-            this.updateData();
-          }
-        }, {
-          key: "setFieldValues",
-          value: function setFieldValues(fields) {
-            for (var field in fields) {
-              if (fields.hasOwnProperty(field)) {
-                dataObject.currentRow(field, fields[field]);
-              }
-            }
-
-            this.updateData();
           }
         }, {
           key: "setCurrentIndex",

@@ -1,29 +1,29 @@
+const events = [
+	'AllowDeleteChanged',
+	'AllowUpdateChanged',
+	'AllowInsertChanged',
+	'SaveFailed',
+	'PartialDataLoaded',
+	'DataLoadFailed',
+	'FieldChanged',
+	'RecordCreated',
+	'RecordRefreshed',
+	'RecordDeleting',
+	'RecordDeleted',
+	'AfterSave',
+	'BeforeLoad',
+	'BeforeSave',
+	'CancelEdit',
+	'CurrentIndexChanged',
+	'DataLoaded',
+	'DirtyChanged'
+]
+
 const dataObjectConnect = function(dataObject, currentRowOnly = false) {
   return function connect(WrappedComponent) {
 	  const connector = class extends React.Component {
 		  constructor(props) {
 			  super(props);
-			  
-			  this.handleAllowDeleteChanged = this.handleAllowDeleteChanged.bind(this);
-			  this.handleAllowUpdateChanged = this.handleAllowUpdateChanged.bind(this);
-			  this.handleAllowInsertChanged = this.handleAllowInsertChanged.bind(this);
-			  this.handleSaveFailed = this.handleSaveFailed.bind(this);
-			  this.handlePartialDataLoaded = this.handlePartialDataLoaded.bind(this);
-			  this.handleDataLoadFailed = this.handleDataLoadFailed.bind(this);
-			  this.handleFieldChanged = this.handleFieldChanged.bind(this);
-			  this.handleRecordCreated = this.handleRecordCreated.bind(this);
-			  this.handleRecordRefreshed = this.handleRecordRefreshed.bind(this);
-			  this.handleRecordDeleting = this.handleRecordDeleting.bind(this);
-			  this.handleRecordDeleted = this.handleRecordDeleted.bind(this);
-			  this.handleAfterSave = this.handleAfterSave.bind(this);
-			  this.handleBeforeSave = this.handleBeforeSave.bind(this);
-			  this.handleBeforeLoad = this.handleBeforeLoad.bind(this);
-			  this.handleCancelEdit = this.handleCancelEdit.bind(this);
-			  this.handleCurrentIndexChanged = this.handleCurrentIndexChanged.bind(this);
-			  this.handleDataLoaded = this.handleDataLoaded.bind(this);
-			  this.handleDirtyChanged = this.handleDirtyChanged.bind(this);
-			  this.setFieldValue = this.setFieldValue.bind(this);
-			  this.setFieldValues = this.setFieldValues.bind(this);
 			  
 			  const initialState = {};
 			  if (currentRowOnly) {
@@ -51,47 +51,17 @@ const dataObjectConnect = function(dataObject, currentRowOnly = false) {
 		  }
 	  
 		  componentDidMount() {
-			  dataObject.attachEvent('onAllowDeleteChanged', this.handleAllowDeleteChanged);
-			  dataObject.attachEvent('onAllowUpdateChanged', this.handleAllowUpdateChanged);
-			  dataObject.attachEvent('onAllowInsertChanged', this.handleAllowInsertChanged);
-			  dataObject.attachEvent('onSaveFailed', this.handleSaveFailed);
-			  dataObject.attachEvent('onPartialDataLoaded', this.handlePartialDataLoaded);
-			  dataObject.attachEvent('onDataLoadFailed', this.handleDataLoadFailed);
-			  dataObject.attachEvent('onFieldChanged', this.handleFieldChanged);
-			  dataObject.attachEvent('onRecordCreated', this.handleRecordCreated);
-			  dataObject.attachEvent('onRecordRefreshed', this.handleRecordRefreshed);
-			  dataObject.attachEvent('onRecordDeleting', this.handleRecordDeleting);
-			  dataObject.attachEvent('onRecordDeleted', this.handleRecordDeleted);
-			  dataObject.attachEvent('onAfterSave', this.handleAfterSave);
-			  dataObject.attachEvent('onBeforeLoad', this.handleBeforeLoad);
-			  dataObject.attachEvent('onBeforeSave', this.handleBeforeSave);
-			  dataObject.attachEvent('onCancelEdit', this.handleCancelEdit);
-			  dataObject.attachEvent('onCurrentIndexChanged', this.handleCurrentIndexChanged);
-			  dataObject.attachEvent('onDataLoaded', this.handleDataLoaded);
-			  dataObject.attachEvent('onDirtyChanged', this.handleDirtyChanged);
+				for (let event of events) {
+					dataObject.attachEvent('on' + event, this['handle' + event]);
+				}
 			  
 			  this.updateData();
 		  }
 		  
 		  componentWillUnmount() {
-			  dataObject.detachEvent('onAllowDeleteChanged', this.handleAllowDeleteChanged);
-			  dataObject.detachEvent('onAllowUpdateChanged', this.handleAllowUpdateChanged);
-			  dataObject.detachEvent('onAllowInsertChanged', this.handleAllowInsertChanged);
-			  dataObject.detachEvent('onSaveFailed', this.handleSaveFailed);
-			  dataObject.detachEvent('onPartialDataLoaded', this.handlePartialDataLoaded);
-			  dataObject.detachEvent('onDataLoadFailed', this.handleDataLoadFailed);
-			  dataObject.detachEvent('onFieldChanged', this.handleFieldChanged);
-			  dataObject.detachEvent('onRecordCreated', this.handleRecordCreated);
-			  dataObject.detachEvent('onRecordRefreshed', this.handleRecordRefreshed);
-			  dataObject.detachEvent('onRecordDeleting', this.handleRecordDeleting);
-			  dataObject.detachEvent('onRecordDeleted', this.handleRecordDeleted);
-			  dataObject.detachEvent('onAfterSave', this.handleAfterSave);
-			  dataObject.detachEvent('onBeforeLoad', this.handleBeforeLoad);
-			  dataObject.detachEvent('onBeforeSave', this.handleBeforeSave);
-			  dataObject.detachEvent('onCancelEdit', this.handleCancelEdit);
-			  dataObject.detachEvent('onCurrentIndexChanged', this.handleCurrentIndexChanged);
-			  dataObject.detachEvent('onDataLoaded', this.handleDataLoaded);
-			  dataObject.detachEvent('onDirtyChanged', this.handleDirtyChanged);
+				for (let event of events) {
+					dataObject.detachEvent('on' + event, this['handle' + event]);
+				}
 		  }
 		  
 		  cancelEdit() {
@@ -121,7 +91,7 @@ const dataObjectConnect = function(dataObject, currentRowOnly = false) {
 			  });
 		  }
 		  
-		  updateData(otherState = {}) {
+		  updateData = (otherState = {}) => {
 			  if (currentRowOnly) {
 				  const record = dataObject.currentRow();
 				  this.setState(Object.assign(record, otherState));
@@ -132,27 +102,27 @@ const dataObjectConnect = function(dataObject, currentRowOnly = false) {
 			  }
 		  }
 		  
-		  handleAllowDeleteChanged(allowed) {
+		  handleAllowDeleteChanged = (allowed) => {
 			  this.setState({ canDelete: allowed });
 		  }
 		  
-		  handleAllowUpdateChanged(allowed) {
+		  handleAllowUpdateChanged = (allowed) => {
 			  this.setState({ canUpdate: allowed });
 		  }
 		  
-		  handleAllowInsertChanged(allowed) {
+		  handleAllowInsertChanged = (allowed) => {
 			  this.setState({ canInsert: allowed });
 		  }
 		  
-		  handleSaveFailed() {
+		  handleSaveFailed = () => {
 			  this.setState({ saveFailed: true });
 		  }
 		  
-		  handlePartialDataLoaded() {
+		  handlePartialDataLoaded = () => {
 			  
 		  }
 		  
-		  handleDataLoadFailed(loadError) {
+		  handleDataLoadFailed = (loadError) => {
 			  if (loadError) {
 				  this.setState({ isLoading: false , loadError });
 			  } else {
@@ -160,43 +130,43 @@ const dataObjectConnect = function(dataObject, currentRowOnly = false) {
 			  }
 		  }
 		  
-		  handleFieldChanged({ name, value }) {
+		  handleFieldChanged = () => {
 			  this.updateData()
 		  }
 		  
-		  handleRecordCreated() {
+		  handleRecordCreated = () => {
 			  this.updateData();
 		  }
 		  
-		  handleRecordRefreshed() {
+		  handleRecordRefreshed = () => {
 			  this.updateData();
 		  }
 		  
-		  handleRecordDeleting() {
+		  handleRecordDeleting = () => {
 			  this.setState({ isDeleting: true });
 		  }
 		  
-		  handleRecordDeleted() {
+		  handleRecordDeleted = () => {
 			  this.updateData({ isDeleting: false });
 		  }
 		  
-		  handleAfterSave() {
+		  handleAfterSave = () => {
 			  this.updateData({ isSaving: false });
 		  }
 		  
-		  handleBeforeLoad() {
+		  handleBeforeLoad = () => {
 			  this.setState({ isLoading: true });
 		  }
 		  
-		  handleBeforeSave() {
+		  handleBeforeSave = () => {
 			  this.setState({ isSaving: true, saveFailed: false });
 		  }
 		  
-		  handleCancelEdit() {
+		  handleCancelEdit = () => {
 			  this.updateData({ isSaving: false });
 		  }
 		  
-		  handleCurrentIndexChanged(currentIndex) {
+		  handleCurrentIndexChanged = (currentIndex) => {
 			  if (currentRowOnly) {
 				  this.updateData();
 			  } else {
@@ -205,11 +175,11 @@ const dataObjectConnect = function(dataObject, currentRowOnly = false) {
 			  }
 		  }
 		  
-		  handleDataLoaded() {
+		  handleDataLoaded = () => {
 			  this.updateData({ isLoading: false, isSaving: false, isDeleting: false, saveFailed: false });
 		  }
 		  
-		  handleDirtyChanged() {
+		  handleDirtyChanged = () => {
 			  this.setState({ isDirty: dataObject.isDirty() });
 		  }
 		  
@@ -231,12 +201,12 @@ const dataObjectConnect = function(dataObject, currentRowOnly = false) {
 			  });
 		  }
 		  
-		  setFieldValue(name, value) {
+		  setFieldValue = (name, value) => {
 			  dataObject.currentRow(name, value);
 			  this.updateData();
 		  }
 
-		  setFieldValues(fields) {
+		  setFieldValues = (fields) => {
 			  for (let field in fields) {
 				  if (fields.hasOwnProperty(field)) {
 					  dataObject.currentRow(field, fields[field]);

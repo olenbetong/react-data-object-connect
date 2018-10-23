@@ -13,9 +13,10 @@ function babelPlugin(format) {
 				["@babel/preset-env", {
 					"targets": {
 						"browsers": [
-							"last 5 chrome versions",
-							"last 5 firefox versions",
-							"last 3 safari versions"
+							"last 5 Chrome versions",
+							"last 5 Firefox versions",
+							"last 3 Safari versions",
+							"last 3 Edge versions"
 						]
 					},
 					"useBuiltIns": false

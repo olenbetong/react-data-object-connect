@@ -142,30 +142,32 @@
           });
 
           _defineProperty(_assertThisInitialized(_assertThisInitialized(_this)), "handleAllowDeleteChanged", function (allowed) {
-            _this.setState({
+            return _this.setState({
               canDelete: allowed
             });
           });
 
           _defineProperty(_assertThisInitialized(_assertThisInitialized(_this)), "handleAllowUpdateChanged", function (allowed) {
-            _this.setState({
+            return _this.setState({
               canUpdate: allowed
             });
           });
 
           _defineProperty(_assertThisInitialized(_assertThisInitialized(_this)), "handleAllowInsertChanged", function (allowed) {
-            _this.setState({
+            return _this.setState({
               canInsert: allowed
             });
           });
 
           _defineProperty(_assertThisInitialized(_assertThisInitialized(_this)), "handleSaveFailed", function () {
-            _this.setState({
+            return _this.setState({
               saveFailed: true
             });
           });
 
-          _defineProperty(_assertThisInitialized(_assertThisInitialized(_this)), "handlePartialDataLoaded", function () {});
+          _defineProperty(_assertThisInitialized(_assertThisInitialized(_this)), "handlePartialDataLoaded", function () {
+            return null;
+          });
 
           _defineProperty(_assertThisInitialized(_assertThisInitialized(_this)), "handleDataLoadFailed", function (loadError) {
             if (loadError) {
@@ -180,51 +182,45 @@
             }
           });
 
-          _defineProperty(_assertThisInitialized(_assertThisInitialized(_this)), "handleFieldChanged", function () {
-            _this.updateData();
-          });
+          _defineProperty(_assertThisInitialized(_assertThisInitialized(_this)), "handleFieldChanged", _this.updateData);
 
-          _defineProperty(_assertThisInitialized(_assertThisInitialized(_this)), "handleRecordCreated", function () {
-            _this.updateData();
-          });
+          _defineProperty(_assertThisInitialized(_assertThisInitialized(_this)), "handleRecordCreated", _this.updateData);
 
-          _defineProperty(_assertThisInitialized(_assertThisInitialized(_this)), "handleRecordRefreshed", function () {
-            _this.updateData();
-          });
+          _defineProperty(_assertThisInitialized(_assertThisInitialized(_this)), "handleRecordRefreshed", _this.updateData);
 
           _defineProperty(_assertThisInitialized(_assertThisInitialized(_this)), "handleRecordDeleting", function () {
-            _this.setState({
+            return _this.setState({
               isDeleting: true
             });
           });
 
           _defineProperty(_assertThisInitialized(_assertThisInitialized(_this)), "handleRecordDeleted", function () {
-            _this.updateData({
+            return _this.updateData({
               isDeleting: false
             });
           });
 
           _defineProperty(_assertThisInitialized(_assertThisInitialized(_this)), "handleAfterSave", function () {
-            _this.updateData({
+            return _this.updateData({
               isSaving: false
             });
           });
 
           _defineProperty(_assertThisInitialized(_assertThisInitialized(_this)), "handleBeforeLoad", function () {
-            _this.setState({
+            return _this.setState({
               isLoading: true
             });
           });
 
           _defineProperty(_assertThisInitialized(_assertThisInitialized(_this)), "handleBeforeSave", function () {
-            _this.setState({
+            return _this.setState({
               isSaving: true,
               saveFailed: false
             });
           });
 
           _defineProperty(_assertThisInitialized(_assertThisInitialized(_this)), "handleCancelEdit", function () {
-            _this.updateData({
+            return _this.updateData({
               isSaving: false
             });
           });
@@ -242,7 +238,7 @@
           });
 
           _defineProperty(_assertThisInitialized(_assertThisInitialized(_this)), "handleDataLoaded", function () {
-            _this.updateData({
+            return _this.updateData({
               isLoading: false,
               isSaving: false,
               isDeleting: false,
@@ -251,7 +247,7 @@
           });
 
           _defineProperty(_assertThisInitialized(_assertThisInitialized(_this)), "handleDirtyChanged", function () {
-            _this.setState({
+            return _this.setState({
               isDirty: dataObject.isDirty()
             });
           });

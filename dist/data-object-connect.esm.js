@@ -33,7 +33,7 @@ function _extends() {
 
 const events = ['AllowDeleteChanged', 'AllowUpdateChanged', 'AllowInsertChanged', 'SaveFailed', 'PartialDataLoaded', 'DataLoadFailed', 'FieldChanged', 'RecordCreated', 'RecordRefreshed', 'RecordDeleting', 'RecordDeleted', 'AfterSave', 'BeforeLoad', 'BeforeSave', 'CancelEdit', 'CurrentIndexChanged', 'DataLoaded', 'DirtyChanged'];
 
-const dataObjectConnect = function (dataObject, currentRowOnly = false) {
+const dataObjectConnect = function dataObjectConnect(dataObject, currentRowOnly = false) {
   return function connect(WrappedComponent) {
     const connector = class connector extends React.Component {
       constructor(props) {
@@ -53,31 +53,23 @@ const dataObjectConnect = function (dataObject, currentRowOnly = false) {
           }
         });
 
-        _defineProperty(this, "handleAllowDeleteChanged", allowed => {
-          this.setState({
-            canDelete: allowed
-          });
-        });
+        _defineProperty(this, "handleAllowDeleteChanged", allowed => this.setState({
+          canDelete: allowed
+        }));
 
-        _defineProperty(this, "handleAllowUpdateChanged", allowed => {
-          this.setState({
-            canUpdate: allowed
-          });
-        });
+        _defineProperty(this, "handleAllowUpdateChanged", allowed => this.setState({
+          canUpdate: allowed
+        }));
 
-        _defineProperty(this, "handleAllowInsertChanged", allowed => {
-          this.setState({
-            canInsert: allowed
-          });
-        });
+        _defineProperty(this, "handleAllowInsertChanged", allowed => this.setState({
+          canInsert: allowed
+        }));
 
-        _defineProperty(this, "handleSaveFailed", () => {
-          this.setState({
-            saveFailed: true
-          });
-        });
+        _defineProperty(this, "handleSaveFailed", () => this.setState({
+          saveFailed: true
+        }));
 
-        _defineProperty(this, "handlePartialDataLoaded", () => {});
+        _defineProperty(this, "handlePartialDataLoaded", () => null);
 
         _defineProperty(this, "handleDataLoadFailed", loadError => {
           if (loadError) {
@@ -92,54 +84,36 @@ const dataObjectConnect = function (dataObject, currentRowOnly = false) {
           }
         });
 
-        _defineProperty(this, "handleFieldChanged", () => {
-          this.updateData();
-        });
+        _defineProperty(this, "handleFieldChanged", this.updateData);
 
-        _defineProperty(this, "handleRecordCreated", () => {
-          this.updateData();
-        });
+        _defineProperty(this, "handleRecordCreated", this.updateData);
 
-        _defineProperty(this, "handleRecordRefreshed", () => {
-          this.updateData();
-        });
+        _defineProperty(this, "handleRecordRefreshed", this.updateData);
 
-        _defineProperty(this, "handleRecordDeleting", () => {
-          this.setState({
-            isDeleting: true
-          });
-        });
+        _defineProperty(this, "handleRecordDeleting", () => this.setState({
+          isDeleting: true
+        }));
 
-        _defineProperty(this, "handleRecordDeleted", () => {
-          this.updateData({
-            isDeleting: false
-          });
-        });
+        _defineProperty(this, "handleRecordDeleted", () => this.updateData({
+          isDeleting: false
+        }));
 
-        _defineProperty(this, "handleAfterSave", () => {
-          this.updateData({
-            isSaving: false
-          });
-        });
+        _defineProperty(this, "handleAfterSave", () => this.updateData({
+          isSaving: false
+        }));
 
-        _defineProperty(this, "handleBeforeLoad", () => {
-          this.setState({
-            isLoading: true
-          });
-        });
+        _defineProperty(this, "handleBeforeLoad", () => this.setState({
+          isLoading: true
+        }));
 
-        _defineProperty(this, "handleBeforeSave", () => {
-          this.setState({
-            isSaving: true,
-            saveFailed: false
-          });
-        });
+        _defineProperty(this, "handleBeforeSave", () => this.setState({
+          isSaving: true,
+          saveFailed: false
+        }));
 
-        _defineProperty(this, "handleCancelEdit", () => {
-          this.updateData({
-            isSaving: false
-          });
-        });
+        _defineProperty(this, "handleCancelEdit", () => this.updateData({
+          isSaving: false
+        }));
 
         _defineProperty(this, "handleCurrentIndexChanged", currentIndex => {
           if (currentRowOnly) {
@@ -152,20 +126,16 @@ const dataObjectConnect = function (dataObject, currentRowOnly = false) {
           }
         });
 
-        _defineProperty(this, "handleDataLoaded", () => {
-          this.updateData({
-            isLoading: false,
-            isSaving: false,
-            isDeleting: false,
-            saveFailed: false
-          });
-        });
+        _defineProperty(this, "handleDataLoaded", () => this.updateData({
+          isLoading: false,
+          isSaving: false,
+          isDeleting: false,
+          saveFailed: false
+        }));
 
-        _defineProperty(this, "handleDirtyChanged", () => {
-          this.setState({
-            isDirty: dataObject.isDirty()
-          });
-        });
+        _defineProperty(this, "handleDirtyChanged", () => this.setState({
+          isDirty: dataObject.isDirty()
+        }));
 
         _defineProperty(this, "setFieldValue", (name, value) => {
           dataObject.currentRow(name, value);

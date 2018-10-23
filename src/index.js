@@ -102,26 +102,12 @@ const dataObjectConnect = function(dataObject, currentRowOnly = false) {
 			  }
 		  }
 		  
-		  handleAllowDeleteChanged = (allowed) => {
-			  this.setState({ canDelete: allowed });
-		  }
-		  
-		  handleAllowUpdateChanged = (allowed) => {
-			  this.setState({ canUpdate: allowed });
-		  }
-		  
-		  handleAllowInsertChanged = (allowed) => {
-			  this.setState({ canInsert: allowed });
-		  }
-		  
-		  handleSaveFailed = () => {
-			  this.setState({ saveFailed: true });
-		  }
-		  
-		  handlePartialDataLoaded = () => {
-			  
-		  }
-		  
+		  handleAllowDeleteChanged = (allowed) => this.setState({ canDelete: allowed });	  
+		  handleAllowUpdateChanged = (allowed) => this.setState({ canUpdate: allowed });
+		  handleAllowInsertChanged = (allowed) => this.setState({ canInsert: allowed });
+		  handleSaveFailed = () => this.setState({ saveFailed: true });
+		  handlePartialDataLoaded = () => null;
+
 		  handleDataLoadFailed = (loadError) => {
 			  if (loadError) {
 				  this.setState({ isLoading: false , loadError });
@@ -130,41 +116,16 @@ const dataObjectConnect = function(dataObject, currentRowOnly = false) {
 			  }
 		  }
 		  
-		  handleFieldChanged = () => {
-			  this.updateData()
-		  }
-		  
-		  handleRecordCreated = () => {
-			  this.updateData();
-		  }
-		  
-		  handleRecordRefreshed = () => {
-			  this.updateData();
-		  }
-		  
-		  handleRecordDeleting = () => {
-			  this.setState({ isDeleting: true });
-		  }
-		  
-		  handleRecordDeleted = () => {
-			  this.updateData({ isDeleting: false });
-		  }
-		  
-		  handleAfterSave = () => {
-			  this.updateData({ isSaving: false });
-		  }
-		  
-		  handleBeforeLoad = () => {
-			  this.setState({ isLoading: true });
-		  }
-		  
-		  handleBeforeSave = () => {
-			  this.setState({ isSaving: true, saveFailed: false });
-		  }
-		  
-		  handleCancelEdit = () => {
-			  this.updateData({ isSaving: false });
-		  }
+		  handleFieldChanged = this.updateData;
+		  handleRecordCreated = this.updateData;
+		  handleRecordRefreshed = this.updateData;
+
+		  handleRecordDeleting = () => this.setState({ isDeleting: true });		  
+		  handleRecordDeleted = () => this.updateData({ isDeleting: false });		  
+		  handleAfterSave = () => this.updateData({ isSaving: false });
+		  handleBeforeLoad = () => this.setState({ isLoading: true });
+		  handleBeforeSave = () => this.setState({ isSaving: true, saveFailed: false });
+		  handleCancelEdit = () => this.updateData({ isSaving: false });
 		  
 		  handleCurrentIndexChanged = (currentIndex) => {
 			  if (currentRowOnly) {
@@ -175,13 +136,8 @@ const dataObjectConnect = function(dataObject, currentRowOnly = false) {
 			  }
 		  }
 		  
-		  handleDataLoaded = () => {
-			  this.updateData({ isLoading: false, isSaving: false, isDeleting: false, saveFailed: false });
-		  }
-		  
-		  handleDirtyChanged = () => {
-			  this.setState({ isDirty: dataObject.isDirty() });
-		  }
+		  handleDataLoaded = () => this.updateData({ isLoading: false, isSaving: false, isDeleting: false, saveFailed: false });		  
+		  handleDirtyChanged = () => this.setState({ isDirty: dataObject.isDirty() });
 		  
 		  refreshData(callback) {
 			  return new Promise((resolve) => {

@@ -4,10 +4,10 @@
   "description": "React HOC used to give a React component data from an Appframe data object",
   "main": "dist/data-object-connect.umd.js",
   "scripts": {
-    "build-dev": "node --experimental-modules rollup.mjs",
-    "build-prod": "node --experimental-modules rollup.mjs --prod",
-    "publish-dev": "npx appframe publish --config appframe.dev.js",
-    "publish-prod": "npx appframe publish --config appframe.prod.js"
+    "build:dev": "node --experimental-modules rollup.mjs",
+    "build:prod": "node --experimental-modules rollup.mjs --prod",
+    "publish:dev": "npx appframe publish --config appframe/dev.js",
+    "publish:prod": "npx appframe publish --config appframe/prod.js"
   },
   "repository": {
     "type": "git",

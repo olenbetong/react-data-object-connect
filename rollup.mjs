@@ -10,16 +10,16 @@ function babelPlugin(format) {
 	if (format === 'esm') {
 		return babel({
 			presets: [
-				["@babel/preset-env", {
-					"targets": {
-						"browsers": [
-							"last 5 Chrome versions",
-							"last 5 Firefox versions",
-							"last 3 Safari versions",
-							"last 3 Edge versions"
+				['@babel/preset-env', {
+					'targets': {
+						'browsers': [
+							'Chrome >= 67',
+							'Firefox >= 60',
+							'Safari >= 11',
+							'Edge >= 16'
 						]
 					},
-					"useBuiltIns": false
+					'useBuiltIns': false
 				}]
 			]
 		});

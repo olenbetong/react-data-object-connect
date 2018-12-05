@@ -33,20 +33,27 @@ function _extends() {
 
 const events = ['AllowDeleteChanged', 'AllowUpdateChanged', 'AllowInsertChanged', 'SaveFailed', 'PartialDataLoaded', 'DataLoadFailed', 'FieldChanged', 'RecordCreated', 'RecordRefreshed', 'RecordDeleting', 'RecordDeleted', 'AfterSave', 'BeforeLoad', 'BeforeSave', 'CancelEdit', 'CurrentIndexChanged', 'DataLoaded', 'DirtyChanged'];
 
-const dataObjectConnect = function dataObjectConnect(dataObject, currentRowOnly = false) {
+const dataObjectConnect = function dataObjectConnect(dataObject) {
+  let currentRowOnly = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
   return function connect(WrappedComponent) {
     const connector = class connector extends React.Component {
       constructor(props) {
-        super(props);
+        var _this;
 
-        _defineProperty(this, "updateData", (otherState = {}) => {
+        _this = super(props);
+
+        _defineProperty(this, "updateData", function () {
+          let otherState = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+
           if (currentRowOnly) {
             const record = dataObject.currentRow();
-            this.setState(Object.assign(record, otherState));
+
+            _this.setState(Object.assign(record, otherState));
           } else {
             const data = dataObject.getData();
             const current = dataObject.currentRow();
-            this.setState(Object.assign({
+
+            _this.setState(Object.assign({
               current,
               data
             }, otherState));
@@ -251,8 +258,8 @@ const dataObjectConnect = function dataObjectConnect(dataObject, currentRowOnly 
         dataObject.setCurrentIndex(idx);
       }
 
-      setParameter(...args) {
-        dataObject.setParameter(...args);
+      setParameter() {
+        dataObject.setParameter(...arguments);
       }
 
       render() {

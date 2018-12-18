@@ -13,7 +13,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://dev.azure.com/bvhansen/appframe-cli/_git/data-object-connect"
+    "url": "https://github.com/olenbetong/react-data-object-connect"
   },
   "keywords": [
     "appframe",

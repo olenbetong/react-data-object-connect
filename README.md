@@ -1,4 +1,4 @@
-# Data Object Connect
+# React Data Object Connect
 
 ### HoC that connects AppframeWeb data objects to React components.
 
@@ -9,13 +9,13 @@
 Install using npm
 
 ```
-npm install --save @bjornarvh/data-object-connect
+npm install --save @olenbetong/react-data-object-connect
 ```
 
 or include the umd build in a script
 
 ```html
-<script src="https://unpkg.com/@bjornarvh/data-object-connect@latest/dist/data-object-connect.umd.min.js"></script>
+<script src="https://unpkg.com/@olenbetong/react-data-object-connect@latest/dist/data-object-connect.umd.min.js"></script>
 ```
 
 ### Usage
@@ -28,7 +28,7 @@ Example connecting to all records:
 
 ```jsx
 import React from 'react';
-import dataObjectConnect from '@bjornarvh/data-object-connect';
+import dataObjectConnect from '@olenbetong/react-data-object-connect';
 
 const MyListComponent = (props) => <ul>
 	{props.data.map(item => <li key={item.PrimKey}>{item.Title}</li>)}
@@ -41,7 +41,7 @@ Example connecting to a single record, and checking if it is modified:
 
 ```jsx
 import React from 'react';
-import dataObjectConnect from '@bjornarvh/data-object-connect';
+import dataObjectConnect from '@olenbetong/react-data-object-connect';
 
 const MyRecordComponent = (props) => <p>
 	{props.isDirty && <div>(Data not saved</div>)}

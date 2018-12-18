@@ -24,15 +24,15 @@
   "author": "Bjørnar Vister Hansen <bvh@olenbetong.no>",
   "license": "MIT",
   "devDependencies": {
-    "@babel/core": "^7.2.0",
+    "@babel/core": "^7.2.2",
     "@babel/plugin-proposal-class-properties": "^7.2.1",
     "@babel/preset-env": "^7.2.0",
     "@babel/preset-react": "^7.0.0",
-    "@bjornarvh/appframe-cli": "^1.1.6",
-    "dotenv": "^6.1.0",
+    "@olenbetong/appframe-cli": "^1.1.7",
+    "dotenv": "^6.2.0",
     "minimist": "^1.2.0",
-    "rollup": "^0.67.4",
-    "rollup-plugin-babel": "^4.0.3",
+    "rollup": "^0.68.0",
+    "rollup-plugin-babel": "^4.1.0",
     "rollup-plugin-babel-minify": "^6.2.0"
   }
 }

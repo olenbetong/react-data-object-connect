@@ -28,7 +28,7 @@
     "@babel/plugin-proposal-class-properties": "^7.2.1",
     "@babel/preset-env": "^7.2.0",
     "@babel/preset-react": "^7.0.0",
-    "@olenbetong/appframe-cli": "^1.1.7",
+    "@olenbetong/appframe-cli": "^1.1.8",
     "dotenv": "^6.2.0",
     "minimist": "^1.2.0",
     "rollup": "^0.68.0",

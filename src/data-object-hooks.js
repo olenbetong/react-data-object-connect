@@ -22,7 +22,7 @@ const dataUpdateEvents = [
 	'onDataLoaded',
 ];
 
-export function useCurrentRecord(dataObject) {
+export function useCurrentRow(dataObject) {
 	const [record, setRecord] = useState(dataObject.currentRow());
 	
 	useEffect(() => {

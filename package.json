@@ -18,8 +18,8 @@
     "build:test": "eslint ./src && node rollup.js",
     "build:prod": "eslint ./src && node rollup.js --prod",
     "publish": "npm run publish:test && npm run publish:prod",
-    "publish:test": "npx appframe publish --config appframe.config.js",
-    "publish:prod": "npx appframe publish --config appframe.config.js"
+    "publish:test": "npx appframe publish --mode test --config appframe.config.js",
+    "publish:prod": "npx appframe publish --mode production --config appframe.config.js"
   },
   "repository": {
     "type": "git",

@@ -1,15 +1,25 @@
 {
-  "name": "@bjornarvh/data-object-connect",
+  "name": "@olenbetong/data-object-connect",
   "version": "1.0.0",
   "description": "React HOC used to give a React component data from an Appframe data object",
   "main": "dist/data-object-connect.umd.js",
+  "appframe": [
+    {
+      "fileName": "data-object-connect",
+      "libraryName": "dataObjectConnect"
+    },
+    {
+      "fileName": "data-object-hooks",
+      "libraryName": "dataObjectHooks"
+    }
+  ],
   "scripts": {
-    "build": "npm run build:dev && npm run build:prod",
-    "build:dev": "node --experimental-modules rollup.mjs",
-    "build:prod": "node --experimental-modules rollup.mjs --prod",
-    "publish": "npm run publish:dev && npm run publish:prod",
-    "publish:dev": "npx appframe publish --config appframe/dev.js",
-    "publish:prod": "npx appframe publish --config appframe/prod.js"
+    "build": "npm run build:test && npm run build:prod",
+    "build:test": "eslint ./src && node rollup.js",
+    "build:prod": "eslint ./src && node rollup.js --prod",
+    "publish": "npm run publish:test && npm run publish:prod",
+    "publish:test": "npx appframe publish --config appframe.config.js",
+    "publish:prod": "npx appframe publish --config appframe.config.js"
   },
   "repository": {
     "type": "git",
@@ -29,10 +39,14 @@
     "@babel/preset-env": "^7.2.3",
     "@babel/preset-react": "^7.0.0",
     "@olenbetong/appframe-cli": "^1.1.9",
+    "babel-eslint": "^10.0.1",
     "dotenv": "^6.2.0",
+    "eslint": "^5.12.0",
+    "eslint-plugin-react": "^7.12.3",
+    "eslint-plugin-react-hooks": "0.0.0",
     "minimist": "^1.2.0",
-    "rollup": "^1.0.0",
-    "rollup-plugin-babel": "^4.2.0",
+    "rollup": "^1.1.0",
+    "rollup-plugin-babel": "^4.3.0",
     "rollup-plugin-babel-minify": "^6.2.0"
   }
 }

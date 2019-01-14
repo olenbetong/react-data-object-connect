@@ -16,6 +16,7 @@ const dataUpdateEvents = [
 	'onCurrentIndexChanged',
 	'onFieldChanged',
 	'onRecordCreated',
+	'onRecordDeleted',
 	'onRecordRefreshed',
 	'onAfterSave',
 	'onCancelEdit',

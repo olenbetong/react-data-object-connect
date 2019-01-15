@@ -1,10 +1,12 @@
 const { useEffect, useState } = window.React;
 
 export function useCurrentIndex(dataObject) {
-	const [index, setIndex] = useState(dataObject.getcurrentIndex());
+	const [index, setIndex] = useState(dataObject.getCurrentIndex());
 
 	useEffect(() => {
 		dataObject.attachEvent('onCurrentIndexChanged', setIndex);
+
+		setIndex(dataObject.getCurrentIndex());
 
 		return () => dataObject.detachEvent('onCurrentIndexChanged', setIndex);
 	}, [dataObject]);
@@ -13,7 +15,6 @@ export function useCurrentIndex(dataObject) {
 }
 
 const dataUpdateEvents = [
-	'onCurrentIndexChanged',
 	'onFieldChanged',
 	'onRecordCreated',
 	'onRecordDeleted',
@@ -24,30 +25,39 @@ const dataUpdateEvents = [
 ];
 
 export function useCurrentRow(dataObject) {
-	const [record, setRecord] = useState(dataObject.currentRow());
+	const [record, setRecord] = useState({});
 	
+	function updateRecord() {
+		setRecord(dataObject.currentRow());
+	}
+
 	useEffect(() => {
-		function updateRecord() {
-			setRecord(dataObject.currentRow());
-		}
+		const recordUpdateEvents = [
+			'onCurrentIndexChanged',
+			...dataUpdateEvents,
+		];
+
+		recordUpdateEvents.forEach(event => dataObject.attachEvent(event, updateRecord));
+
+		updateRecord();
 		
-		dataUpdateEvents.forEach(event => dataObject.attachEvent(event, updateRecord));
-		
-		return () => dataUpdateEvents.forEach(event => dataObject.detachEvent(event, updateRecord));
+		return () => recordUpdateEvents.forEach(event => dataObject.detachEvent(event, updateRecord));
 	}, [dataObject]);
 	
 	return record;
 }
 
 export function useData(dataObject) {
-	const [data, setRecord] = useState(dataObject.getData());
+	const [data, setData] = useState([]);
 	
+	function updateData() {
+		setData(dataObject.getData());
+	}
+
 	useEffect(() => {
-		function updateData() {
-			setRecord(dataObject.getData());
-		}
-		
 		dataUpdateEvents.forEach(event => dataObject.attachEvent(event, updateData));
+
+		updateData();
 		
 		return () => dataUpdateEvents.forEach(event => dataObject.detachEvent(event, updateData));
 	}, [dataObject]);
@@ -56,10 +66,12 @@ export function useData(dataObject) {
 }
 
 export function useDirty(dataObject) {
-	const [isDirty, setDirty] = useState(dataObject.isDirty());
+	const [isDirty, setDirty] = useState(false);
 
 	useEffect(() => {
 		dataObject.attachEvent('onDirtyChanged', setDirty);
+
+		setDirty(dataObject.isDirty());
 
 		return () => {
 			dataObject.detachEvent('onDirtyChanged', setDirty);
@@ -86,11 +98,25 @@ export function useErrors(dataObject) {
 export function useLoading(dataObject) {
 	const [isLoading, setLoading] = useState(dataObject.isDataLoading());
 
+	function setIsLoading() {
+		setLoading(true);
+	}
+
+	function setIsNotLoading() {
+		setLoading(false);
+	}
+
 	useEffect(() => {
-		dataObject.attachEvent('onDirtyChanged', setLoading);
+		dataObject.attachEvent('onBeforeLoad', setIsLoading);
+		dataObject.attachEvent('onDataLoaded', setIsNotLoading);
+		dataObject.attachEvent('onDataLoadFailed', setIsNotLoading);
+
+		setLoading(dataObject.isDataLoading);
 
 		return () => {
-			dataObject.detachEvent('onDirtyChanged', setLoading);
+			dataObject.detachEvent('onBeforeLoad', setIsLoading);
+			dataObject.detachEvent('onDataLoaded', setIsNotLoading);
+			dataObject.detachEvent('onDataLoadFailed', setIsNotLoading);
 		};
 	}, [dataObject]);
 

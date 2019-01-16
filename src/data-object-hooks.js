@@ -81,7 +81,7 @@ export function useDirty(dataObject) {
 	return isDirty;
 }
 
-export function useErrors(dataObject) {
+export function useError(dataObject) {
 	const [loadError, setError] = useState(null);
 
 	useEffect(() => {
@@ -126,12 +126,13 @@ export function useLoading(dataObject) {
 export function useStatus(dataObject) {
 	const [isSaving, setIsSaving] = useState(false);
 	const [isDeleting, setIsDeleting] = useState(false);
+	
+	function setSaving() { setIsSaving(true); }
+	function setNotSaving() { setIsSaving(false); }
+	function setDeleting() { setIsDeleting(true); }
+	function setNotDeleting() { setIsDeleting(false); }
 
 	useEffect(() => {
-		function setSaving() { setIsSaving(true); }
-		function setNotSaving() { setIsSaving(false); }
-		function setDeleting() { setIsDeleting(true); }
-		function setNotDeleting() { setIsDeleting(false); }
 
 		dataObject.attachEvent('onBeforeSave', setSaving);
 		dataObject.attachEvent('onAfterSave', setNotSaving);

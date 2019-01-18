@@ -2,7 +2,7 @@
   "name": "@olenbetong/data-object-connect",
   "version": "1.0.0",
   "description": "React HOC used to give a React component data from an Appframe data object",
-  "main": "dist/data-object-connect.umd.js",
+  "main": "dist/data-object-connect.esm.js",
   "appframe": [
     {
       "fileName": "data-object-connect",
@@ -38,7 +38,7 @@
     "@babel/plugin-proposal-class-properties": "^7.2.3",
     "@babel/preset-env": "^7.2.3",
     "@babel/preset-react": "^7.0.0",
-    "@olenbetong/appframe-cli": "^1.1.9",
+    "@olenbetong/appframe-cli": "^1.2.0",
     "babel-eslint": "^10.0.1",
     "dotenv": "^6.2.0",
     "eslint": "^5.12.0",

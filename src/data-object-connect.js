@@ -22,12 +22,18 @@ const events = [
 ];
 
 const dataObjectConnect = function(dataObject, currentRowOnly = false) {
+  function getDataObject() {
+    return typeof dataObject === "string" ? window[dataObject] : dataObject;
+  }
+
   return function connect(WrappedComponent) {
     const connector = class extends React.Component {
       constructor(props) {
         super(props);
 
         const initialState = {};
+        const dataObject = getDataObject();
+
         if (currentRowOnly) {
           for (let field of dataObject.getFields()) {
             initialState[field.name] = null;
@@ -54,6 +60,8 @@ const dataObjectConnect = function(dataObject, currentRowOnly = false) {
       }
 
       componentDidMount() {
+        const dataObject = getDataObject();
+
         for (let event of events) {
           dataObject.attachEvent("on" + event, this["handle" + event]);
         }
@@ -62,16 +70,20 @@ const dataObjectConnect = function(dataObject, currentRowOnly = false) {
       }
 
       componentWillUnmount() {
+        const dataObject = getDataObject();
+
         for (let event of events) {
           dataObject.detachEvent("on" + event, this["handle" + event]);
         }
       }
 
       cancelEdit() {
-        dataObject.cancelEdit();
+        getDataObject().cancelEdit();
       }
 
       deleteRow(idx) {
+        const dataObject = getDataObject();
+
         return new Promise(resolve => {
           const callback = (error, data) => {
             resolve({ data, error });
@@ -86,6 +98,8 @@ const dataObjectConnect = function(dataObject, currentRowOnly = false) {
       }
 
       endEdit(callback) {
+        const dataObject = getDataObject();
+
         return new Promise(resolve => {
           dataObject.endEdit((error, data) => {
             "function" === typeof callback && callback(error, data);
@@ -95,6 +109,8 @@ const dataObjectConnect = function(dataObject, currentRowOnly = false) {
       }
 
       updateData = (otherState = {}) => {
+        const dataObject = getDataObject();
+
         if (currentRowOnly) {
           const record = dataObject.currentRow();
           this.setState(Object.assign(record, otherState));
@@ -141,9 +157,11 @@ const dataObjectConnect = function(dataObject, currentRowOnly = false) {
 
       handleDataLoaded = () =>
         this.updateData({ isLoading: false, isSaving: false, isDeleting: false, saveFailed: false });
-      handleDirtyChanged = () => this.setState({ isDirty: dataObject.isDirty() });
+      handleDirtyChanged = () => this.setState({ isDirty: getDataObject().isDirty() });
 
       refreshData(callback) {
+        const dataObject = getDataObject();
+
         return new Promise(resolve => {
           dataObject.refreshDataSource((error, data) => {
             "function" === typeof callback && callback(error, data);
@@ -153,6 +171,8 @@ const dataObjectConnect = function(dataObject, currentRowOnly = false) {
       }
 
       refreshRow(callback) {
+        const dataObject = getDataObject();
+
         return new Promise(resolve => {
           dataObject.refreshCurrentRow((error, data) => {
             "function" === typeof callback && callback(error, data);
@@ -162,11 +182,13 @@ const dataObjectConnect = function(dataObject, currentRowOnly = false) {
       }
 
       setFieldValue = (name, value) => {
-        dataObject.currentRow(name, value);
+        getDataObject().currentRow(name, value);
         this.updateData();
       };
 
       setFieldValues = fields => {
+        const dataObject = getDataObject();
+
         for (let field in fields) {
           if (fields.hasOwnProperty(field)) {
             dataObject.currentRow(field, fields[field]);
@@ -176,11 +198,11 @@ const dataObjectConnect = function(dataObject, currentRowOnly = false) {
       };
 
       setCurrentIndex(idx) {
-        dataObject.setCurrentIndex(idx);
+        getDataObject().setCurrentIndex(idx);
       }
 
       setParameter(...args) {
-        dataObject.setParameter(...args);
+        getDataObject().setParameter(...args);
       }
 
       render() {
@@ -206,7 +228,7 @@ const dataObjectConnect = function(dataObject, currentRowOnly = false) {
       return WrappedComponent.displayName || WrappedComponent.name || "Component";
     }
 
-    connector.displayName = `${dataObject.getDataSourceId()}(${getDisplayName()})`;
+    connector.displayName = `${getDataObject().getDataSourceId()}(${getDisplayName()})`;
 
     return connector;
   };

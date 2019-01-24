@@ -1,182 +1,186 @@
 const { useEffect, useState } = window.React;
 
 export function useCurrentIndex(dataObject) {
-	const [index, setIndex] = useState(dataObject.getCurrentIndex());
+  const [index, setIndex] = useState(dataObject.getCurrentIndex());
 
-	useEffect(() => {
-		dataObject.attachEvent('onCurrentIndexChanged', setIndex);
+  useEffect(() => {
+    dataObject.attachEvent("onCurrentIndexChanged", setIndex);
 
-		setIndex(dataObject.getCurrentIndex());
+    setIndex(dataObject.getCurrentIndex());
 
-		return () => dataObject.detachEvent('onCurrentIndexChanged', setIndex);
-	}, [dataObject]);
+    return () => dataObject.detachEvent("onCurrentIndexChanged", setIndex);
+  }, [dataObject]);
 
-	return index;
+  return index;
 }
 
 const dataUpdateEvents = [
-	'onFieldChanged',
-	'onRecordCreated',
-	'onRecordDeleted',
-	'onRecordRefreshed',
-	'onAfterSave',
-	'onCancelEdit',
-	'onDataLoaded',
+  "onFieldChanged",
+  "onRecordCreated",
+  "onRecordDeleted",
+  "onRecordRefreshed",
+  "onAfterSave",
+  "onCancelEdit",
+  "onDataLoaded"
 ];
 
 export function useCurrentRow(dataObject) {
-	const [record, setRecord] = useState({});
-	
-	function updateRecord() {
-		setRecord(dataObject.currentRow());
-	}
+  const [record, setRecord] = useState({});
 
-	useEffect(() => {
-		const recordUpdateEvents = [
-			'onCurrentIndexChanged',
-			...dataUpdateEvents,
-		];
+  function updateRecord() {
+    setRecord(dataObject.currentRow());
+  }
 
-		recordUpdateEvents.forEach(event => dataObject.attachEvent(event, updateRecord));
+  useEffect(() => {
+    const recordUpdateEvents = ["onCurrentIndexChanged", ...dataUpdateEvents];
 
-		updateRecord();
-		
-		return () => recordUpdateEvents.forEach(event => dataObject.detachEvent(event, updateRecord));
-	}, [dataObject]);
-	
-	return record;
+    recordUpdateEvents.forEach(event => dataObject.attachEvent(event, updateRecord));
+
+    updateRecord();
+
+    return () => recordUpdateEvents.forEach(event => dataObject.detachEvent(event, updateRecord));
+  }, [dataObject]);
+
+  return record;
 }
 
 export function useData(dataObject) {
-	const [data, setData] = useState([]);
-	
-	function updateData() {
-		setData(dataObject.getData());
-	}
+  const [data, setData] = useState([]);
 
-	useEffect(() => {
-		dataUpdateEvents.forEach(event => dataObject.attachEvent(event, updateData));
+  function updateData() {
+    setData(dataObject.getData());
+  }
 
-		updateData();
-		
-		return () => dataUpdateEvents.forEach(event => dataObject.detachEvent(event, updateData));
-	}, [dataObject]);
-	
-	return data;
+  useEffect(() => {
+    dataUpdateEvents.forEach(event => dataObject.attachEvent(event, updateData));
+
+    updateData();
+
+    return () => dataUpdateEvents.forEach(event => dataObject.detachEvent(event, updateData));
+  }, [dataObject]);
+
+  return data;
 }
 
 export function useDirty(dataObject) {
-	const [isDirty, setDirty] = useState(false);
+  const [isDirty, setDirty] = useState(false);
 
-	useEffect(() => {
-		dataObject.attachEvent('onDirtyChanged', setDirty);
+  useEffect(() => {
+    dataObject.attachEvent("onDirtyChanged", setDirty);
 
-		setDirty(dataObject.isDirty());
+    setDirty(dataObject.isDirty());
 
-		return () => {
-			dataObject.detachEvent('onDirtyChanged', setDirty);
-		};
-	}, [dataObject]);
+    return () => {
+      dataObject.detachEvent("onDirtyChanged", setDirty);
+    };
+  }, [dataObject]);
 
-	return isDirty;
+  return isDirty;
 }
 
 export function useError(dataObject) {
-	const [loadError, setError] = useState(null);
+  const [loadError, setError] = useState(null);
 
-	useEffect(() => {
-		dataObject.attachEvent('onDataLoadFailed', setError);
+  useEffect(() => {
+    dataObject.attachEvent("onDataLoadFailed", setError);
 
-		return () => {
-			dataObject.detachEvent('onDataLoadFailed', setError);
-		};
-	}, [dataObject]);
+    return () => {
+      dataObject.detachEvent("onDataLoadFailed", setError);
+    };
+  }, [dataObject]);
 
-	return loadError;
+  return loadError;
 }
 
 export function useLoading(dataObject) {
-	const [isLoading, setLoading] = useState(dataObject.isDataLoading());
+  const [isLoading, setLoading] = useState(dataObject.isDataLoading());
 
-	function setIsLoading() {
-		setLoading(true);
-	}
+  function setIsLoading() {
+    setLoading(true);
+  }
 
-	function setIsNotLoading() {
-		setLoading(false);
-	}
+  function setIsNotLoading() {
+    setLoading(false);
+  }
 
-	useEffect(() => {
-		dataObject.attachEvent('onBeforeLoad', setIsLoading);
-		dataObject.attachEvent('onDataLoaded', setIsNotLoading);
-		dataObject.attachEvent('onDataLoadFailed', setIsNotLoading);
+  useEffect(() => {
+    dataObject.attachEvent("onBeforeLoad", setIsLoading);
+    dataObject.attachEvent("onDataLoaded", setIsNotLoading);
+    dataObject.attachEvent("onDataLoadFailed", setIsNotLoading);
 
-		setLoading(dataObject.isDataLoading);
+    setLoading(dataObject.isDataLoading);
 
-		return () => {
-			dataObject.detachEvent('onBeforeLoad', setIsLoading);
-			dataObject.detachEvent('onDataLoaded', setIsNotLoading);
-			dataObject.detachEvent('onDataLoadFailed', setIsNotLoading);
-		};
-	}, [dataObject]);
+    return () => {
+      dataObject.detachEvent("onBeforeLoad", setIsLoading);
+      dataObject.detachEvent("onDataLoaded", setIsNotLoading);
+      dataObject.detachEvent("onDataLoadFailed", setIsNotLoading);
+    };
+  }, [dataObject]);
 
-	return isLoading;
+  return isLoading;
 }
 
 export function useStatus(dataObject) {
-	const [isSaving, setIsSaving] = useState(false);
-	const [isDeleting, setIsDeleting] = useState(false);
-	
-	function setSaving() { setIsSaving(true); }
-	function setNotSaving() { setIsSaving(false); }
-	function setDeleting() { setIsDeleting(true); }
-	function setNotDeleting() { setIsDeleting(false); }
+  const [isSaving, setIsSaving] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false);
 
-	useEffect(() => {
+  function setSaving() {
+    setIsSaving(true);
+  }
+  function setNotSaving() {
+    setIsSaving(false);
+  }
+  function setDeleting() {
+    setIsDeleting(true);
+  }
+  function setNotDeleting() {
+    setIsDeleting(false);
+  }
 
-		dataObject.attachEvent('onBeforeSave', setSaving);
-		dataObject.attachEvent('onAfterSave', setNotSaving);
-		dataObject.attachEvent('onSaveFailed', setNotSaving);
+  useEffect(() => {
+    dataObject.attachEvent("onBeforeSave", setSaving);
+    dataObject.attachEvent("onAfterSave", setNotSaving);
+    dataObject.attachEvent("onSaveFailed", setNotSaving);
 
-		dataObject.attachEvent('onRecordDeleting', setDeleting);
-		dataObject.attachEvent('onRecordDeleted', setNotDeleting);
+    dataObject.attachEvent("onRecordDeleting", setDeleting);
+    dataObject.attachEvent("onRecordDeleted", setNotDeleting);
 
-		return () => {
-			dataObject.detachEvent('onBeforeSave', setSaving);
-			dataObject.detachEvent('onAfterSave', setNotSaving);
-			dataObject.detachEvent('onSaveFailed', setNotSaving);
+    return () => {
+      dataObject.detachEvent("onBeforeSave", setSaving);
+      dataObject.detachEvent("onAfterSave", setNotSaving);
+      dataObject.detachEvent("onSaveFailed", setNotSaving);
 
-			dataObject.detachEvent('onRecordDeleting', setDeleting);
-			dataObject.detachEvent('onRecordDeleted', setNotDeleting);
-		};
-	}, [dataObject]);
+      dataObject.detachEvent("onRecordDeleting", setDeleting);
+      dataObject.detachEvent("onRecordDeleted", setNotDeleting);
+    };
+  }, [dataObject]);
 
-	return {
-		isDeleting,
-		isSaving,
-	};
+  return {
+    isDeleting,
+    isSaving
+  };
 }
 
 export function usePermissions(dataObject) {
-	const [allowDelete, setAllowDelete] = useState(dataObject.isDeleteAllowed());
-	const [allowInsert, setAllowInsert] = useState(dataObject.isInsertAllowed());
-	const [allowUpdate, setAllowUpdate] = useState(dataObject.isUpdateAllowed());
+  const [allowDelete, setAllowDelete] = useState(dataObject.isDeleteAllowed());
+  const [allowInsert, setAllowInsert] = useState(dataObject.isInsertAllowed());
+  const [allowUpdate, setAllowUpdate] = useState(dataObject.isUpdateAllowed());
 
-	useEffect(() => {
-		dataObject.attachEvent('onAllowDeleteChanged', setAllowDelete);
-		dataObject.attachEvent('onAllowInsertChanged', setAllowInsert);
-		dataObject.attachEvent('onAllowUpdateChanged', setAllowUpdate);
+  useEffect(() => {
+    dataObject.attachEvent("onAllowDeleteChanged", setAllowDelete);
+    dataObject.attachEvent("onAllowInsertChanged", setAllowInsert);
+    dataObject.attachEvent("onAllowUpdateChanged", setAllowUpdate);
 
-		return () => {
-			dataObject.detachEvent('onAllowDeleteChanged', setAllowDelete);
-			dataObject.detachEvent('onAllowInsertChanged', setAllowInsert);
-			dataObject.detachEvent('onAllowUpdateChanged', setAllowUpdate);
-		};
-	}, [dataObject]);
+    return () => {
+      dataObject.detachEvent("onAllowDeleteChanged", setAllowDelete);
+      dataObject.detachEvent("onAllowInsertChanged", setAllowInsert);
+      dataObject.detachEvent("onAllowUpdateChanged", setAllowUpdate);
+    };
+  }, [dataObject]);
 
-	return {
-		allowDelete,
-		allowInsert,
-		allowUpdate
-	};
+  return {
+    allowDelete,
+    allowInsert,
+    allowUpdate
+  };
 }

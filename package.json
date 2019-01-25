@@ -1,5 +1,5 @@
 {
-  "name": "@olenbetong/data-object-connect",
+  "name": "@olenbetong/react-data-object-connect",
   "version": "1.0.0",
   "description": "React HOC used to give a React component data from an Appframe data object",
   "main": "index.js",
@@ -17,7 +17,6 @@
     "build": "npm run build:test && npm run build:prod",
     "build:test": "rollup --config",
     "build:prod": "rollup --config --configProd",
-    "publish": "npm run publish:test && npm run publish:prod",
     "publish:test": "npx appframe publish --mode test --config appframe.config.js",
     "publish:prod": "npx appframe publish --mode production --config appframe.config.js"
   },

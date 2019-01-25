@@ -21,7 +21,7 @@ const events = [
   "DirtyChanged"
 ];
 
-function dataObjectConnect(dataObject, currentRowOnly = false) {
+export function dataObjectConnect(dataObject, currentRowOnly = false) {
   return function connect(WrappedComponent) {
     function getDataObject() {
       return typeof dataObject === "string" ? window[dataObject] : dataObject;
@@ -289,7 +289,7 @@ function dataObjectConnect(dataObject, currentRowOnly = false) {
   };
 }
 
-dataObjectConnect.properties = [
+export const properties = [
   "onCancelEdit",
   "onCurrentIndexChange",
   "onEndEdit",
@@ -310,5 +310,3 @@ dataObjectConnect.properties = [
   "loadError",
   "saveFailed"
 ];
-
-export default dataObjectConnect;

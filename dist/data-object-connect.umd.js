@@ -1,8 +1,8 @@
 (function (global, factory) {
-  typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory() :
-  typeof define === 'function' && define.amd ? define(factory) :
-  (global = global || self, global.dataObjectConnect = factory());
-}(this, function () { 'use strict';
+  typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports) :
+  typeof define === 'function' && define.amd ? define(['exports'], factory) :
+  (global = global || self, factory(global.dataObjectConnect = {}));
+}(this, function (exports) { 'use strict';
 
   function _classCallCheck(instance, Constructor) {
     if (!(instance instanceof Constructor)) {
@@ -98,7 +98,6 @@
   const useEffect = React.useEffect;
 
   var events = ["AllowDeleteChanged", "AllowUpdateChanged", "AllowInsertChanged", "SaveFailed", "PartialDataLoaded", "DataLoadFailed", "FieldChanged", "RecordCreated", "RecordRefreshed", "RecordDeleting", "RecordDeleted", "AfterSave", "BeforeLoad", "BeforeSave", "CancelEdit", "CurrentIndexChanged", "DataLoaded", "DirtyChanged"];
-
   function dataObjectConnect(dataObject) {
     var currentRowOnly = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
     return function connect(WrappedComponent) {
@@ -469,9 +468,11 @@
       return connector;
     };
   }
+  var properties = ["onCancelEdit", "onCurrentIndexChange", "onEndEdit", "onDeleteRow", "onFieldChange", "onFieldsChange", "onRefreshData", "onRefreshRow", "onSetParameter", "canDelete", "canUpdate", "canInsert", "currentIndex", "isDirty", "isDeleting", "isLoading", "isSaving", "loadError", "saveFailed"];
 
-  dataObjectConnect.properties = ["onCancelEdit", "onCurrentIndexChange", "onEndEdit", "onDeleteRow", "onFieldChange", "onFieldsChange", "onRefreshData", "onRefreshRow", "onSetParameter", "canDelete", "canUpdate", "canInsert", "currentIndex", "isDirty", "isDeleting", "isLoading", "isSaving", "loadError", "saveFailed"];
+  exports.dataObjectConnect = dataObjectConnect;
+  exports.properties = properties;
 
-  return dataObjectConnect;
+  Object.defineProperty(exports, '__esModule', { value: true });
 
 }));

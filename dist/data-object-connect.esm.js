@@ -92,7 +92,6 @@ const useState = React.useState;
 const useEffect = React.useEffect;
 
 var events = ["AllowDeleteChanged", "AllowUpdateChanged", "AllowInsertChanged", "SaveFailed", "PartialDataLoaded", "DataLoadFailed", "FieldChanged", "RecordCreated", "RecordRefreshed", "RecordDeleting", "RecordDeleted", "AfterSave", "BeforeLoad", "BeforeSave", "CancelEdit", "CurrentIndexChanged", "DataLoaded", "DirtyChanged"];
-
 function dataObjectConnect(dataObject) {
   var currentRowOnly = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
   return function connect(WrappedComponent) {
@@ -463,7 +462,6 @@ function dataObjectConnect(dataObject) {
     return connector;
   };
 }
+var properties = ["onCancelEdit", "onCurrentIndexChange", "onEndEdit", "onDeleteRow", "onFieldChange", "onFieldsChange", "onRefreshData", "onRefreshRow", "onSetParameter", "canDelete", "canUpdate", "canInsert", "currentIndex", "isDirty", "isDeleting", "isLoading", "isSaving", "loadError", "saveFailed"];
 
-dataObjectConnect.properties = ["onCancelEdit", "onCurrentIndexChange", "onEndEdit", "onDeleteRow", "onFieldChange", "onFieldsChange", "onRefreshData", "onRefreshRow", "onSetParameter", "canDelete", "canUpdate", "canInsert", "currentIndex", "isDirty", "isDeleting", "isLoading", "isSaving", "loadError", "saveFailed"];
-
-export default dataObjectConnect;
+export { dataObjectConnect, properties };

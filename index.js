@@ -1,5 +1,8 @@
 /* eslint-env node */
+const connect = require("./dist/data-object-connect.esm.node");
+
 module.exports = {
-  dataObjectConnect: require("./dist/data-object-connect.esm.node"),
-  dataObjectHooks: require("./dist/data-object-hooks.esm.node")
+  dataObjectConnect: connect.dataObjectConnect,
+  dataObjectHooks: require("./dist/data-object-hooks.esm.node"),
+  connectedProperties: connect.properties
 };

@@ -1,4 +1,4 @@
-const { useEffect, useState } = window.React;
+import { useEffect, useState } from "react";
 
 export function useCurrentIndex(dataObject) {
   const [index, setIndex] = useState(dataObject.getCurrentIndex());

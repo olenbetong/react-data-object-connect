@@ -59,13 +59,21 @@ export function dataObjectConnect(dataObject, currentRowOnly = false) {
         );
 
         this.handleAfterSave = this.handleAfterSave.bind(this);
-        this.handleAllowDeleteChanged = this.handleAllowDeleteChanged.bind(this);
-        this.handleAllowInsertChanged = this.handleAllowInsertChanged.bind(this);
-        this.handleAllowUpdateChanged = this.handleAllowUpdateChanged.bind(this);
+        this.handleAllowDeleteChanged = this.handleAllowDeleteChanged.bind(
+          this
+        );
+        this.handleAllowInsertChanged = this.handleAllowInsertChanged.bind(
+          this
+        );
+        this.handleAllowUpdateChanged = this.handleAllowUpdateChanged.bind(
+          this
+        );
         this.handleBeforeLoad = this.handleBeforeLoad.bind(this);
         this.handleBeforeSave = this.handleBeforeSave.bind(this);
         this.handleCancelEdit = this.handleCancelEdit.bind(this);
-        this.handleCurrentIndexChanged = this.handleCurrentIndexChanged.bind(this);
+        this.handleCurrentIndexChanged = this.handleCurrentIndexChanged.bind(
+          this
+        );
         this.handleDataLoaded = this.handleDataLoaded.bind(this);
         this.handleDataLoadFailed = this.handleDataLoadFailed.bind(this);
         this.handleDirtyChanged = this.handleDirtyChanged.bind(this);
@@ -206,7 +214,12 @@ export function dataObjectConnect(dataObject, currentRowOnly = false) {
       }
 
       handleDataLoaded() {
-        this.updateData({ isLoading: false, isSaving: false, isDeleting: false, saveFailed: false });
+        this.updateData({
+          isLoading: false,
+          isSaving: false,
+          isDeleting: false,
+          saveFailed: false
+        });
       }
 
       handleDirtyChanged() {
@@ -279,10 +292,15 @@ export function dataObjectConnect(dataObject, currentRowOnly = false) {
     };
 
     function getDisplayName() {
-      return WrappedComponent.displayName || WrappedComponent.name || "Component";
+      return (
+        WrappedComponent.displayName || WrappedComponent.name || "Component"
+      );
     }
 
-    connector.displayName = typeof dataObject === "string" ? dataObject : dataObject.getDataSourceId();
+    connector.displayName =
+      typeof dataObject === "string"
+        ? dataObject
+        : dataObject.getDataSourceId();
     connector.displayName += `(${getDisplayName()})`;
 
     return connector;

@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { getData } from "./get-data";
 
 export function useCurrentIndex(dataObject) {
   const [index, setIndex] = useState(dataObject.getCurrentIndex());
@@ -34,14 +35,43 @@ export function useCurrentRow(dataObject) {
   useEffect(() => {
     const recordUpdateEvents = ["onCurrentIndexChanged", ...dataUpdateEvents];
 
-    recordUpdateEvents.forEach(event => dataObject.attachEvent(event, updateRecord));
+    recordUpdateEvents.forEach(event =>
+      dataObject.attachEvent(event, updateRecord)
+    );
 
     updateRecord();
 
-    return () => recordUpdateEvents.forEach(event => dataObject.detachEvent(event, updateRecord));
+    return () =>
+      recordUpdateEvents.forEach(event =>
+        dataObject.detachEvent(event, updateRecord)
+      );
   }, [dataObject]);
 
   return record;
+}
+
+export function useSingleRecord(dataObject, filter) {
+  const [record, setRecord] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    setIsLoading(true);
+
+    getData(dataObject, filter).then(data => {
+      if (data.length > 0) {
+        setRecord(data[0]);
+      } else {
+        setRecord(null);
+      }
+
+      setIsLoading(false);
+    });
+  }, [dataObject, filter]);
+
+  return {
+    record,
+    isLoading
+  };
 }
 
 export function useData(dataObject) {
@@ -52,11 +82,16 @@ export function useData(dataObject) {
   }
 
   useEffect(() => {
-    dataUpdateEvents.forEach(event => dataObject.attachEvent(event, updateData));
+    dataUpdateEvents.forEach(event =>
+      dataObject.attachEvent(event, updateData)
+    );
 
     updateData();
 
-    return () => dataUpdateEvents.forEach(event => dataObject.detachEvent(event, updateData));
+    return () =>
+      dataUpdateEvents.forEach(event =>
+        dataObject.detachEvent(event, updateData)
+      );
   }, [dataObject]);
 
   return data;

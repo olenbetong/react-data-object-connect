@@ -54,7 +54,7 @@ export function useSingleRecord(dataObject, filter) {
   const [record, setRecord] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
 
-  useEffect(() => {
+  function refresh() {
     setIsLoading(true);
 
     getData(dataObject, filter).then(data => {
@@ -66,10 +66,15 @@ export function useSingleRecord(dataObject, filter) {
 
       setIsLoading(false);
     });
+  }
+
+  useEffect(() => {
+    refresh();
   }, [dataObject, filter]);
 
   return {
     record,
+    refresh,
     isLoading
   };
 }

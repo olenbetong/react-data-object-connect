@@ -103,7 +103,7 @@ export function useData(dataObject) {
 }
 
 export function useDataWithoutState(dataObject, filter) {
-  const [data, setData] = useState(null);
+  const [data, setData] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
 
   function refresh() {

@@ -191,7 +191,7 @@ function useData(dataObject) {
   return data;
 }
 function useDataWithoutState(dataObject, filter) {
-  var _useState11 = useState(null),
+  var _useState11 = useState([]),
       _useState12 = _slicedToArray(_useState11, 2),
       data = _useState12[0],
       setData = _useState12[1];

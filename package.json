@@ -1,6 +1,6 @@
 {
   "name": "@olenbetong/react-data-object-connect",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "React HOC used to give a React component data from an Appframe data object",
   "main": "index.js",
   "appframe": [

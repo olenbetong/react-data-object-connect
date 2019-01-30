@@ -85,43 +85,42 @@ Function properties passed to the component:
 
 If using a React version with hooks, there are also data object hooks available:
 
-- useCurrentIndex - returns only the current index
-- useCurrentRow - returns the current record
-- useData - returns an array with all records
-- useDirty - returns a boolean indicating if the current row is dirty or not
-- useError - returns any loading error message
-- useLoading - returns a boolean indicating if the data object is loading or not
-- useStatus - returns booleans indicating if the data object is saving or deleting records
-- usePermissions - returns booleans indicating if the user can delete, insert or update records
+- useCurrentIndex - Returns only the current index
+- useCurrentRow - Returns the current record
+- useData - Returns an array with all records currently in the data object
+- useDataWithoutState - Loads data without changing the data object's state. Uses the data objects data handler directly.
+- useDirty - Returns a boolean indicating if the current row is dirty or not
+- useError - Returns any loading error message
+- useLoading - Returns a boolean indicating if the data object is loading or not
+- useStatus - Returns booleans indicating if the data object is saving or deleting records
+- usePermissions - Returns booleans indicating if the user can delete, insert or update records
 
 ### Usage
 
 **NB!** You have to include a separate script as the hooks are not bundles with the dataObjectConnect function.
 
-```html
-<script
-  src="/file/component/modules/umd/data-object-hooks.min.js"
-  type="text/javascript"
-></script>
-```
-
 ```jsx
-const {
+import {
   useCurrentIndex,
   useCurrentRow,
   useData,
+  useDataWithoutState,
   useDirty,
   useError,
   useLoading,
   useSingleRow,
   useStatus,
   usePermissions
-} = dataObjectHooks;
+} from "@olenbetong/react-data-object-connect";
 
 function MyFunctionComponent(props) {
   const { isLoading, record, refresh } = useSingleRow(
     dsMyDataObject,
     `[MyKeyField] = ${props.recordId}`
+  );
+  const { isLoading, data, refresh } = useDataWithoutState(
+    dsMyDataObject,
+    `[MyCategory] = 1`
   );
   const currentIndex = useCurrentIndex(dsMyDataObject);
   const myRecord = useCurrentRow(dsMyDataObject);
@@ -148,6 +147,16 @@ function MyFunctionComponent(props) {
 ```
 
 ## Changelog
+
+### [2.0.0] - 2019-01-30
+
+#### Added
+
+- Added useDataWithoutState hook
+
+#### Breaking changes
+
+- Hooks are now top level exports instead of children of dataObjectHooks
 
 ### [1.1.0] - 2019-01-28
 

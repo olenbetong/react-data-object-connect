@@ -102,6 +102,35 @@ export function useData(dataObject) {
   return data;
 }
 
+export function useDataWithoutState(dataObject, filter) {
+  const [data, setData] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
+
+  function refresh() {
+    setIsLoading(true);
+
+    getData(dataObject, filter).then(data => {
+      if (data.length > 0) {
+        setData(data);
+      } else {
+        setData([]);
+      }
+
+      setIsLoading(false);
+    });
+  }
+
+  useEffect(() => {
+    refresh();
+  }, [dataObject, filter]);
+
+  return {
+    data,
+    refresh,
+    isLoading
+  };
+}
+
 export function useDirty(dataObject) {
   const [isDirty, setDirty] = useState(false);
 

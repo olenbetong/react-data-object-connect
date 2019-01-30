@@ -141,7 +141,7 @@ function useSingleRecord(dataObject, filter) {
       isLoading = _useState8[0],
       setIsLoading = _useState8[1];
 
-  useEffect(function () {
+  function refresh() {
     setIsLoading(true);
     getData(dataObject, filter).then(function (data) {
       if (data.length > 0) {
@@ -152,9 +152,14 @@ function useSingleRecord(dataObject, filter) {
 
       setIsLoading(false);
     });
+  }
+
+  useEffect(function () {
+    refresh();
   }, [dataObject, filter]);
   return {
     record: record,
+    refresh: refresh,
     isLoading: isLoading
   };
 }
@@ -181,11 +186,44 @@ function useData(dataObject) {
   }, [dataObject]);
   return data;
 }
-function useDirty(dataObject) {
-  var _useState11 = useState(false),
+function useDataWithoutState(dataObject, filter) {
+  var _useState11 = useState(null),
       _useState12 = _slicedToArray(_useState11, 2),
-      isDirty = _useState12[0],
-      setDirty = _useState12[1];
+      data = _useState12[0],
+      setData = _useState12[1];
+
+  var _useState13 = useState(true),
+      _useState14 = _slicedToArray(_useState13, 2),
+      isLoading = _useState14[0],
+      setIsLoading = _useState14[1];
+
+  function refresh() {
+    setIsLoading(true);
+    getData(dataObject, filter).then(function (data) {
+      if (data.length > 0) {
+        setData(data);
+      } else {
+        setData([]);
+      }
+
+      setIsLoading(false);
+    });
+  }
+
+  useEffect(function () {
+    refresh();
+  }, [dataObject, filter]);
+  return {
+    data: data,
+    refresh: refresh,
+    isLoading: isLoading
+  };
+}
+function useDirty(dataObject) {
+  var _useState15 = useState(false),
+      _useState16 = _slicedToArray(_useState15, 2),
+      isDirty = _useState16[0],
+      setDirty = _useState16[1];
 
   useEffect(function () {
     dataObject.attachEvent("onDirtyChanged", setDirty);
@@ -197,10 +235,10 @@ function useDirty(dataObject) {
   return isDirty;
 }
 function useError(dataObject) {
-  var _useState13 = useState(null),
-      _useState14 = _slicedToArray(_useState13, 2),
-      loadError = _useState14[0],
-      setError = _useState14[1];
+  var _useState17 = useState(null),
+      _useState18 = _slicedToArray(_useState17, 2),
+      loadError = _useState18[0],
+      setError = _useState18[1];
 
   useEffect(function () {
     dataObject.attachEvent("onDataLoadFailed", setError);
@@ -211,10 +249,10 @@ function useError(dataObject) {
   return loadError;
 }
 function useLoading(dataObject) {
-  var _useState15 = useState(dataObject.isDataLoading()),
-      _useState16 = _slicedToArray(_useState15, 2),
-      isLoading = _useState16[0],
-      setLoading = _useState16[1];
+  var _useState19 = useState(dataObject.isDataLoading()),
+      _useState20 = _slicedToArray(_useState19, 2),
+      isLoading = _useState20[0],
+      setLoading = _useState20[1];
 
   function setIsLoading() {
     setLoading(true);
@@ -238,15 +276,15 @@ function useLoading(dataObject) {
   return isLoading;
 }
 function useStatus(dataObject) {
-  var _useState17 = useState(false),
-      _useState18 = _slicedToArray(_useState17, 2),
-      isSaving = _useState18[0],
-      setIsSaving = _useState18[1];
+  var _useState21 = useState(false),
+      _useState22 = _slicedToArray(_useState21, 2),
+      isSaving = _useState22[0],
+      setIsSaving = _useState22[1];
 
-  var _useState19 = useState(false),
-      _useState20 = _slicedToArray(_useState19, 2),
-      isDeleting = _useState20[0],
-      setIsDeleting = _useState20[1];
+  var _useState23 = useState(false),
+      _useState24 = _slicedToArray(_useState23, 2),
+      isDeleting = _useState24[0],
+      setIsDeleting = _useState24[1];
 
   function setSaving() {
     setIsSaving(true);
@@ -284,20 +322,20 @@ function useStatus(dataObject) {
   };
 }
 function usePermissions(dataObject) {
-  var _useState21 = useState(dataObject.isDeleteAllowed()),
-      _useState22 = _slicedToArray(_useState21, 2),
-      allowDelete = _useState22[0],
-      setAllowDelete = _useState22[1];
-
-  var _useState23 = useState(dataObject.isInsertAllowed()),
-      _useState24 = _slicedToArray(_useState23, 2),
-      allowInsert = _useState24[0],
-      setAllowInsert = _useState24[1];
-
-  var _useState25 = useState(dataObject.isUpdateAllowed()),
+  var _useState25 = useState(dataObject.isDeleteAllowed()),
       _useState26 = _slicedToArray(_useState25, 2),
-      allowUpdate = _useState26[0],
-      setAllowUpdate = _useState26[1];
+      allowDelete = _useState26[0],
+      setAllowDelete = _useState26[1];
+
+  var _useState27 = useState(dataObject.isInsertAllowed()),
+      _useState28 = _slicedToArray(_useState27, 2),
+      allowInsert = _useState28[0],
+      setAllowInsert = _useState28[1];
+
+  var _useState29 = useState(dataObject.isUpdateAllowed()),
+      _useState30 = _slicedToArray(_useState29, 2),
+      allowUpdate = _useState30[0],
+      setAllowUpdate = _useState30[1];
 
   useEffect(function () {
     dataObject.attachEvent("onAllowDeleteChanged", setAllowDelete);
@@ -316,4 +354,4 @@ function usePermissions(dataObject) {
   };
 }
 
-export { useCurrentIndex, useCurrentRow, useSingleRecord, useData, useDirty, useError, useLoading, useStatus, usePermissions };
+export { useCurrentIndex, useCurrentRow, useSingleRecord, useData, useDataWithoutState, useDirty, useError, useLoading, useStatus, usePermissions };

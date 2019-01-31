@@ -227,6 +227,7 @@ function MyRecordComponent(props) {
 
 - Added useSingleRow hook
 
+[2.1.1]: https://github.com/olenbetong/react-data-object-connect/compare/v2.1.0...v2.1.1
 [2.1.0]: https://github.com/olenbetong/react-data-object-connect/compare/v2.0.0...v2.1.0
 [2.0.0]: https://github.com/olenbetong/react-data-object-connect/compare/v1.1.0...v2.0.1
 [1.1.0]: https://github.com/olenbetong/react-data-object-connect/compare/v1.0.1...v1.1.0

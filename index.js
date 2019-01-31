@@ -4,14 +4,16 @@ const {
   getData,
   useCurrentIndex,
   useCurrentRow,
-  useSingleRecord,
   useData,
   useDataWithoutState,
   useDirty,
   useError,
+  useFetchData,
+  useFetchRecord,
   useLoading,
-  useStatus,
-  usePermissions
+  usePermissions,
+  useSingleRecord,
+  useStatus
 } = require("./dist/data-object-hooks.esm.node");
 
 module.exports = {
@@ -29,13 +31,15 @@ module.exports = {
   getData,
   useCurrentIndex,
   useCurrentRow,
-  useSingleRecord,
   useData,
   useDataWithoutState,
   useDirty,
+  useFetchData,
+  useFetchRecord,
   useError,
   useLoading,
-  useStatus,
   usePermissions,
+  useSingleRecord,
+  useStatus,
   connectedProperties: connect.properties
 };

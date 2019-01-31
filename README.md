@@ -188,16 +188,22 @@ function MyRecordComponent(props) {
 
 ## Changelog
 
+### [2.1.1] - 2019-01-31
+
+#### Changed
+
+- [FIXED] Missing property "type" on the supplied filter element!
+
 ### [2.1.0] - 2019-01-31
 
 #### Changed
 
-- The filter argument passed to the useRecord and useFetchData can now be a filter object
+- The filter argument passed to the useFetchRecord and useFetchData can now be a filter object
 
 #### Added
 
 - connectRow alias to connect to a row without second parameter.
-- getData - the function used by useRecord and useFetchData is now exported
+- getData - the function used by useFetchRecord and useFetchData is now exported
 
 #### Deprecated
 
@@ -205,7 +211,7 @@ function MyRecordComponent(props) {
 - useSingleRow has been renamed to useFetchRecord
 - useDataWithoutState has been renamed to useFetchData
 
-### [2.0.0] - 2019-01-30
+### [2.0.1] - 2019-01-30
 
 #### Added
 
@@ -222,5 +228,5 @@ function MyRecordComponent(props) {
 - Added useSingleRow hook
 
 [2.1.0]: https://github.com/olenbetong/react-data-object-connect/compare/v2.0.0...v2.1.0
-[2.0.0]: https://github.com/olenbetong/react-data-object-connect/compare/v1.1.0...v2.0.0
+[2.0.0]: https://github.com/olenbetong/react-data-object-connect/compare/v1.1.0...v2.0.1
 [1.1.0]: https://github.com/olenbetong/react-data-object-connect/compare/v1.0.1...v1.1.0

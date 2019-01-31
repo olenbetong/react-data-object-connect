@@ -10,8 +10,9 @@ export function getData(dataObject, filter) {
     const filterData = {
       filterString: "",
       whereClause: typeof filter === "string" ? filter : "",
-      whereObject: typeof filter === "object" ? filter : {}
+      whereObject: typeof filter === "object" ? filter : null
     };
+
     dataHandler.retrieve(filterData, function(error, data) {
       if (error !== null) {
         reject(error);

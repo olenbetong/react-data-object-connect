@@ -7,10 +7,12 @@ export function getData(dataObject, filter) {
   const fields = dataObject.getFields();
 
   return new Promise((resolve, reject) => {
-    dataHandler.retrieve({ filterString: "", whereClause: filter }, function(
-      error,
-      data
-    ) {
+    const filterData = {
+      filterString: "",
+      whereClause: typeof filter === "string" ? filter : "",
+      whereObject: typeof filter === "object" ? filter : {}
+    };
+    dataHandler.retrieve(filterData, function(error, data) {
       if (error !== null) {
         reject(error);
       } else {

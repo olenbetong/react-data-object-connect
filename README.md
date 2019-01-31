@@ -20,15 +20,15 @@ or include the umd build in a script
 
 ### Usage
 
-The dataObjectConnect function takes 2 parameters. The first is the data object to connect. The second is a boolean indicating whether you only want the current row. Default is false. This will return the HoC function to connect to React components.
+Use the connect and connectRow functions to create a higher order component that can be used to connect the data object to React components.
 
-If connected only to the current row, each field in the row is passed as a property to the wrapped component. Otherwise, the data is passed as an array of records to the `data` property. The current state of the data object, and functions to modify the data will also be passed.
+The connect function will pass all records to the component in a property named `data`, while the connectRow passes all the fields in the current row as properties to the component.
 
 Example connecting to all records:
 
 ```jsx
 import React from "react";
-import dataObjectConnect from "@olenbetong/react-data-object-connect";
+import { connect } from "@olenbetong/react-data-object-connect";
 
 const MyListComponent = props => (
   <ul>
@@ -38,21 +38,23 @@ const MyListComponent = props => (
   </ul>
 );
 
-const MyConnectedList = dataObjectConnect(dsMyDataObject)(MyListComponent);
+const MyConnectedList = connect(dsMyDataObject)(MyListComponent);
 ```
 
 Example connecting to a single record, and checking if it is modified:
 
 ```jsx
 import React from 'react';
-import dataObjectConnect from '@olenbetong/react-data-object-connect';
+import { connectRow } from '@olenbetong/react-data-object-connect';
 
-const MyRecordComponent = (props) => <p>
-	{props.isDirty && <div>(Data not saved</div>)}
-	{props.Title}
-</p>
+const MyRecordComponent = (props) => (
+  <p>
+	  {props.isDirty && <div>(Data not saved</div>)}
+	  {props.Title}
+  </p>
+)
 
-const MyConnectedComponent = dataObjectConnect(dsMyDataObject, true)(MyRecordComponent);
+const MyConnectedComponent = connectRow(dsMyDataObject, true)(MyRecordComponent);
 ```
 
 #### Properties
@@ -83,45 +85,41 @@ Function properties passed to the component:
 
 ## Hooks
 
-If using a React version with hooks, there are also data object hooks available:
+If using a React with hooks, there are also data object hooks available.
 
-- useCurrentIndex - Returns only the current index
-- useCurrentRow - Returns the current record
-- useData - Returns an array with all records currently in the data object
-- useDataWithoutState - Loads data without changing the data object's state. Uses the data objects data handler directly.
-- useDirty - Returns a boolean indicating if the current row is dirty or not
-- useError - Returns any loading error message
-- useLoading - Returns a boolean indicating if the data object is loading or not
-- useStatus - Returns booleans indicating if the data object is saving or deleting records
-- usePermissions - Returns booleans indicating if the user can delete, insert or update records
+- useCurrentIndex(dataObject) - Returns only the current index
+- useCurrentRow(dataObject) - Returns the current record
+- useData(dataObject) - Returns an array with all records currently in the data object
+- useDirty(dataObject) - Returns a boolean indicating if the current row is dirty or not
+- useError(dataObject) - Returns any loading error message
+- useLoading(dataObject) - Returns a boolean indicating if the data object is loading or not
+- useStatus(dataObject) - Returns booleans indicating if the data object is saving or deleting records
+- usePermissions(dataObject) - Returns booleans indicating if the user can delete, insert or update records
 
-### Usage
+The above hooks uses the data objects internal state to pass data to the components. If you do not want to depend on the data objects current row or data storage, you can use the following hooks. They return data from the data object's data handler directly, and will not affect the data objects internal state.
 
-**NB!** You have to include a separate script as the hooks are not bundles with the dataObjectConnect function.
+- useFetchData(dataObject, filter) - Returns data matching the filter
+- useFetchRecord(dataObject, filter) - Use if the filter is expected to only return a single row. If multiple rows are returned from the server, only the first record will be returned to the component.
+
+### Examples
+
+#### Getting all state from the data object
+
+This will list all reacords in the data object, and create an editor for the current row.
 
 ```jsx
 import {
   useCurrentIndex,
   useCurrentRow,
   useData,
-  useDataWithoutState,
   useDirty,
   useError,
   useLoading,
-  useSingleRow,
   useStatus,
   usePermissions
 } from "@olenbetong/react-data-object-connect";
 
 function MyFunctionComponent(props) {
-  const { isLoading, record, refresh } = useSingleRow(
-    dsMyDataObject,
-    `[MyKeyField] = ${props.recordId}`
-  );
-  const { isLoading, data, refresh } = useDataWithoutState(
-    dsMyDataObject,
-    `[MyCategory] = 1`
-  );
   const currentIndex = useCurrentIndex(dsMyDataObject);
   const myRecord = useCurrentRow(dsMyDataObject);
   const myRecords = useData(dsMyDataObject);
@@ -146,7 +144,66 @@ function MyFunctionComponent(props) {
 }
 ```
 
+#### Getting data from the data source without affecting the data object
+
+```jsx
+import {
+  useFetchData,
+  useFetchRecord
+} from "@olenbetong/react-data-object-connect";
+
+function MyFunctionComponent(props) {
+  const { isLoading, data, refresh } = useFetchData(
+    dsMyDataObject,
+    `[EntityCategory] = 1`
+  );
+
+  return (
+    <div>
+      {isLoading && <i className="fa fa-spin fa-spinner" />}
+      {data.map(data => (
+        <ListItem {...item} />
+      ))}
+    </div>
+  );
+}
+
+function MyRecordComponent(props) {
+  const { isLoading, record, refresh } = useFetchRecord(
+    dsMyDataObject,
+    `[EntityID] = ${props.id}`
+  );
+
+  return (
+    <div>
+      {isLoading && <Spinner />}
+      <button onClick={refresh}>
+        <i className="fa fa-refresh" /> Refresh
+      </button>
+      <MyEditor {...record} />
+    </div>
+  );
+}
+```
+
 ## Changelog
+
+### [2.1.0] - 2019-01-31
+
+#### Changed
+
+- The filter argument passed to the useRecord and useFetchData can now be a filter object
+
+#### Added
+
+- connectRow alias to connect to a row without second parameter.
+- getData - the function used by useRecord and useFetchData is now exported
+
+#### Deprecated
+
+- dataObjectConnect has been renamed to connect
+- useSingleRow has been renamed to useFetchRecord
+- useDataWithoutState has been renamed to useFetchData
 
 ### [2.0.0] - 2019-01-30
 
@@ -163,3 +220,7 @@ function MyFunctionComponent(props) {
 #### Added
 
 - Added useSingleRow hook
+
+[2.1.0]: https://github.com/olenbetong/react-data-object-connect/compare/v2.0.0...v2.1.0
+[2.0.0]: https://github.com/olenbetong/react-data-object-connect/compare/v1.1.0...v2.0.0
+[1.1.0]: https://github.com/olenbetong/react-data-object-connect/compare/v1.0.1...v1.1.0

@@ -1,5 +1,14 @@
 import { useEffect, useState } from "react";
-import { getData } from "./get-data";
+
+export { useCurrentRow, useData } from "./hooks/use-data";
+export {
+  useSingleRecord,
+  useDataWithoutState,
+  useFetchData,
+  useFetchRecord
+} from "./hooks/use-fetch-data";
+
+export { getData } from "./get-data";
 
 export function useCurrentIndex(dataObject) {
   const [index, setIndex] = useState(dataObject.getCurrentIndex());
@@ -13,122 +22,6 @@ export function useCurrentIndex(dataObject) {
   }, [dataObject]);
 
   return index;
-}
-
-const dataUpdateEvents = [
-  "onFieldChanged",
-  "onRecordCreated",
-  "onRecordDeleted",
-  "onRecordRefreshed",
-  "onAfterSave",
-  "onCancelEdit",
-  "onDataLoaded"
-];
-
-export function useCurrentRow(dataObject) {
-  const [record, setRecord] = useState({});
-
-  function updateRecord() {
-    setRecord(dataObject.currentRow());
-  }
-
-  useEffect(() => {
-    const recordUpdateEvents = ["onCurrentIndexChanged", ...dataUpdateEvents];
-
-    recordUpdateEvents.forEach(event =>
-      dataObject.attachEvent(event, updateRecord)
-    );
-
-    updateRecord();
-
-    return () =>
-      recordUpdateEvents.forEach(event =>
-        dataObject.detachEvent(event, updateRecord)
-      );
-  }, [dataObject]);
-
-  return record;
-}
-
-export function useSingleRecord(dataObject, filter) {
-  const [record, setRecord] = useState(null);
-  const [isLoading, setIsLoading] = useState(true);
-
-  function refresh() {
-    setIsLoading(true);
-
-    getData(dataObject, filter).then(data => {
-      if (data.length > 0) {
-        setRecord(data[0]);
-      } else {
-        setRecord(null);
-      }
-
-      setIsLoading(false);
-    });
-  }
-
-  useEffect(() => {
-    refresh();
-  }, [dataObject, filter]);
-
-  return {
-    record,
-    refresh,
-    isLoading
-  };
-}
-
-export function useData(dataObject) {
-  const [data, setData] = useState([]);
-
-  function updateData() {
-    setData(dataObject.getData());
-  }
-
-  useEffect(() => {
-    dataUpdateEvents.forEach(event =>
-      dataObject.attachEvent(event, updateData)
-    );
-
-    updateData();
-
-    return () =>
-      dataUpdateEvents.forEach(event =>
-        dataObject.detachEvent(event, updateData)
-      );
-  }, [dataObject]);
-
-  return data;
-}
-
-export function useDataWithoutState(dataObject, filter) {
-  const [data, setData] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
-
-  function refresh() {
-    setIsLoading(true);
-
-    getData(dataObject, filter).then(data => {
-      if (data.length > 0) {
-        setData(data);
-      } else {
-        setData([]);
-      }
-
-      setIsLoading(false);
-    });
-  }
-
-  useEffect(() => {
-    refresh();
-  }, [dataObject, filter]);
-
-  return {
-    data,
-    refresh,
-    isLoading
-  };
 }
 
 export function useDirty(dataObject) {
@@ -177,7 +70,7 @@ export function useLoading(dataObject) {
     dataObject.attachEvent("onDataLoaded", setIsNotLoading);
     dataObject.attachEvent("onDataLoadFailed", setIsNotLoading);
 
-    setLoading(dataObject.isDataLoading);
+    setLoading(dataObject.isDataLoading());
 
     return () => {
       dataObject.detachEvent("onBeforeLoad", setIsLoading);

@@ -112,7 +112,7 @@ function getData(dataObject, filter) {
     var filterData = {
       filterString: "",
       whereClause: typeof filter === "string" ? filter : "",
-      whereObject: _typeof(filter) === "object" ? filter : {}
+      whereObject: _typeof(filter) === "object" ? filter : null
     };
     dataHandler.retrieve(filterData, function (error, data) {
       if (error !== null) {

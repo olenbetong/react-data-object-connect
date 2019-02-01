@@ -1,6 +1,6 @@
 # React Data Object Connect
 
-### HoC that connects AppframeWeb data objects to React components.
+Utilities to connect AppframeWeb data objects to React components. Higher order components for class components, and hooks for function components.
 
 ## Getting Started
 
@@ -54,7 +54,7 @@ const MyRecordComponent = (props) => (
   </p>
 )
 
-const MyConnectedComponent = connectRow(dsMyDataObject, true)(MyRecordComponent);
+const MyConnectedComponent = connectRow(dsMyDataObject)(MyRecordComponent);
 ```
 
 #### Properties
@@ -229,5 +229,5 @@ function MyRecordComponent(props) {
 
 [2.1.1]: https://github.com/olenbetong/react-data-object-connect/compare/v2.1.0...v2.1.1
 [2.1.0]: https://github.com/olenbetong/react-data-object-connect/compare/v2.0.0...v2.1.0
-[2.0.0]: https://github.com/olenbetong/react-data-object-connect/compare/v1.1.0...v2.0.1
+[2.0.1]: https://github.com/olenbetong/react-data-object-connect/compare/v1.1.0...v2.0.1
 [1.1.0]: https://github.com/olenbetong/react-data-object-connect/compare/v1.0.1...v1.1.0

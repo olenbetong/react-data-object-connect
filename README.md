@@ -188,9 +188,9 @@ function MyRecordComponent(props) {
 
 ## Changelog
 
-### [2.1.4] - 2019-02-15
+### [2.1.5] - 2019-02-15
 
- - Initial isLoading state will now check the data object's isDataLoading()
+- Initial isLoading state will now check the data object's isDataLoading()
 
 ### [2.1.1] - 2019-01-31
 
@@ -231,6 +231,7 @@ function MyRecordComponent(props) {
 
 - Added useSingleRow hook
 
+[2.1.5]: https://github.com/olenbetong/react-data-object-connect/compare/v2.1.1...v2.1.5
 [2.1.1]: https://github.com/olenbetong/react-data-object-connect/compare/v2.1.0...v2.1.1
 [2.1.0]: https://github.com/olenbetong/react-data-object-connect/compare/v2.0.0...v2.1.0
 [2.0.1]: https://github.com/olenbetong/react-data-object-connect/compare/v1.1.0...v2.0.1

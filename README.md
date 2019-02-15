@@ -188,6 +188,10 @@ function MyRecordComponent(props) {
 
 ## Changelog
 
+### [2.1.4] - 2019-02-15
+
+ - Initial isLoading state will now check the data object's isDataLoading()
+
 ### [2.1.1] - 2019-01-31
 
 #### Changed

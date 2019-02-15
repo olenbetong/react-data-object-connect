@@ -154,7 +154,7 @@
             currentIndex: dataObject.getCurrentIndex(),
             isDirty: dataObject.isDirty(),
             isDeleting: false,
-            isLoading: false,
+            isLoading: dataObject.isDataLoading() === true,
             isSaving: false,
             loadError: null,
             saveFailed: false

@@ -13,6 +13,11 @@
       "libraryName": "dataObjectHooks"
     }
   ],
+  "files": [
+    "index.js",
+    "dist",
+    "src"
+  ],
   "scripts": {
     "build": "npm run build:test && npm run build:prod",
     "build:test": "rollup --config",

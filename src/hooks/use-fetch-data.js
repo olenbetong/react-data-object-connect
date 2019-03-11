@@ -3,13 +3,17 @@ import { getData } from "../get-data";
 
 export function useSingleRecord(dataObject, filter) {
   // eslint-disable-next-line no-console
-  console.warn("DEPRECATED: useSingleRecord has been renamed to useRecord");
+  console.warn(
+    "DEPRECATED: useSingleRecord has been renamed to useFetchRecord"
+  );
   return useFetchRecord(dataObject, filter);
 }
 
 export function useDataWithoutState(dataObject, filter) {
   // eslint-disable-next-line no-console
-  console.warn("DEPRECATED: useDataWithoutState has been renamed to useRecord");
+  console.warn(
+    "DEPRECATED: useDataWithoutState has been renamed to useFetchData"
+  );
   return useFetchData(dataObject, filter);
 }
 

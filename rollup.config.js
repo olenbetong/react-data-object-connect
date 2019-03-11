@@ -56,14 +56,14 @@ function getConfig(isProd, format) {
   const entries = appframe instanceof Array ? appframe : [appframe];
 
   return entries.map(entry => {
-    const fileExt = isProd ? `min.js` : `.js`;
+    const fileExt = isProd ? `min.js` : `js`;
     const config = {
       input: `src/${entry.fileName}.js`,
       plugins,
       output: {
         externals: ["react", "react-dom"],
         file: `dist/${format}/${entry.fileName}.${fileExt}`,
-        format: format === "es" ? "esm" : format,
+        format: format === "module" ? "esm" : format,
         globals: {
           react: "React",
           "react-dom": "ReactDOM"
@@ -72,7 +72,7 @@ function getConfig(isProd, format) {
       }
     };
 
-    if (format !== "es") {
+    if (format !== "module") {
       config.plugins.push(
         virtual({
           "react-dom": `const { ReactDOM } = window; export default ReactDOM;`,
@@ -94,7 +94,7 @@ module.exports = commandLineArgs => {
   const isProd = commandLineArgs.configProd === true;
 
   return [
-    ...getConfig(isProd, "es"),
+    ...getConfig(isProd, "module"),
     ...getConfig(isProd, "esm"),
     ...getConfig(isProd, "umd")
   ];

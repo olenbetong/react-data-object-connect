@@ -1,6 +1,6 @@
 /* eslint-env node */
 const dotenv = require("dotenv");
-const fs = require("fs");
+const fs = require("fs").promises;
 const minimist = require("minimist");
 const args = minimist(process.argv.slice(2));
 
@@ -9,24 +9,32 @@ dotenv.load();
 const { APPFRAME_LOGIN: user, APPFRAME_PWD: password } = process.env;
 
 const targets = [];
-const unminified = new RegExp("([a-z-]+).(umd|esm).js$", "gi");
-const minified = new RegExp("([a-z-]+).(umd|esm).min.js$", "gi");
+const unminified = new RegExp("([a-z-]+).js$", "gi");
+const minified = new RegExp("([a-z-]+).min.js$", "gi");
 
-fs.readdirSync("./dist").forEach(file => {
-  const exp = args.mode === "test" ? unminified : minified;
+async function getTargets() {
+  const folders = ["esm", "umd"];
+  for (let folder of folders) {
+    const files = await fs.readdir(`./dist/${folder}`);
 
-  if (exp.test(file)) {
-    const result = /([a-z-]+)\.(umd|esm)/gi.exec(file);
-    const name = result[1];
-    const format = result[2];
+    for (let file of files) {
+      const exp = args.mode === "test" ? unminified : minified;
 
-    targets.push({
-      source: `./dist/${file}`,
-      target: `modules/${format}/${name}.min.js`,
-      type: "component-global"
-    });
+      if (exp.test(file)) {
+        const result = /([a-z-]+)/gi.exec(file);
+        const name = result[1];
+
+        targets.push({
+          source: `./dist/${folder}/${file}`,
+          target: `modules/${folder}/${name}.min.js`,
+          type: "component-global"
+        });
+      }
+    }
   }
-});
+}
+
+getTargets();
 
 module.exports = {
   hostname: "synergi.olenbetong.no",

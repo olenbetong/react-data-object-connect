@@ -30,3 +30,5 @@ export {
   useSingleRecord,
   useStatus
 } from "./data-object-hooks";
+
+export { SimpleDataHandler } from "./data-handler";

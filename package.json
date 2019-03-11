@@ -3,7 +3,7 @@
   "version": "2.1.6",
   "description": "React HOC used to give a React component data from an Appframe data object",
   "main": "./dist/umd/index.js",
-  "module": "./dist/esm.node/index.js",
+  "module": "./dist/module/index.js",
   "appframe": [
     {
       "fileName": "data-object-connect",

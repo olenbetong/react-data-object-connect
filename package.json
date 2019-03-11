@@ -2,7 +2,8 @@
   "name": "@olenbetong/react-data-object-connect",
   "version": "2.1.6",
   "description": "React HOC used to give a React component data from an Appframe data object",
-  "main": "index.js",
+  "main": "./dist/umd/index.js",
+  "module": "./dist/esm.node/index.js",
   "appframe": [
     {
       "fileName": "data-object-connect",
@@ -11,6 +12,14 @@
     {
       "fileName": "data-object-hooks",
       "libraryName": "dataObjectHooks"
+    },
+    {
+      "fileName": "data-handler",
+      "libraryName": "dataHandler"
+    },
+    {
+      "fileName": "index",
+      "libraryName": "ReactDataObjectConnect"
     }
   ],
   "files": [
@@ -55,6 +64,7 @@
     "rollup-plugin-babel": "^4.3.2",
     "rollup-plugin-babel-minify": "^7.0.0",
     "rollup-plugin-replace": "^2.1.0",
+    "rollup-plugin-terser": "^4.0.4",
     "rollup-plugin-virtual": "^1.0.1"
   },
   "peerDependencies": {

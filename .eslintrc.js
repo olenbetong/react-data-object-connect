@@ -3,7 +3,11 @@ module.exports = {
     browser: true,
     es6: true
   },
-  extends: ["eslint:recommended", "plugin:react/recommended", "plugin:prettier/recommended"],
+  extends: [
+    "eslint:recommended",
+    "plugin:react/recommended",
+    "plugin:prettier/recommended"
+  ],
   parser: "babel-eslint",
   parserOptions: {
     ecmaFeatures: {
@@ -12,7 +16,7 @@ module.exports = {
     ecmaVersion: 2018,
     sourceType: "module"
   },
-  plugins: ["react", "prettier"],
+  plugins: ["react", "prettier", "react-hooks"],
   rules: {
     "react/prop-types": "off",
     "no-console": "warn"

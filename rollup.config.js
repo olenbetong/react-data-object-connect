@@ -3,9 +3,39 @@ import { appframe } from "./package.json";
 
 /* Rollup & plugins */
 import babel from "rollup-plugin-babel";
-import minify from "rollup-plugin-babel-minify";
+import { terser } from "rollup-plugin-terser";
 import virtual from "rollup-plugin-virtual";
 import replace from "rollup-plugin-replace";
+
+function getBabelConfig(format) {
+  const config = {
+    presets: [
+      [
+        "@babel/preset-env",
+        {
+          targets: {
+            browsers: [
+              "last 5 Chrome versions",
+              "last 5 Firefox versions",
+              "last 3 Safari versions",
+              "last 2 Edge versions"
+            ]
+          },
+          useBuiltIns: false
+        }
+      ],
+      "@babel/preset-react"
+    ],
+    plugins: ["@babel/plugin-proposal-class-properties"],
+    ignore: ["node_modules"]
+  };
+
+  if (format === "umd") {
+    config.presets[0][1].targets.browsers.push("IE 11");
+  }
+
+  return config;
+}
 
 function getConfig(isProd, format) {
   if (isProd) {
@@ -16,24 +46,24 @@ function getConfig(isProd, format) {
     replace({
       "process.env.NODE_ENV": JSON.stringify("production")
     }),
-    babel()
+    babel(getBabelConfig(format))
   ];
 
   if (isProd) {
-    plugins.push(minify({ comments: false }));
+    plugins.push(terser());
   }
 
   const entries = appframe instanceof Array ? appframe : [appframe];
 
   return entries.map(entry => {
-    const fileExt = isProd ? `${format}.min.js` : `${format}.js`;
+    const fileExt = isProd ? `min.js` : `.js`;
     const config = {
       input: `src/${entry.fileName}.js`,
       plugins,
       output: {
         externals: ["react", "react-dom"],
-        file: `dist/${entry.fileName}.${fileExt}`,
-        format: format === "esm.node" ? "esm" : format,
+        file: `dist/${format}/${entry.fileName}.${fileExt}`,
+        format: format === "es" ? "esm" : format,
         globals: {
           react: "React",
           "react-dom": "ReactDOM"
@@ -42,7 +72,7 @@ function getConfig(isProd, format) {
       }
     };
 
-    if (format !== "esm.node") {
+    if (format !== "es") {
       config.plugins.push(
         virtual({
           "react-dom": `const { ReactDOM } = window; export default ReactDOM;`,
@@ -64,7 +94,7 @@ module.exports = commandLineArgs => {
   const isProd = commandLineArgs.configProd === true;
 
   return [
-    ...getConfig(isProd, "esm.node"),
+    ...getConfig(isProd, "es"),
     ...getConfig(isProd, "esm"),
     ...getConfig(isProd, "umd")
   ];

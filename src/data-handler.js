@@ -1,4 +1,4 @@
-export class SimpleDataHandler {
+export default class SimpleDataHandler {
   constructor(dataObject) {
     const { data } = window.af;
     this.dataObject = dataObject;

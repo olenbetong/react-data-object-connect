@@ -21,7 +21,7 @@ const events = [
   "DirtyChanged"
 ];
 
-export function dataObjectConnect(dataObject, currentRowOnly = false) {
+function dataObjectConnect(dataObject, currentRowOnly = false) {
   return function connect(WrappedComponent) {
     function getDataObject() {
       return typeof dataObject === "string" ? window[dataObject] : dataObject;
@@ -328,3 +328,8 @@ export const properties = [
   "loadError",
   "saveFailed"
 ];
+
+export const connect = dataObjectConnect;
+export function connectRow(dataObject) {
+  dataObjectConnect(dataObject, true);
+}

@@ -63,7 +63,7 @@ function getConfig(isProd, format) {
       output: {
         externals: ["react", "react-dom"],
         file: `dist/${format}/${entry.fileName}.${fileExt}`,
-        format: format === "module" ? "esm" : format,
+        format: format,
         globals: {
           react: "React",
           "react-dom": "ReactDOM"
@@ -72,19 +72,17 @@ function getConfig(isProd, format) {
       }
     };
 
-    if (format !== "module") {
-      config.plugins.push(
-        virtual({
-          "react-dom": `const { ReactDOM } = window; export default ReactDOM;`,
-          react: `const { React } = window;
+    config.plugins.push(
+      virtual({
+        "react-dom": `const { ReactDOM } = window; export default ReactDOM;`,
+        react: `const { React } = window;
 export default React;
 export const PureComponent = React.PureComponent;
 export const Component = React.Component;
 export const useState = React.useState;
 export const useEffect = React.useEffect;`
-        })
-      );
-    }
+      })
+    );
 
     return config;
   });
@@ -93,9 +91,5 @@ export const useEffect = React.useEffect;`
 module.exports = commandLineArgs => {
   const isProd = commandLineArgs.configProd === true;
 
-  return [
-    ...getConfig(isProd, "module"),
-    ...getConfig(isProd, "esm"),
-    ...getConfig(isProd, "umd")
-  ];
+  return [...getConfig(isProd, "esm"), ...getConfig(isProd, "umd")];
 };

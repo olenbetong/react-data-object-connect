@@ -1,4 +1,4 @@
-export function getData(dataObject, filter) {
+export default function getData(dataObject, filter) {
   const { data } = window.af;
   const dataHandler = new data.DataProviderHandler({
     dataSourceId: dataObject.getDataSourceId(),

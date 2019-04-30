@@ -90,6 +90,7 @@ If using a React with hooks, there are also data object hooks available.
 - useCurrentIndex(dataObject) - Returns only the current index
 - useCurrentRow(dataObject) - Returns the current record
 - useData(dataObject) - Returns an array with all records currently in the data object
+- useDataWithFilter(dataObject, filter, type) - Like useData, but loads data with the given filter. Type can be filterString or whereClause (defaults to filterString) and must be a string
 - useDirty(dataObject) - Returns a boolean indicating if the current row is dirty or not
 - useError(dataObject) - Returns any loading error message
 - useLoading(dataObject) - Returns a boolean indicating if the data object is loading or not
@@ -138,6 +139,29 @@ function MyFunctionComponent(props) {
       <MyEditor {...myRecord} isDirty={isDirty} />
       {myRecords.map(record => (
         <ListItem {...item} />
+      ))}
+    </div>
+  );
+}
+```
+
+Automatically getting data with a given filter
+
+```jsx
+import {
+  useDataWithFilter,
+  useLoading
+} from "@olenbetong/react-data-object-connect";
+
+function MyComponent({ someId }) {
+  const isLoading = useLoading(dsMyDataObject);
+  const data = useDataWithFilter(dsMyDataObject, `[SomeID] = ${someId}`);
+
+  return (
+    <div>
+      {isLoading && <i className="fa fa-spin fa-spinner" />}
+      {data.map(record => (
+        <ListItem {...record} />
       ))}
     </div>
   );

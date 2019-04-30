@@ -188,15 +188,18 @@ function MyRecordComponent(props) {
 
 ## Changelog
 
-### [3.0.0] - 2019-03-11
+### [3.0.0] - 2019-XX-XX
 
 #### 🚀 Added
 
 - New SimpleDataHandler class to use data objects without state management.
+- New useDataWithFilter hook that loads data when a filter changes
 
 #### ⚠ Breaking changes
 
-- Structure of dist folder has changed. Files are now separated into folders with format as name instead of adding the format to the file name.
+- Removed deprecated functions `dataObjectConnect`, `useSingleRow` and `useDataWithoutState`
+- Structure of dist folder has changed. Files are now separated into folders with format as name instead of adding the format to the file name. Module field now points to source directory.
+- Babel required to use as module.
 
 ### [2.1.5] - 2019-02-15
 

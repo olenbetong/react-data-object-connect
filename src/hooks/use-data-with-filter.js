@@ -25,7 +25,7 @@ export default function useDataWithFilter(
       dataObject.setParameter(type, filter);
       dataObject.refreshDataSource();
     }
-
-    return data;
   }, [dataObject, filter]);
+
+  return data;
 }

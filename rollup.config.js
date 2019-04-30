@@ -9,6 +9,7 @@ import replace from "rollup-plugin-replace";
 
 function getBabelConfig(format) {
   const config = {
+    babelrc: false,
     presets: [
       [
         "@babel/preset-env",

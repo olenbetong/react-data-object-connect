@@ -1,8 +1,11 @@
 /* eslint-env node */
 const dotenv = require("dotenv");
-const fs = require("fs").promises;
+const fs = require("fs");
 const minimist = require("minimist");
 const args = minimist(process.argv.slice(2));
+const pkg = require("./package.json");
+const [version] = pkg.version.split("-");
+const [major] = version.split(".");
 
 dotenv.load();
 
@@ -13,22 +16,24 @@ const unminified = new RegExp("([a-z-]+).js$", "gi");
 const minified = new RegExp("([a-z-]+).min.js$", "gi");
 
 async function getTargets() {
-  const folders = ["esm", "umd"];
+  const folders = ["esm", "iife"];
   for (let folder of folders) {
-    const files = await fs.readdir(`./dist/${folder}`);
+    if (fs.existsSync(`./dist/${folder}`)) {
+      const files = await fs.promises.readdir(`./dist/${folder}`);
 
-    for (let file of files) {
-      const exp = args.mode === "test" ? unminified : minified;
+      for (let file of files) {
+        const exp = args.mode === "test" ? unminified : minified;
 
-      if (exp.test(file)) {
-        const result = /([a-z-]+)/gi.exec(file);
-        const name = result[1];
+        if (exp.test(file)) {
+          const result = /([a-z-]+)/gi.exec(file);
+          const name = result[1];
 
-        targets.push({
-          source: `./dist/${folder}/${file}`,
-          target: `modules/${folder}/${name}.min.js`,
-          type: "component-global"
-        });
+          targets.push({
+            source: `./dist/${folder}/${file}`,
+            target: `modules/react-data-object-connect/${major}/${folder}/${name}.min.js`,
+            type: "component-global"
+          });
+        }
       }
     }
   }

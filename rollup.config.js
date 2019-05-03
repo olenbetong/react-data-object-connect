@@ -92,5 +92,9 @@ export const useEffect = React.useEffect;`
 module.exports = commandLineArgs => {
   const isProd = commandLineArgs.configProd === true;
 
-  return [...getConfig(isProd, "esm"), ...getConfig(isProd, "umd")];
+  return [
+    ...getConfig(isProd, "esm"),
+    ...getConfig(isProd, "umd"),
+    ...getConfig(isProd, "iife")
+  ];
 };

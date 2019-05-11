@@ -29,7 +29,7 @@
     "src"
   ],
   "scripts": {
-    "build": "npm run build:test && npm run build:prod && npx babel src -d es",
+    "build": "npx babel src -d es && npm run build:test && npm run build:prod",
     "build:test": "rollup --config",
     "build:prod": "rollup --config --configProd",
     "publish:test": "npx appframe publish --mode test --config appframe.config.js",

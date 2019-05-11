@@ -23,9 +23,5 @@ export default function useFetchData(dataObject, filter) {
     refresh();
   }, [dataObject, filter]);
 
-  return {
-    data,
-    refresh,
-    isLoading
-  };
+  return { data, refresh, isLoading };
 }

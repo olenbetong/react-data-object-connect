@@ -15,6 +15,7 @@ export { default as useFetchData } from "./hooks/use-fetch-data";
 export { default as useFetchRecord } from "./hooks/use-fetch-record";
 export { default as useLoading } from "./hooks/use-loading";
 export { default as usePermissions } from "./hooks/use-permissions";
+export { default as useProcedure } from "./hooks/use-procedure";
 export { default as useStatus } from "./hooks/use-status";
 
 export { default as SimpleDataHandler } from "./data-handler";

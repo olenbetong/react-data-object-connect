@@ -242,6 +242,12 @@ function MyComponent() {
 
 ## Changelog
 
+### [3.0.1] - 2019-05-11
+
+#### 🐛 Fixes
+
+- Fixed error not reset after successful execution in useProcedure
+
 ### [3.0.0] - 2019-05-11
 
 #### 🚀 Added

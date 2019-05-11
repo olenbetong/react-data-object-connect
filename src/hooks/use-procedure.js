@@ -20,8 +20,10 @@ export default function useProcedure(procedure, params) {
           setIsExecuting(false);
           if (err) {
             setError(err);
+            setData([]);
           } else {
             setData(data);
+            setError(null);
           }
         }
       });

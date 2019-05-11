@@ -102,6 +102,10 @@ The above hooks uses the data objects internal state to pass data to the compone
 - useFetchData(dataObject, filter) - Returns data matching the filter
 - useFetchRecord(dataObject, filter) - Use if the filter is expected to only return a single row. If multiple rows are returned from the server, only the first record will be returned to the component.
 
+One hook is also available for procedures.
+
+- useProcedure(procedure, parameters) - Returns an object containing `data`, `isExecuting` and `error` properties. Executes whenever the procedure or parameters arguments change.
+
 ### Examples
 
 #### Getting all state from the data object
@@ -210,14 +214,41 @@ function MyRecordComponent(props) {
 }
 ```
 
+#### Executing a stored procedure
+
+```jsx
+import { useProcedure } from "@olenbetong/react-data-object-connect";
+
+function MyComponent() {
+  const { data, error, isExecuting } = useProcedure(
+    procMyProcedure,
+    {
+      Parameter: "value",
+      OtherParam: 52,
+      ThirdParam: "Oh, hai!"
+    }
+  );
+
+  return (
+    <div>
+      {error && <div className="alert alert-danger">{error}</div>}
+      {isExecuting && <Spinner />}
+      {data && data.length > 0 && data[0].map(record => (
+        <RecordComponent key={record.IdentityField} {...record} />
+      )}
+  )
+}
+```
+
 ## Changelog
 
-### [3.0.0] - 2019-XX-XX
+### [3.0.0] - 2019-05-11
 
 #### 🚀 Added
 
 - New SimpleDataHandler class to use data objects without state management.
 - New useDataWithFilter hook that loads data when a filter changes
+- New useProcedure hook that executes a stored procedure when the parameters change
 
 #### ⚠ Breaking changes
 

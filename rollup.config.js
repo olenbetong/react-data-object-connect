@@ -80,8 +80,9 @@ function getConfig(isProd, format) {
 export default React;
 export const PureComponent = React.PureComponent;
 export const Component = React.Component;
+export const useEffect = React.useEffect;
 export const useState = React.useState;
-export const useEffect = React.useEffect;`
+export const useRef = React.useRef;`
       })
     );
 

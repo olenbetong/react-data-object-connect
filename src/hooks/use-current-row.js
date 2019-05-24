@@ -4,11 +4,11 @@ import dataUpdateEvents from "./data-update-events";
 export default function useCurrentRow(dataObject) {
   const [record, setRecord] = useState({});
 
-  function updateRecord() {
-    setRecord(dataObject.currentRow());
-  }
-
   useEffect(() => {
+    function updateRecord() {
+      setRecord(dataObject.currentRow());
+    }
+
     const recordUpdateEvents = ["onCurrentIndexChanged", ...dataUpdateEvents];
 
     recordUpdateEvents.forEach(event =>

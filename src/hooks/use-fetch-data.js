@@ -3,9 +3,10 @@ import getData from "../get-data";
 
 export default function useFetchData(dataObject, filter) {
   const [data, setData] = useState([]);
+  const [shouldUpdate, setShouldUpdate] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
 
-  function refresh() {
+  useEffect(() => {
     setIsLoading(true);
 
     getData(dataObject, filter).then(data => {
@@ -17,11 +18,11 @@ export default function useFetchData(dataObject, filter) {
 
       setIsLoading(false);
     });
-  }
+  }, [dataObject, filter, shouldUpdate]);
 
-  useEffect(() => {
-    refresh();
-  }, [dataObject, filter]);
-
-  return { data, refresh, isLoading };
+  return {
+    data,
+    refresh: () => setShouldUpdate(shouldUpdate => !shouldUpdate),
+    isLoading
+  };
 }

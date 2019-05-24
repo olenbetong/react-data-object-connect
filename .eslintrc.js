@@ -19,6 +19,7 @@ module.exports = {
   plugins: ["react", "prettier", "react-hooks"],
   rules: {
     "react/prop-types": "off",
-    "no-console": "warn"
+    "no-console": "warn",
+    "react-hooks/exhaustive-deps": "warn"
   }
 };

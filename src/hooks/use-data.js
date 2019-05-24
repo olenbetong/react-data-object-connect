@@ -4,11 +4,11 @@ import dataUpdateEvents from "./data-update-events";
 export default function useData(dataObject) {
   const [data, setData] = useState([]);
 
-  function updateData() {
-    setData(dataObject.getData());
-  }
-
   useEffect(() => {
+    function updateData() {
+      setData(dataObject.getData());
+    }
+
     dataUpdateEvents.forEach(event =>
       dataObject.attachEvent(event, updateData)
     );

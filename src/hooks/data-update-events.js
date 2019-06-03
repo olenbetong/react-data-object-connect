@@ -5,5 +5,6 @@ export default [
   "onRecordRefreshed",
   "onAfterSave",
   "onCancelEdit",
-  "onDataLoaded"
+  "onDataLoaded",
+  "onPartialDataLoaded"
 ];

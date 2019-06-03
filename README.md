@@ -242,6 +242,12 @@ function MyComponent() {
 
 ## Changelog
 
+### [3.0.2] - 2019-06-03
+
+#### 🐛 Fixes
+
+ - Fixed data not updating in useData for paged data data objects
+
 ### [3.0.1] - 2019-05-11
 
 #### 🐛 Fixes

@@ -1,14 +1,13 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import dataUpdateEvents from "./data-update-events";
 
 export default function useData(dataObject) {
   const [data, setData] = useState([]);
+  const updateData = useCallback(() => {
+    setData(dataObject.getData());
+  }, [dataObject]);
 
   useEffect(() => {
-    function updateData() {
-      setData(dataObject.getData());
-    }
-
     dataUpdateEvents.forEach(event =>
       dataObject.attachEvent(event, updateData)
     );
@@ -19,7 +18,7 @@ export default function useData(dataObject) {
       dataUpdateEvents.forEach(event =>
         dataObject.detachEvent(event, updateData)
       );
-  }, [dataObject]);
+  }, [dataObject, updateData]);
 
   return data;
 }

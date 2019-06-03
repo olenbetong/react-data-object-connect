@@ -32,6 +32,7 @@ export default function useProcedure(procedure, params) {
     return () => {
       isAborted = false;
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, deps);
 
   return { data, error, isExecuting };

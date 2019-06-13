@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from "react";
-import getData from "../get-data";
+import getData from "./getData";
 
 export default function useFetchData(dataObject, filter) {
   const [data, setData] = useState([]);

@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from "react";
-import dataUpdateEvents from "./data-update-events";
+import dataUpdateEvents from "./dataUpdateEvents";
 
 export default function useCurrentRow(dataObject) {
   const [record, setRecord] = useState({});

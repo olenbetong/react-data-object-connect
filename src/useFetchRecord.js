@@ -1,4 +1,4 @@
-import useFetchData from "./use-fetch-data";
+import useFetchData from "./useFetchData";
 
 export default function useFetchRecord(dataObject, filter) {
   const { isLoading, data, refresh } = useFetchData(dataObject, filter);

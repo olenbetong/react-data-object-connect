@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import useData from "./use-data";
+import useData from "./useData";
 
 export default function useDataWithFilter(
   dataObject,

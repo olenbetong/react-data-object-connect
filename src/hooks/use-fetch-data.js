@@ -1,10 +1,13 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import getData from "../get-data";
 
 export default function useFetchData(dataObject, filter) {
   const [data, setData] = useState([]);
   const [shouldUpdate, setShouldUpdate] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+  const refresh = useCallback(() => {
+    setShouldUpdate(shouldUpdate => !shouldUpdate);
+  }, []);
 
   useEffect(() => {
     setIsLoading(true);
@@ -22,7 +25,7 @@ export default function useFetchData(dataObject, filter) {
 
   return {
     data,
-    refresh: () => setShouldUpdate(shouldUpdate => !shouldUpdate),
+    refresh,
     isLoading
   };
 }

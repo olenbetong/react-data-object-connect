@@ -242,6 +242,20 @@ function MyComponent() {
 
 ## Changelog
 
+### [4.0.0] - 2019-06-13
+
+#### 🚀 Enhancements
+
+ - Module build now only transforms JSX to React to reduce bundle size
+
+#### ⚠ Breaking changes
+
+ - Structure of dist and es folders have changed. Hooks moved up one level, and files now use camel case instead of hyphens.
+   - Hooks moved out of hooks folder to shoren imports
+   - File names use camelCase instead of kebab-case
+   - dataObjectConnect renamed to connect
+   - dataObjectHooks renamed to hooks
+
 ### [3.0.2] - 2019-06-03
 
 #### 🐛 Fixes
@@ -311,6 +325,7 @@ function MyComponent() {
 
 - Added useSingleRow hook
 
+[4.0.0]: https://github.com/olenbetong/react-data-object-connect/compare/v3.0.2...v4.0.0
 [3.0.2]: https://github.com/olenbetong/react-data-object-connect/compare/v3.0.1...v3.0.2
 [3.0.1]: https://github.com/olenbetong/react-data-object-connect/compare/v3.0.0...v3.0.1
 [3.0.0]: https://github.com/olenbetong/react-data-object-connect/compare/v2.1.5...v3.0.0

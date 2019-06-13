@@ -1,16 +1,5 @@
 {
-  "presets": [
-    [
-      "@babel/preset-env",
-      {
-        "targets": {
-          "browsers": ["last 3 Chrome versions"]
-        },
-        "useBuiltIns": false
-      }
-    ],
-    "@babel/preset-react"
-  ],
-  "plugins": ["@babel/plugin-proposal-class-properties"],
+  "presets": [],
+  "plugins": [ "@babel/plugin-transform-react-jsx"],
   "ignore": ["node_modules"]
 }

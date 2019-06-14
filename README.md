@@ -250,8 +250,8 @@ function MyComponent() {
 
 #### ⚠ Breaking changes
 
- - Structure of dist and es folders have changed. Hooks moved up one level, and files now use camel case instead of hyphens.
-   - Hooks moved out of hooks folder to shoren imports
+ - Structure of dist and es folders have changed.
+   - Hooks moved out of hooks folder to shorten import statements
    - File names use camelCase instead of kebab-case
    - dataObjectConnect renamed to connect
    - dataObjectHooks renamed to hooks

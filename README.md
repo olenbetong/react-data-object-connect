@@ -12,7 +12,7 @@ Install using npm
 npm install @olenbetong/react-data-object-connect
 ```
 
-or include the umd build in a script
+or include the IIFE build in a script
 
 ```html
 <script src="https://unpkg.com/@olenbetong/react-data-object-connect@4.0.0/dist/iife/index.min.js"></script>
@@ -40,12 +40,12 @@ If using a React with hooks, there are also data object hooks available.
 
 The above hooks uses the data objects internal state to pass data to the components. If you do not want to depend on the data objects current row or data storage, you can use the following hooks. They return data from the data object's data handler directly, and will not affect the data objects internal state.
 
-- useFetchData(dataObject, filter) - Returns data matching the filter
-- useFetchRecord(dataObject, filter) - Use if the filter is expected to only return a single row. If multiple rows are returned from the server, only the first record will be returned to the component.
+- **useFetchData**(dataObject, filter) - Returns data matching the filter
+- **useFetchRecord**(dataObject, filter) - Use if the filter is expected to only return a single row. If multiple rows are returned from the server, only the first record will be returned to the component.
 
 One hook is also available for procedures.
 
-- useProcedure(procedure, parameters) - Returns an object containing `data`, `isExecuting` and `error` properties. Executes whenever the procedure or parameters arguments change.
+- **useProcedure**(procedure, parameters) - Returns an object containing `data`, `isExecuting` and `error` properties. Executes whenever the procedure or parameters arguments change.
 
 ### Examples
 

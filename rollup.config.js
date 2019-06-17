@@ -31,8 +31,10 @@ function getBabelConfig(format) {
     ignore: ["node_modules"]
   };
 
-  if (format !== "esm") {
+  if (["umd", "iife"].includes(format)) {
     config.presets[0][1].targets.browsers.push("IE 11");
+  } else if (format === "cjs") {
+    config.presets[0][1].targets.browsers.push("maintained node versions");
   }
 
   return config;
@@ -99,6 +101,7 @@ module.exports = commandLineArgs => {
   return [
     ...getConfig(isProd, "esm"),
     ...getConfig(isProd, "umd"),
-    ...getConfig(isProd, "iife")
+    ...getConfig(isProd, "iife"),
+    ...getConfig(isProd, "cjs")
   ];
 };

@@ -31,7 +31,7 @@ function getBabelConfig(format) {
     ignore: ["node_modules"]
   };
 
-  if (format === "umd") {
+  if (format !== "esm") {
     config.presets[0][1].targets.browsers.push("IE 11");
   }
 

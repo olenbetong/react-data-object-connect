@@ -7,13 +7,13 @@ const pkg = require("./package.json");
 const [version] = pkg.version.split("-");
 const [major] = version.split(".");
 
-dotenv.load();
+dotenv.config();
 
 const { APPFRAME_LOGIN: user, APPFRAME_PWD: password } = process.env;
 
 const targets = [];
-const unminified = new RegExp("([a-z-]+).js$", "gi");
-const minified = new RegExp("([a-z-]+).min.js$", "gi");
+const unminified = new RegExp("^([a-z]+).js$", "gi");
+const minified = new RegExp("^([a-z]+).min.js$", "gi");
 
 async function getTargets() {
   const folders = ["esm", "iife"];
@@ -23,7 +23,6 @@ async function getTargets() {
 
       for (let file of files) {
         const exp = args.mode === "test" ? unminified : minified;
-
         if (exp.test(file)) {
           const result = /([a-z-]+)/gi.exec(file);
           const name = result[1];

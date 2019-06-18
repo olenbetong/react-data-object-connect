@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 
 export default function useDirty(dataObject) {
-  const [isDirty, setDirty] = useState(false);
+  const [isDirty, setDirty] = useState(dataObject.isDirty() || false);
 
   useEffect(() => {
     dataObject.attachEvent("onDirtyChanged", setDirty);

@@ -2,7 +2,7 @@ import { useCallback, useEffect, useState } from "react";
 import dataUpdateEvents from "./dataUpdateEvents";
 
 export default function useData(dataObject) {
-  const [data, setData] = useState([]);
+  const [data, setData] = useState(dataObject.getData());
   const updateData = useCallback(() => {
     setData(dataObject.getData());
   }, [dataObject]);

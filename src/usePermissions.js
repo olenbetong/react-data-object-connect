@@ -6,14 +6,20 @@ export default function usePermissions(dataObject) {
   const [allowUpdate, setAllowUpdate] = useState(dataObject.isUpdateAllowed());
 
   useEffect(() => {
-    dataObject.attachEvent("onAllowDeleteChanged", setAllowDelete);
-    dataObject.attachEvent("onAllowInsertChanged", setAllowInsert);
-    dataObject.attachEvent("onAllowUpdateChanged", setAllowUpdate);
+    const updateAllowDelete = () =>
+      setAllowDelete(dataObject.isDeleteAllowed());
+    const updateAllowInsert = () =>
+      setAllowInsert(dataObject.isInsertAllowed());
+    const updateAllowUpdate = () =>
+      setAllowUpdate(dataObject.isUpdateAllowed());
 
+    dataObject.attachEvent("onAllowDeleteChanged", updateAllowDelete);
+    dataObject.attachEvent("onAllowInsertChanged", updateAllowInsert);
+    dataObject.attachEvent("onAllowUpdateChanged", updateAllowUpdate);
     return () => {
-      dataObject.detachEvent("onAllowDeleteChanged", setAllowDelete);
-      dataObject.detachEvent("onAllowInsertChanged", setAllowInsert);
-      dataObject.detachEvent("onAllowUpdateChanged", setAllowUpdate);
+      dataObject.detachEvent("onAllowDeleteChanged", updateAllowDelete);
+      dataObject.detachEvent("onAllowInsertChanged", updateAllowInsert);
+      dataObject.detachEvent("onAllowUpdateChanged", updateAllowUpdate);
     };
   }, [dataObject]);
 

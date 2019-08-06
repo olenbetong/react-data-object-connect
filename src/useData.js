@@ -4,7 +4,15 @@ import dataUpdateEvents from "./dataUpdateEvents";
 export default function useData(dataObject) {
   const [data, setData] = useState(dataObject.getData());
   const updateData = useCallback(() => {
-    setData(dataObject.getData());
+    const data = dataObject.getData();
+
+    // If current row is dirty, getData will still return the saved record
+    const idx = dataObject.getCurrentIndex();
+    if (idx >= 0) {
+      data[idx] = dataObject.currentRow();
+    }
+
+    setData(data);
   }, [dataObject]);
 
   useEffect(() => {

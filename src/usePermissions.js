@@ -16,6 +16,11 @@ export default function usePermissions(dataObject) {
     dataObject.attachEvent("onAllowDeleteChanged", updateAllowDelete);
     dataObject.attachEvent("onAllowInsertChanged", updateAllowInsert);
     dataObject.attachEvent("onAllowUpdateChanged", updateAllowUpdate);
+
+    updateAllowDelete();
+    updateAllowInsert();
+    updateAllowUpdate();
+
     return () => {
       dataObject.detachEvent("onAllowDeleteChanged", updateAllowDelete);
       dataObject.detachEvent("onAllowInsertChanged", updateAllowInsert);

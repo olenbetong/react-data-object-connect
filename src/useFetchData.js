@@ -9,6 +9,25 @@ export default function useFetchData(dataObject, filter) {
     setShouldUpdate(shouldUpdate => !shouldUpdate);
   }, []);
 
+  const refreshRows = useCallback(
+    (filter, idField = "PrimKey") => {
+      getData(dataObject, filter).then(records => {
+        let newData = [...data];
+        for (let record of records) {
+          for (let i = 0; i < newData.length; i++) {
+            const current = newData[i];
+            if (current[idField] === record[idField]) {
+              newData[i] = record;
+            }
+          }
+        }
+
+        setData(newData);
+      });
+    },
+    [dataObject, data]
+  );
+
   useEffect(() => {
     if (filter !== false) {
       setIsLoading(true);
@@ -28,6 +47,7 @@ export default function useFetchData(dataObject, filter) {
   return {
     data,
     refresh,
+    refreshRows,
     isLoading
   };
 }

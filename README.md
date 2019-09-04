@@ -117,6 +117,11 @@ function MyComponent({ someId }) {
 
 If you want to conditionally load data, you may set the filter to `false`.
 
+The refreshRows method can be used to update only a subset of the current data. The first parameter is
+the filter that will be used to fetch data. The second parameter is the field that will be used to compare
+fetched data with current data (defaults to PrimKey). If the refreshRows fetches records that are not
+in the current set, they will not be added.
+
 ```jsx
 import {
   useFetchData,
@@ -124,7 +129,7 @@ import {
 } from "@olenbetong/react-data-object-connect";
 
 function MyFunctionComponent(props) {
-  const { isLoading, data, refresh } = useFetchData(
+  const { isLoading, data, refresh, refreshRows } = useFetchData(
     dsMyDataObject,
     `[EntityCategory] = 1`
   );
@@ -133,7 +138,7 @@ function MyFunctionComponent(props) {
     <div>
       {isLoading && <i className="fa fa-spin fa-spinner" />}
       {data.map(data => (
-        <ListItem {...item} />
+        <ListItem {...item} onRefresh={refreshRows(`[PrimKey] = '${item.PrimKey'`, "PrimKey")} />
       ))}
     </div>
   );

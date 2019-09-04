@@ -4,7 +4,7 @@ import getData from "./getData";
 export default function useFetchData(dataObject, filter) {
   const [data, setData] = useState([]);
   const [shouldUpdate, setShouldUpdate] = useState(false);
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(filter !== false);
   const refresh = useCallback(() => {
     setShouldUpdate(shouldUpdate => !shouldUpdate);
   }, []);

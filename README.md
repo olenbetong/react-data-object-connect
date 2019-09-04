@@ -40,7 +40,7 @@ If using a React with hooks, there are also data object hooks available.
 
 The above hooks uses the data objects internal state to pass data to the components. If you do not want to depend on the data objects current row or data storage, you can use the following hooks. They return data from the data object's data handler directly, and will not affect the data objects internal state.
 
-- **useFetchData**(dataObject, filter) - Returns data matching the filter
+- **useFetchData**(dataObject, filter) - Returns data matching the filter. If the filter is set to `false`, data will not be loaded.
 - **useFetchRecord**(dataObject, filter) - Use if the filter is expected to only return a single row. If multiple rows are returned from the server, only the first record will be returned to the component.
 
 One hook is also available for procedures.
@@ -114,6 +114,8 @@ function MyComponent({ someId }) {
 ```
 
 #### Getting data from the data source without affecting the data object
+
+If you want to conditionally load data, you may set the filter to `false`.
 
 ```jsx
 import {

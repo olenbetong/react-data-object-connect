@@ -10,17 +10,19 @@ export default function useFetchData(dataObject, filter) {
   }, []);
 
   useEffect(() => {
-    setIsLoading(true);
+    if (filter !== false) {
+      setIsLoading(true);
 
-    getData(dataObject, filter).then(data => {
-      if (data.length > 0) {
-        setData(data);
-      } else {
-        setData([]);
-      }
+      getData(dataObject, filter).then(data => {
+        if (data.length > 0) {
+          setData(data);
+        } else {
+          setData([]);
+        }
 
-      setIsLoading(false);
-    });
+        setIsLoading(false);
+      });
+    }
   }, [dataObject, filter, shouldUpdate]);
 
   return {

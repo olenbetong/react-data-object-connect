@@ -258,7 +258,9 @@ Function properties passed to the component:
 
 ## Reducing script size
 
-### Bundlers (webpack/rollup/parcel etc.)
+### Modules
+
+If you use a bundler that supports tee shaking (webpack/rollup/parcel etc.), no further actions should be needed to reduce bundle size.
 
 In the node package, the scripts are located in the `es` folder, and you can include the parts you need instead of the whole package.
 

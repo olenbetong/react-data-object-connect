@@ -138,7 +138,7 @@ function MyFunctionComponent(props) {
     <div>
       {isLoading && <i className="fa fa-spin fa-spinner" />}
       {data.map(data => (
-        <ListItem {...item} onRefresh={refreshRows(`[PrimKey] = '${item.PrimKey'`, "PrimKey")} />
+        <ListItem {...item} onRefresh={refreshRows(`[PrimKey] = '${item.PrimKey}'`, "PrimKey")} />
       ))}
     </div>
   );
@@ -183,7 +183,8 @@ function MyComponent() {
       {isExecuting && <Spinner />}
       {data && data.length > 0 && data[0].map(record => (
         <RecordComponent key={record.IdentityField} {...record} />
-      )}
+      ))}
+    </div>
   )
 }
 ```

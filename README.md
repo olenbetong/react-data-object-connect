@@ -138,7 +138,10 @@ function MyFunctionComponent(props) {
     <div>
       {isLoading && <i className="fa fa-spin fa-spinner" />}
       {data.map(data => (
-        <ListItem {...item} onRefresh={refreshRows(`[PrimKey] = '${item.PrimKey}'`, "PrimKey")} />
+        <ListItem
+          {...item}
+          onRefresh={refreshRows(`[PrimKey] = '${item.PrimKey}'`, "PrimKey")}
+        />
       ))}
     </div>
   );
@@ -168,24 +171,23 @@ function MyRecordComponent(props) {
 import { useProcedure } from "@olenbetong/react-data-object-connect";
 
 function MyComponent() {
-  const { data, error, isExecuting } = useProcedure(
-    procMyProcedure,
-    {
-      Parameter: "value",
-      OtherParam: 52,
-      ThirdParam: "Oh, hai!"
-    }
-  );
+  const { data, error, isExecuting } = useProcedure(procMyProcedure, {
+    Parameter: "value",
+    OtherParam: 52,
+    ThirdParam: "Oh, hai!"
+  });
 
   return (
     <div>
       {error && <div className="alert alert-danger">{error}</div>}
       {isExecuting && <Spinner />}
-      {data && data.length > 0 && data[0].map(record => (
-        <RecordComponent key={record.IdentityField} {...record} />
-      ))}
+      {data &&
+        data.length > 0 &&
+        data[0].map(record => (
+          <RecordComponent key={record.IdentityField} {...record} />
+        ))}
     </div>
-  )
+  );
 }
 ```
 
@@ -220,8 +222,8 @@ import { connectRow } from '@olenbetong/react-data-object-connect';
 
 const MyRecordComponent = (props) => (
   <p>
-	  {props.isDirty && <div>(Data not saved</div>)}
-	  {props.Title}
+    {props.isDirty && <div>(Data not saved</div>)}
+    {props.Title}
   </p>
 )
 
@@ -269,7 +271,10 @@ import useData from "@olenbetong/react-data-object-connect/es/useData";
 Or for the `connect`/`connectRow` functions:
 
 ```js
-import { connect, connectRow } from "@olenbetong/react-data-object-connect/es/connect";
+import {
+  connect,
+  connectRow
+} from "@olenbetong/react-data-object-connect/es/connect";
 ```
 
 ### Browser

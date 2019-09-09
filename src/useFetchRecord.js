@@ -7,6 +7,6 @@ export default function useFetchRecord(dataObject, filter) {
   return {
     record,
     refresh,
-    isLoading
+    isLoading,
   };
 }

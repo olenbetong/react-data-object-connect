@@ -2,7 +2,7 @@ export default function getData(dataObject, filter) {
   const { data } = window.af;
   const dataHandler = new data.DataProviderHandler({
     dataSourceId: dataObject.getDataSourceId(),
-    timeout: 30000
+    timeout: 30000,
   });
   const fields = dataObject.getFields();
 
@@ -10,7 +10,7 @@ export default function getData(dataObject, filter) {
     const filterData = {
       filterString: "",
       whereClause: typeof filter === "string" ? filter : "",
-      whereObject: typeof filter === "object" ? filter : null
+      whereObject: typeof filter === "object" ? filter : null,
     };
 
     dataHandler.retrieve(filterData, function(error, data) {

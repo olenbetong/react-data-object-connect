@@ -7,5 +7,5 @@ export default [
   "onAfterSave",
   "onCancelEdit",
   "onDataLoaded",
-  "onPartialDataLoaded"
+  "onPartialDataLoaded",
 ];

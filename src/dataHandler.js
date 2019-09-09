@@ -5,7 +5,7 @@ export default class SimpleDataHandler {
     this.fields = dataObject.getFields();
     this.dataHandler = new data.DataProviderHandler({
       dataSourceId: dataObject.getDataSourceId(),
-      timeout: 30000
+      timeout: 30000,
     });
   }
 
@@ -47,7 +47,7 @@ export default class SimpleDataHandler {
       const filterData = {
         filterString: "",
         whereClause: typeof filter === "string" ? filter : "",
-        whereObject: typeof filter === "object" ? filter : null
+        whereObject: typeof filter === "object" ? filter : null,
       };
 
       this.dataHandler.retrieve(filterData, (error, data) => {

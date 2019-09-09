@@ -1,27 +1,14 @@
 import { useEffect } from "react";
+import equals from "fast-deep-equal";
 import useData from "./useData";
 
-export default function useDataWithFilter(
-  dataObject,
-  filter,
-  type = "filterString"
-) {
+export default function useDataWithFilter(dataObject, filter, type = "filterString") {
   const data = useData(dataObject);
 
   useEffect(() => {
-    if (
-      (typeof filter !== "string" && filter !== null) ||
-      !["filterString", "whereClause"].includes(type)
-    ) {
-      throw new Error(
-        "Only filterString and whereClause with string filters are supported in useDataWithFilter"
-      );
-    }
+    const current = dataObject.getParameter(type);
 
-    if (
-      dataObject.getParameter(type) !== filter ||
-      !dataObject.isDataLoaded()
-    ) {
+    if (!equals(current, filter) || !dataObject.isDataLoaded()) {
       dataObject.setParameter(type, filter);
       dataObject.refreshDataSource();
     }

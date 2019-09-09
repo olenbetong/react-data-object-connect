@@ -25,7 +25,7 @@ export default function useFetchData(dataObject, filter) {
         setData(newData);
       });
     },
-    [dataObject, data]
+    [dataObject, data],
   );
 
   useEffect(() => {
@@ -48,6 +48,6 @@ export default function useFetchData(dataObject, filter) {
     data,
     refresh,
     refreshRows,
-    isLoading
+    isLoading,
   };
 }

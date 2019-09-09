@@ -18,7 +18,7 @@ const events = [
   "CancelEdit",
   "CurrentIndexChanged",
   "DataLoaded",
-  "DirtyChanged"
+  "DirtyChanged",
 ];
 
 export function connect(dataObject, currentRowOnly = false) {
@@ -53,27 +53,19 @@ export function connect(dataObject, currentRowOnly = false) {
             isLoading: dataObject.isDataLoading() === true,
             isSaving: false,
             loadError: null,
-            saveFailed: false
+            saveFailed: false,
           },
-          initialState
+          initialState,
         );
 
         this.handleAfterSave = this.handleAfterSave.bind(this);
-        this.handleAllowDeleteChanged = this.handleAllowDeleteChanged.bind(
-          this
-        );
-        this.handleAllowInsertChanged = this.handleAllowInsertChanged.bind(
-          this
-        );
-        this.handleAllowUpdateChanged = this.handleAllowUpdateChanged.bind(
-          this
-        );
+        this.handleAllowDeleteChanged = this.handleAllowDeleteChanged.bind(this);
+        this.handleAllowInsertChanged = this.handleAllowInsertChanged.bind(this);
+        this.handleAllowUpdateChanged = this.handleAllowUpdateChanged.bind(this);
         this.handleBeforeLoad = this.handleBeforeLoad.bind(this);
         this.handleBeforeSave = this.handleBeforeSave.bind(this);
         this.handleCancelEdit = this.handleCancelEdit.bind(this);
-        this.handleCurrentIndexChanged = this.handleCurrentIndexChanged.bind(
-          this
-        );
+        this.handleCurrentIndexChanged = this.handleCurrentIndexChanged.bind(this);
         this.handleDataLoaded = this.handleDataLoaded.bind(this);
         this.handleDataLoadFailed = this.handleDataLoadFailed.bind(this);
         this.handleDirtyChanged = this.handleDirtyChanged.bind(this);
@@ -218,7 +210,7 @@ export function connect(dataObject, currentRowOnly = false) {
           isLoading: false,
           isSaving: false,
           isDeleting: false,
-          saveFailed: false
+          saveFailed: false,
         });
       }
 
@@ -257,7 +249,7 @@ export function connect(dataObject, currentRowOnly = false) {
         const dataObject = getDataObject();
 
         for (let field in fields) {
-          if (fields.hasOwnProperty(field)) {
+          if (Object.prototype.hasOwnProperty.call(fields, field)) {
             dataObject.currentRow(field, fields[field]);
           }
         }
@@ -292,15 +284,10 @@ export function connect(dataObject, currentRowOnly = false) {
     };
 
     function getDisplayName() {
-      return (
-        WrappedComponent.displayName || WrappedComponent.name || "Component"
-      );
+      return WrappedComponent.displayName || WrappedComponent.name || "Component";
     }
 
-    connector.displayName =
-      typeof dataObject === "string"
-        ? dataObject
-        : dataObject.getDataSourceId();
+    connector.displayName = typeof dataObject === "string" ? dataObject : dataObject.getDataSourceId();
     connector.displayName += `(${getDisplayName()})`;
 
     return connector;
@@ -326,11 +313,11 @@ export const properties = [
   "isLoading",
   "isSaving",
   "loadError",
-  "saveFailed"
+  "saveFailed",
 ];
 
 export const connectRow = dataObject =>
   connect(
     dataObject,
-    true
+    true,
   );

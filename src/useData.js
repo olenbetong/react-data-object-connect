@@ -16,16 +16,11 @@ export default function useData(dataObject) {
   }, [dataObject]);
 
   useEffect(() => {
-    dataUpdateEvents.forEach(event =>
-      dataObject.attachEvent(event, updateData)
-    );
+    dataUpdateEvents.forEach(event => dataObject.attachEvent(event, updateData));
 
     updateData();
 
-    return () =>
-      dataUpdateEvents.forEach(event =>
-        dataObject.detachEvent(event, updateData)
-      );
+    return () => dataUpdateEvents.forEach(event => dataObject.detachEvent(event, updateData));
   }, [dataObject, updateData]);
 
   return data;

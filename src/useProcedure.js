@@ -5,10 +5,7 @@ export default function useProcedure(procedure, params) {
   const [error, setError] = useState(null);
   const [isExecuting, setIsExecuting] = useState(false);
 
-  const deps =
-    typeof params === "object"
-      ? [procedure, ...Object.values(params)]
-      : [procedure, params];
+  const deps = typeof params === "object" ? [procedure, ...Object.values(params)] : [procedure, params];
 
   useEffect(() => {
     let isAborted = true;

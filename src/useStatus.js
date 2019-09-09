@@ -37,6 +37,6 @@ export default function useStatus(dataObject) {
 
   return {
     isDeleting,
-    isSaving
+    isSaving,
   };
 }

@@ -31,7 +31,7 @@ If using a React with hooks, there are also data object hooks available.
 - **useCurrentIndex**(dataObject) - Returns only the current index
 - **useCurrentRow**(dataObject) - Returns the current record
 - **useData**(dataObject) - Returns an array with all records currently in the data object
-- **useDataWithFilter**(dataObject, filter, type) - Like useData, but loads data with the given filter. Type can be filterString or whereClause (defaults to filterString) and must be a string
+- **useDataWithFilter**(dataObject, filter, type) - Like useData, but loads data with the given filter.
 - **useDirty**(dataObject) - Returns a boolean indicating if the current row is dirty or not
 - **useError**(dataObject) - Returns any loading error message
 - **useLoading**(dataObject) - Returns a boolean indicating if the data object is loading or not

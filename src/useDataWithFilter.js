@@ -8,9 +8,11 @@ export default function useDataWithFilter(dataObject, filter, type = "filterStri
   useEffect(() => {
     const current = dataObject.getParameter(type);
 
-    if (!equals(current, filter) || !dataObject.isDataLoaded()) {
-      dataObject.setParameter(type, filter);
-      dataObject.refreshDataSource();
+    if (filter !== false) {
+      if (!equals(current, filter) || !dataObject.isDataLoaded()) {
+        dataObject.setParameter(type, filter);
+        dataObject.refreshDataSource();
+      }
     }
   }, [dataObject, filter, type]);
 

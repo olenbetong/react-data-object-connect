@@ -2,15 +2,7 @@ import { useEffect, useState } from "react";
 import dataUpdateEvents from "./dataUpdateEvents";
 
 function getCurrentData(dataObject) {
-  const newData = dataObject.getPagingComponent().getCurrentData();
-
-  // If current row is dirty, getData will still return the saved record
-  const idx = dataObject.getCurrentIndex();
-  if (idx >= 0) {
-    newData[idx] = dataObject.currentRow();
-  }
-
-  return newData || [];
+  return dataObject.getPagingComponent().getCurrentData() || [];
 }
 
 export default function usePagedData(dataObject) {

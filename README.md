@@ -34,8 +34,11 @@ If using a React with hooks, there are also data object hooks available.
 - **useDataWithFilter**(dataObject, filter, type) - Like useData, but loads data with the given filter.
 - **useDirty**(dataObject) - Returns a boolean indicating if the current row is dirty or not
 - **useError**(dataObject) - Returns any loading error message
+- **useFilter**(dataObject, filter, type) - Refreshes data object whenever the filter changes
 - **useLoading**(dataObject) - Returns a boolean indicating if the data object is loading or not
 - **useStatus**(dataObject) - Returns booleans indicating if the data object is saving or deleting records
+- **usePagedData**(dataObject) - Like useData, but for paged data objects
+- **usePagedDataWithFilter**(dataObject, filter, type) - Like useDataWithFilter, but for paged data objects
 - **usePermissions**(dataObject) - Returns booleans indicating if the user can delete, insert or update records
 
 The above hooks uses the data objects internal state to pass data to the components. If you do not want to depend on the data objects current row or data storage, you can use the following hooks. They return data from the data object's data handler directly, and will not affect the data objects internal state.

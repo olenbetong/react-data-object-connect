@@ -1,20 +1,9 @@
-import { useEffect } from "react";
-import equals from "fast-deep-equal";
 import useData from "./useData";
+import useFilter from "./useFilter";
 
 export default function useDataWithFilter(dataObject, filter, type = "filterString") {
   const data = useData(dataObject);
-
-  useEffect(() => {
-    const current = dataObject.getParameter(type);
-
-    if (filter !== false) {
-      if (!equals(current, filter) || !dataObject.isDataLoaded()) {
-        dataObject.setParameter(type, filter);
-        dataObject.refreshDataSource();
-      }
-    }
-  }, [dataObject, filter, type]);
+  useFilter(dataObject, filter, type);
 
   return data;
 }

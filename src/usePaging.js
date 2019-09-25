@@ -7,8 +7,16 @@ export default function usePaging(dataObject) {
   useEffect(() => {
     const paging = dataObject.getPagingComponent();
 
-    paging.attach("on", "pageChange", () => setPage(paging.getCurrentPage()));
-    paging.attach("on", "pageCountChange", () => setPageCount(paging.getPageCount));
+    const updateCurrentPage = () => setPage(paging.getCurrentPage());
+    const updatePageCount = () => setPageCount(paging.getPageCount());
+
+    paging.attach("on", "pageChange", updateCurrentPage);
+    paging.attach("on", "pageCountChange", updatePageCount);
+
+    return () => {
+      paging.detach("on", "pageChange", updateCurrentPage);
+      paging.detach("on", "pageCountChange", updatePageCount);
+    };
   }, [dataObject]);
 
   return {

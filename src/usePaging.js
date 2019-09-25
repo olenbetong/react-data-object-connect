@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 
 export default function usePaging(dataObject) {
-  const [page, setPage] = useState(0);
-  const [pageCount, setPageCount] = useState(0);
+  const [page, setPage] = useState(() => dataObject.getPagingComponent().getCurrentPage());
+  const [pageCount, setPageCount] = useState(() => dataObject.getPagingComponent().getPageCount());
 
   useEffect(() => {
     const paging = dataObject.getPagingComponent();

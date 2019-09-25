@@ -16,15 +16,15 @@ export default function usePagedData(dataObject) {
     dataUpdateEvents.forEach(event => dataObject.attachEvent(event, updateData));
 
     const pagingComponent = dataObject.getPagingComponent();
-    pagingComponent.attach("after", "pageChange", updateData);
-    pagingComponent.attach("after", "pageRefresh", updateData);
+    pagingComponent.attach("on", "pageChange", updateData);
+    pagingComponent.attach("on", "pageRefresh", updateData);
 
     updateData();
 
     return () => {
       dataUpdateEvents.forEach(event => dataObject.detachEvent(event, updateData));
-      pagingComponent.detach("after", "pageChange", updateData);
-      pagingComponent.detach("after", "pageRefresh", updateData);
+      pagingComponent.detach("on", "pageChange", updateData);
+      pagingComponent.detach("on", "pageRefresh", updateData);
     };
   }, [dataObject]);
 

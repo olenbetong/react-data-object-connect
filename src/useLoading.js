@@ -15,6 +15,7 @@ export default function useLoading(dataObject) {
     dataObject.attachEvent("onBeforeLoad", setIsLoading);
     dataObject.attachEvent("onDataLoaded", setIsNotLoading);
     dataObject.attachEvent("onDataLoadFailed", setIsNotLoading);
+    dataObject.attachEvent("onPartialDataLoaded", setIsNotLoading);
 
     setLoading(dataObject.isDataLoading());
 
@@ -22,6 +23,7 @@ export default function useLoading(dataObject) {
       dataObject.detachEvent("onBeforeLoad", setIsLoading);
       dataObject.detachEvent("onDataLoaded", setIsNotLoading);
       dataObject.detachEvent("onDataLoadFailed", setIsNotLoading);
+      dataObject.detachEvent("onPartialDataLoaded", setIsNotLoading);
     };
   }, [dataObject]);
 

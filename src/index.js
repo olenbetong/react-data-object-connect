@@ -13,6 +13,7 @@ export { default as useFetchRecord } from "./useFetchRecord";
 export { default as useLoading } from "./useLoading";
 export { default as usePagedData } from "./usePagedData";
 export { default as usePagedDataWithFilter } from "./usePagedDataWithFilter";
+export { default as usePaging } from "./usePaging";
 export { default as usePermissions } from "./usePermissions";
 export { default as useProcedure } from "./useProcedure";
 export { default as useStatus } from "./useStatus";

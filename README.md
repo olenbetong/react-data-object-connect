@@ -1,6 +1,7 @@
 # React Data Object Connect
 
-Utilities to connect AppframeWeb data objects to React components. Higher order components for class components, and hooks for function components.
+Utilities to connect AppframeWeb data objects to React components. Higher order
+components for class components, and hooks for function components.
 
 ## Getting Started
 
@@ -20,9 +21,14 @@ or include the IIFE build in a script
 
 ### Hooks or connect/connectRow?
 
-This package provides 2 primary ways of connecting React components to Appframe data objects: the connect/connectRow HoC components, and hooks. `connect`/`connectRow` provide most of the state from the data objects, while with hooks you might need to use several hooks to get the information you need.
+This package provides 2 primary ways of connecting React components to Appframe
+data objects: the connect/connectRow HoC components, and hooks.
+`connect`/`connectRow` provide most of the state from the data objects, while
+with hooks you might need to use several hooks to get the information you need.
 
-Not sure if you should use the connect/connectRow functions, or the hooks? If you are using a React version > 16.8, it is recommended to only use the hooks, as they are more flexible, and usually result in smaller bundles.
+Not sure if you should use the connect/connectRow functions, or the hooks? If
+you are using a React version > 16.8, it is recommended to only use the hooks,
+as they are more flexible, and usually result in smaller bundles.
 
 ## Hooks
 
@@ -30,55 +36,81 @@ If using a React with hooks, there are also data object hooks available.
 
 - **useCurrentIndex**(dataObject) - Returns only the current index
 - **useCurrentRow**(dataObject) - Returns the current record
-- **useData**(dataObject) - Returns an array with all records currently in the data object
-- **useDataWithFilter**(dataObject, filter, type) - Like useData, but loads data with the given filter.
-- **useDirty**(dataObject) - Returns a boolean indicating if the current row is dirty or not
+- **useData**(dataObject) - Returns an array with all records currently in the
+  data object
+- **useDataLength**(dataObject) - Returns the current number of records in the
+  data object
+- **useDataWithFilter**(dataObject, filter, type) - Like useData, but loads data
+  with the given filter.
+- **useDirty**(dataObject) - Returns a boolean indicating if the current row is
+  dirty or not
 - **useError**(dataObject) - Returns any loading error message
-- **useFilter**(dataObject, filter, type) - Refreshes data object whenever the filter changes
-- **useLoading**(dataObject) - Returns a boolean indicating if the data object is loading or not
-- **useStatus**(dataObject) - Returns booleans indicating if the data object is saving or deleting records
+- **useFilter**(dataObject, filter, type) - Refreshes data object whenever the
+  filter changes
+- **useLoading**(dataObject) - Returns a boolean indicating if the data object
+  is loading or not
+- **useStatus**(dataObject) - Returns booleans indicating if the data object is
+  saving or deleting records
 - **usePagedData**(dataObject) - Like useData, but for paged data objects
-- **usePagedDataWithFilter**(dataObject, filter, type) - Like useDataWithFilter, but for paged data objects
-- **usePermissions**(dataObject) - Returns booleans indicating if the user can delete, insert or update records
+- **usePagedDataWithFilter**(dataObject, filter, type) - Like useDataWithFilter,
+  but for paged data objects
+- **usePaging**(dataObject) - Returns page, page count and a method to change
+  the page
+- **useParameter**(dataObject, parameter) - Returns the current value of
+  parameter
+- **usePermissions**(dataObject) - Returns booleans indicating if the user can
+  delete, insert or update records
 
-The above hooks uses the data objects internal state to pass data to the components. If you do not want to depend on the data objects current row or data storage, you can use the following hooks. They return data from the data object's data handler directly, and will not affect the data objects internal state.
+The above hooks uses the data objects internal state to pass data to the
+components. If you do not want to depend on the data objects current row or data
+storage, you can use the following hooks. They return data from the data
+object's data handler directly, and will not affect the data objects internal
+state.
 
-- **useFetchData**(dataObject, filter) - Returns data matching the filter. If the filter is set to `false`, data will not be loaded.
-- **useFetchRecord**(dataObject, filter) - Use if the filter is expected to only return a single row. If multiple rows are returned from the server, only the first record will be returned to the component.
+- **useFetchData**(dataObject, filter) - Returns data matching the filter. If
+  the filter is set to `false`, data will not be loaded.
+- **useFetchRecord**(dataObject, filter) - Use if the filter is expected to only
+  return a single row. If multiple rows are returned from the server, only the
+  first record will be returned to the component.
 
 One hook is also available for procedures.
 
-- **useProcedure**(procedure, parameters) - Returns an object containing `data`, `isExecuting` and `error` properties. Executes whenever the procedure or parameters arguments change.
+- **useProcedure**(procedure, parameters) - Returns an object containing `data`,
+  `isExecuting` and `error` properties. Executes whenever the procedure or
+  parameters arguments change.
 
 ### Examples
 
 #### Getting all state from the data object
 
-This will list all reacords in the data object, and create an editor for the current row.
+This will list all reacords in the data object, and create an editor for the
+current row.
 
 ```jsx
 import {
   useCurrentIndex,
   useCurrentRow,
   useData,
+  useDataLength,
   useDirty,
   useError,
   useLoading,
   useStatus,
-  usePermissions
+  usePermissions,
+  useParameter,
 } from "@olenbetong/react-data-object-connect";
 
 function MyFunctionComponent(props) {
   const currentIndex = useCurrentIndex(dsMyDataObject);
   const myRecord = useCurrentRow(dsMyDataObject);
   const myRecords = useData(dsMyDataObject);
+  const count = useDataLength(dsMyDataObject);
   const isDirty = useDirty(dsMyDataObject);
   const error = useError(dsMyDataObject);
   const isLoading = useLoading(dsMyDataObject);
   const { isDeleting, isSaving } = useStatus(dsMyDataObject);
-  const { allowDelete, allowInsert, allowUpdate } = usePermissions(
-    dsMyDataObject
-  );
+  const { allowDelete, allowInsert, allowUpdate } = usePermissions(dsMyDataObject);
+  const filter = useParameter(dsMyDataObject, "filterString");
 
   return (
     <div>
@@ -88,18 +120,18 @@ function MyFunctionComponent(props) {
       {myRecords.map(record => (
         <ListItem {...item} />
       ))}
+      There are {count} records matching {filter}
     </div>
   );
 }
 ```
 
-Automatically getting data with a given filter
+Automatically getting data with a given filter.
+
+If you want to conditionally load data, you may set the filter to `false`.
 
 ```jsx
-import {
-  useDataWithFilter,
-  useLoading
-} from "@olenbetong/react-data-object-connect";
+import { useDataWithFilter, useLoading } from "@olenbetong/react-data-object-connect";
 
 function MyComponent({ someId }) {
   const isLoading = useLoading(dsMyDataObject);
@@ -120,41 +152,30 @@ function MyComponent({ someId }) {
 
 If you want to conditionally load data, you may set the filter to `false`.
 
-The refreshRows method can be used to update only a subset of the current data. The first parameter is
-the filter that will be used to fetch data. The second parameter is the field that will be used to compare
-fetched data with current data (defaults to PrimKey). If the refreshRows fetches records that are not
-in the current set, they will not be added.
+The refreshRows method can be used to update only a subset of the current data.
+The first parameter is the filter that will be used to fetch data. The second
+parameter is the field that will be used to compare fetched data with current
+data (defaults to PrimKey). If the refreshRows fetches records that are not in
+the current set, they will not be added.
 
 ```jsx
-import {
-  useFetchData,
-  useFetchRecord
-} from "@olenbetong/react-data-object-connect";
+import { useFetchData, useFetchRecord } from "@olenbetong/react-data-object-connect";
 
 function MyFunctionComponent(props) {
-  const { isLoading, data, refresh, refreshRows } = useFetchData(
-    dsMyDataObject,
-    `[EntityCategory] = 1`
-  );
+  const { isLoading, data, refresh, refreshRows } = useFetchData(dsMyDataObject, `[EntityCategory] = 1`);
 
   return (
     <div>
       {isLoading && <i className="fa fa-spin fa-spinner" />}
       {data.map(data => (
-        <ListItem
-          {...item}
-          onRefresh={refreshRows(`[PrimKey] = '${item.PrimKey}'`, "PrimKey")}
-        />
+        <ListItem {...item} onRefresh={refreshRows(`[PrimKey] = '${item.PrimKey}'`, "PrimKey")} />
       ))}
     </div>
   );
 }
 
 function MyRecordComponent(props) {
-  const { isLoading, record, refresh } = useFetchRecord(
-    dsMyDataObject,
-    `[EntityID] = ${props.id}`
-  );
+  const { isLoading, record, refresh } = useFetchRecord(dsMyDataObject, `[EntityID] = ${props.id}`);
 
   return (
     <div>
@@ -177,18 +198,36 @@ function MyComponent() {
   const { data, error, isExecuting } = useProcedure(procMyProcedure, {
     Parameter: "value",
     OtherParam: 52,
-    ThirdParam: "Oh, hai!"
+    ThirdParam: "Oh, hai!",
   });
 
   return (
     <div>
       {error && <div className="alert alert-danger">{error}</div>}
       {isExecuting && <Spinner />}
-      {data &&
-        data.length > 0 &&
-        data[0].map(record => (
-          <RecordComponent key={record.IdentityField} {...record} />
-        ))}
+      {data && data.length > 0 && data[0].map(record => <RecordComponent key={record.IdentityField} {...record} />)}
+    </div>
+  );
+}
+```
+
+#### Paging component
+
+```jsx
+import { usePaging } from "@olenbetong/react-data-object-connect";
+
+function PagingComponent() {
+  const { changePage, page, pagecount } = usePaging(dsMyDataObject);
+
+  return (
+    <div>
+      <button onClick={() => changePage(page - 1)} disabled={page <= 0}>
+        Previous
+      </button>
+      Page {page + 1} of {pageCount}
+      <button onClick={() => changePage(page + 1)} disabled={page + 1 >= pageCount}>
+        pagecount
+      </button>
     </div>
   );
 }
@@ -196,9 +235,12 @@ function MyComponent() {
 
 ## connect/connectRow
 
-Use the connect and connectRow functions to create a higher order component that can be used to connect the data object to React components.
+Use the connect and connectRow functions to create a higher order component that
+can be used to connect the data object to React components.
 
-The connect function will pass all records to the component in a property named `data`, while the connectRow passes all the fields in the current row as properties to the component.
+The connect function will pass all records to the component in a property named
+`data`, while the connectRow passes all the fields in the current row as
+properties to the component.
 
 Example connecting to all records:
 
@@ -252,9 +294,12 @@ Function properties passed to the component:
 - **onCancelEdit** used to cancel all changes made to the current record
 - **onCurrentIndexChange** used to select a row by index
 - **onEndEdit** used to attempt to save changes made to the current record
-- **onDeleteRow** used to delete a row. A component connected to the current row will always delete the current row, otherwise an index can be passed
-- **onFieldChange** used to update a field in the current row (name of field and value as parameters)
-- **onFieldsChange** used to update multiple fields in the current row (object with field names as keys, and values as values)
+- **onDeleteRow** used to delete a row. A component connected to the current row
+  will always delete the current row, otherwise an index can be passed
+- **onFieldChange** used to update a field in the current row (name of field and
+  value as parameters)
+- **onFieldsChange** used to update multiple fields in the current row (object
+  with field names as keys, and values as values)
 - **onRefreshData** used to refresh data
 - **onRefreshRow** used to refresh only the current row
 - **onSetParameter** used to set a parameter on the data object
@@ -263,9 +308,11 @@ Function properties passed to the component:
 
 ### Modules
 
-If you use a bundler that supports tee shaking (webpack/rollup/parcel etc.), no further actions should be needed to reduce bundle size.
+If you use a bundler that supports tee shaking (webpack/rollup/parcel etc.), no
+further actions should be needed to reduce bundle size.
 
-In the node package, the scripts are located in the `es` folder, and you can include the parts you need instead of the whole package.
+In the node package, the scripts are located in the `es` folder, and you can
+include the parts you need instead of the whole package.
 
 For example, if you only use the `useData` hook, import it like this:
 
@@ -276,15 +323,15 @@ import useData from "@olenbetong/react-data-object-connect/es/useData";
 Or for the `connect`/`connectRow` functions:
 
 ```js
-import {
-  connect,
-  connectRow
-} from "@olenbetong/react-data-object-connect/es/connect";
+import { connect, connectRow } from "@olenbetong/react-data-object-connect/es/connect";
 ```
 
 ### Browser
 
-In the `dist/iife` there are a few files you can choose to add. If you only need hooks, use `hooks.min.js`, which exports all the hooks in global variable `dataObjectHooks`. `connect.min.js` exports the connect and connectRow functions in global variable `dataObjectConnect`.
+In the `dist/iife` there are a few files you can choose to add. If you only need
+hooks, use `hooks.min.js`, which exports all the hooks in global variable
+`dataObjectHooks`. `connect.min.js` exports the connect and connectRow functions
+in global variable `dataObjectConnect`.
 
 ## Changelog
 

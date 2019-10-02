@@ -8,6 +8,7 @@ export { default as useDirty } from "./useDirty";
 export { default as useError } from "./useError";
 export { default as useFetchData } from "./useFetchData";
 export { default as useFetchRecord } from "./useFetchRecord";
+export { default as useFilter } from "./useFilter";
 export { default as useLoading } from "./useLoading";
 export { default as usePagedData } from "./usePagedData";
 export { default as usePagedDataWithFilter } from "./usePagedDataWithFilter";

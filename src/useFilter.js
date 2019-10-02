@@ -6,7 +6,7 @@ export default function useFilter(dataObject, filter, type = "filterString") {
     const current = dataObject.getParameter(type);
 
     if (filter !== false) {
-      if (!equals(current, filter) || !dataObject.isDataLoaded()) {
+      if (!equals(current, filter) || (!dataObject.isDataLoaded() && !dataObject.isDataLoading())) {
         dataObject.setParameter(type, filter);
         dataObject.refreshDataSource();
       }

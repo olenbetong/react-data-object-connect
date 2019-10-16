@@ -305,7 +305,7 @@ Function properties passed to the component:
 
 ### Modules
 
-If you use a bundler that supports tee shaking (webpack/rollup/parcel etc.), no
+If you use a bundler that supports tree shaking (webpack/rollup/parcel etc.), no
 further actions should be needed to reduce bundle size.
 
 In the node package, the scripts are located in the `es` folder, and you can
@@ -326,8 +326,8 @@ import { connect, connectRow } from "@olenbetong/react-data-object-connect/es/co
 ### Browser
 
 In the `dist/iife` there are a few files you can choose to add. If you only need
-hooks, use `hooks.min.js`, which exports all the hooks in global variable
-`dataObjectHooks`. `connect.min.js` exports the connect and connectRow functions
+hooks, use `dataObjectHooks.min.js`, which exports all the hooks in global variable
+`dataObjectHooks`. `dataObjectConnect.min.js` exports the connect and connectRow functions
 in global variable `dataObjectConnect`.
 
 ## Changelog

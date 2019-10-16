@@ -9,6 +9,8 @@ import externals from "rollup-plugin-node-externals";
 import commonjs from "rollup-plugin-commonjs";
 import replace from "rollup-plugin-replace";
 import { terser } from "rollup-plugin-terser";
+import alias from "rollup-plugin-alias";
+import path from "path";
 
 const extensions = [".js", ".jsx", ".ts", ".tsx", ".mjs", ".json"];
 
@@ -47,23 +49,48 @@ function getBabelConfig(targets) {
   return config;
 }
 
-function getConfig({ isProd, format, targets = productionTargets }) {
+const preactPath = path.resolve("./node_modules/preact/compat/src/index.js");
+
+function getConfig({ isProd, format, targets = productionTargets, preact = false }) {
   const babelConfig = getBabelConfig(targets);
 
-  const plugins = [
+  const plugins = [];
+
+  if (preact) {
+    plugins.push(
+      alias({
+        entries: [{ find: "react", replacement: preactPath }],
+      }),
+    );
+  }
+
+  plugins.push(
     externals({
-      include: ["@olenbetong/common", "xdate", "react", "react-dom"],
+      include: [
+        "@olenbetong/common",
+        "xdate",
+        "react",
+        "react-dom",
+        "preact",
+        "preact/hooks",
+        "preact/compat",
+        preactPath,
+      ],
     }),
-    babel(babelConfig),
-    commonjs(),
+  );
+  plugins.push(babel(babelConfig));
+  plugins.push(commonjs());
+  plugins.push(
     resolve({
       extensions,
     }),
+  );
+  plugins.push(
     replace({
       "process.env.NODE_ENV": `"${isProd ? "production" : "development"}"`,
     }),
-    fileSize({ showBrotli: true }),
-  ];
+  );
+  plugins.push(fileSize({ showBrotli: true }));
 
   if (isProd) {
     process.env.NODE_ENV = "production";
@@ -72,30 +99,45 @@ function getConfig({ isProd, format, targets = productionTargets }) {
 
   const entries = appframe instanceof Array ? appframe : [appframe];
 
-  return entries.map(entry => {
-    const fileExt = isProd ? "min.js" : "js";
-    const conf = {
-      input: `src/${entry.fileName}.js`,
-      plugins,
-      output: {
-        file: `dist/${format}/${entry.libraryName}.${fileExt}`,
-        format,
-        name: entry.libraryName,
-        globals: {
-          react: "React",
-          "react-dom": "ReactDOM",
-          "@olenbetong/common": "af.common",
-          xdate: "XDate",
+  return entries
+    .filter(entry => entry.fileName === "hooks" || preact === false)
+    .map(entry => {
+      const fileExt = isProd ? "min.js" : "js";
+      const conf = {
+        input: `src/${entry.fileName}.js`,
+        plugins,
+        output: {
+          file: `dist/${format}/${entry.libraryName}${preact ? ".preact" : ""}.${fileExt}`,
+          format,
+          name: entry.libraryName,
+          globals: {
+            [preactPath]: "preactCompat",
+            "preact/hooks": "preactHooks",
+            preact: "preact",
+            react: "React",
+            "react-dom": "ReactDOM",
+            "@olenbetong/common": "af.common",
+            xdate: "XDate",
+          },
         },
-      },
-    };
+      };
 
-    if (format === "esm") {
-      conf.plugins.push(
-        virtual({
-          xdate: `const { XDate } = window; export default XDate;`,
-          "react-dom": `const { ReactDOM } = window; export default ReactDOM;`,
-          react: `const { React } = window;
+      if (format === "esm") {
+        conf.plugins.push(
+          virtual({
+            preact: `export default window.preact`,
+            "react/hooks": `
+            const { preactHooks } = window;
+            export {
+              useCallback: preactHoos.useCallback,
+              useEffect: preactHoos.useEffect,
+              useState: preactHoos.useState,
+              useRef: preactHoos.useRef,
+            }
+          `,
+            xdate: `const { XDate } = window; export default XDate;`,
+            "react-dom": `const { ReactDOM } = window; export default ReactDOM;`,
+            react: `const { React } = window;
   export default React;
   export const PureComponent = React.PureComponent;
   export const Component = React.Component;
@@ -103,12 +145,12 @@ function getConfig({ isProd, format, targets = productionTargets }) {
   export const useEffect = React.useEffect;
   export const useState = React.useState;
   export const useRef = React.useRef;`,
-        }),
-      );
-    }
+          }),
+        );
+      }
 
-    return conf;
-  });
+      return conf;
+    });
 }
 
 module.exports = commandLineArgs => {
@@ -118,6 +160,7 @@ module.exports = commandLineArgs => {
     ...getConfig({ isProd, format: "esm", targets: developmentTargets }),
     ...getConfig({ isProd, format: "umd", targets: productionTargets }),
     ...getConfig({ isProd, format: "iife", targets: productionTargets }),
+    ...getConfig({ isProd, format: "iife", targets: productionTargets, preact: true }),
     ...getConfig({ isProd, format: "cjs", targets: { node: "9" } }),
   ];
 };

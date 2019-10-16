@@ -265,21 +265,19 @@ export function connect(dataObject, currentRowOnly = false) {
       }
 
       render() {
-        return (
-          <WrappedComponent
-            {...this.state}
-            onCancelEdit={this.cancelEdit}
-            onCurrentIndexChange={this.setCurrentIndex}
-            onDeleteRow={this.deleteRow}
-            onEndEdit={this.endEdit}
-            onFieldChange={this.setFieldValue}
-            onFieldsChange={this.setFieldValues}
-            onRefreshData={this.refreshData}
-            onRefreshRow={this.refreshRow}
-            onSetParameter={this.setParameter}
-            {...this.props}
-          />
-        );
+        return React.createElement(WrappedComponent, {
+          ...this.state,
+          onCancelEdit: this.cancelEdit,
+          onCurrentIndexChange: this.setCurrentIndex,
+          onDeleteRow: this.deleteRow,
+          onEndEdit: this.endEdit,
+          onFieldChange: this.setFieldValue,
+          onFieldsChange: this.setFieldValues,
+          onRefreshData: this.refreshData,
+          onRefreshRow: this.refreshRow,
+          onSetParameter: this.setParameter,
+          ...this.props,
+        });
       }
     };
 

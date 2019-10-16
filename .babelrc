@@ -1,5 +1,5 @@
 {
-  "presets": [],
   "plugins": [ "@babel/plugin-transform-react-jsx", "@babel/plugin-transform-runtime"],
-  "ignore": ["node_modules"]
+  "presets": ["@babel/preset-typescript"],
+  "ignore": ["**/*.d.ts", "**/*.test.ts"]
 }

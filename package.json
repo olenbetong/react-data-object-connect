@@ -1,6 +1,6 @@
 {
   "name": "@olenbetong/react-data-object-connect",
-  "version": "4.6.0",
+  "version": "4.7.0-alpha.0",
   "description": "React HOC used to give a React component data from an Appframe data object",
   "main": "./dist/umd/ReactDataObjectConnect.min.js",
   "module": "./es/index.js",

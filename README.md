@@ -51,9 +51,6 @@ If using a React with hooks, there are also data object hooks available.
   is loading or not
 - **useStatus**(dataObject) - Returns booleans indicating if the data object is
   saving or deleting records
-- **usePagedData**(dataObject) - Like useData, but for paged data objects
-- **usePagedDataWithFilter**(dataObject, filter, type) - Like useDataWithFilter,
-  but for paged data objects
 - **usePaging**(dataObject) - Returns page, page count and a method to change
   the page
 - **useParameter**(dataObject, parameter) - Returns the current value of

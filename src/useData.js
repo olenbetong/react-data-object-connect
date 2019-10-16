@@ -18,7 +18,7 @@ function getCurrentData(dataObject) {
 }
 
 export default function useData(dataObject) {
-  const [data, setData] = useState(getCurrentData());
+  const [data, setData] = useState(getCurrentData(dataObject));
 
   useEffect(() => {
     const pagingComponent = dataObject.isDynamicLoading() && dataObject.getPagingComponent();

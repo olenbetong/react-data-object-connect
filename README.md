@@ -13,10 +13,10 @@ Install using npm
 npm install @olenbetong/react-data-object-connect
 ```
 
-or include the IIFE build in a script
+or include the IIFE build in a script (example uses hooks only build)
 
 ```html
-<script src="https://unpkg.com/@olenbetong/react-data-object-connect@4.0.0/dist/iife/index.min.js"></script>
+<script src="https://unpkg.com/@olenbetong/react-data-object-connect@4.7.0/dist/iife/dataObjectHooks.min.js"></script>
 ```
 
 ### Hooks or connect/connectRow?

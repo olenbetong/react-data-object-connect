@@ -1,12 +1,12 @@
 import { useCallback, useEffect, useState } from "react";
-import dataUpdateEvents from "./dataUpdateEvents";
+import { dataUpdateEvents, recordUpdateEvents } from "./dataUpdateEvents";
 
 export default function useCurrentRow(dataObject) {
   const [record, setRecord] = useState(dataObject.currentRow() || {});
   const updateRecord = useCallback(() => setRecord(dataObject.currentRow()), [dataObject]);
 
   useEffect(() => {
-    const recordUpdateEvents = ["onCurrentIndexChanged", ...dataUpdateEvents];
+    const recordUpdateEvents = ["onCurrentIndexChanged", ...dataUpdateEvents, ...recordUpdateEvents];
 
     recordUpdateEvents.forEach(event => dataObject.attachEvent(event, updateRecord));
 

@@ -1,23 +1,15 @@
 import { useEffect, useState } from "react";
-import dataUpdateEvents from "./dataUpdateEvents";
+import { dataUpdateEvents, recordUpdateEvents } from "./dataUpdateEvents";
 
-function getCurrentData(dataObject) {
+function getCurrentData(dataObject, includeDirty) {
   if (dataObject.isDynamicLoading()) {
     return dataObject.getPagingComponent().getCurrentData() || [];
   } else {
-    const data = dataObject.getData();
-
-    // If current row is dirty, getData will still return the saved record
-    const idx = dataObject.getCurrentIndex();
-    if (idx >= 0) {
-      data[idx] = dataObject.currentRow();
-    }
-
-    return data;
+    return includeDirty ? dataObject.getDirtyData() : dataObject.getData();
   }
 }
 
-export default function useData(dataObject) {
+export default function useData(dataObject, { includeDirty = true }) {
   const [data, setData] = useState(getCurrentData(dataObject));
 
   useEffect(() => {
@@ -34,7 +26,8 @@ export default function useData(dataObject) {
       }
     }
 
-    dataUpdateEvents.forEach(event => dataObject.attachEvent(event, updateData));
+    const events = includeDirty ? dataUpdateEvents.concat(recordUpdateEvents) : dataUpdateEvents;
+    events.forEach(event => dataObject.attachEvent(event, updateData));
 
     if (dataObject.isDynamicLoading()) {
       pagingComponent.attach("on", "pageChange", updateData);
@@ -52,7 +45,7 @@ export default function useData(dataObject) {
         pagingComponent.detach("on", "pageRefresh", updateData);
       }
     };
-  }, [dataObject]);
+  }, [dataObject, includeDirty]);
 
   return data;
 }

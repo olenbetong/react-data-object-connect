@@ -36,7 +36,7 @@ If using a React with hooks, there are also data object hooks available.
 
 - **useCurrentIndex**(dataObject) - Returns only the current index
 - **useCurrentRow**(dataObject) - Returns the current record
-- **useData**(dataObject) - Returns an array with all records currently in the
+- **useData**(dataObject, options) - Returns an array with all records currently in the
   data object
 - **useDataLength**(dataObject) - Returns the current number of records in the
   data object
@@ -75,6 +75,10 @@ One hook is also available for procedures.
 - **useProcedure**(procedure, parameters) - Returns an object containing `data`,
   `isExecuting` and `error` properties. Executes whenever the procedure or
   parameters arguments change.
+
+### useData options
+`useData` accepts a second options argument. Available options are:
+- **includeDirty** (default `true`) - Includes currently dirty data in the dataset. Disable this to optimize if the data is used many places.
 
 ### Examples
 

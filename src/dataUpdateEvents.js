@@ -1,11 +1,11 @@
 // A resusable array containing all data object events that should trigger an update
-export default [
-  "onFieldChanged",
+export const dataUpdateEvents = [
   "onRecordCreated",
   "onRecordDeleted",
   "onRecordRefreshed",
   "onAfterSave",
-  "onCancelEdit",
   "onDataLoaded",
   "onPartialDataLoaded",
 ];
+
+export const recordUpdateEvents = ["onFieldChanged", "onCancelEdit"];

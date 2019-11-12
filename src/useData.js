@@ -9,7 +9,8 @@ function getCurrentData(dataObject, includeDirty) {
   }
 }
 
-export default function useData(dataObject, { includeDirty = true }) {
+export default function useData(dataObject, options = {}) {
+  const { includeDirty = true } = options;
   const [data, setData] = useState(getCurrentData(dataObject));
 
   useEffect(() => {

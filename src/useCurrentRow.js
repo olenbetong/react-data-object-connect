@@ -6,13 +6,13 @@ export default function useCurrentRow(dataObject) {
   const updateRecord = useCallback(() => setRecord(dataObject.currentRow()), [dataObject]);
 
   useEffect(() => {
-    const recordUpdateEvents = ["onCurrentIndexChanged", ...dataUpdateEvents, ...recordUpdateEvents];
+    const events = ["onCurrentIndexChanged", ...dataUpdateEvents, ...recordUpdateEvents];
 
-    recordUpdateEvents.forEach(event => dataObject.attachEvent(event, updateRecord));
+    events.forEach(event => dataObject.attachEvent(event, updateRecord));
 
     updateRecord();
 
-    return () => recordUpdateEvents.forEach(event => dataObject.detachEvent(event, updateRecord));
+    return () => events.forEach(event => dataObject.detachEvent(event, updateRecord));
   }, [dataObject, updateRecord]);
 
   return record;

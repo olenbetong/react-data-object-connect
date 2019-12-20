@@ -36,8 +36,8 @@ If using a React with hooks, there are also data object hooks available.
 
 - **useCurrentIndex**(dataObject) - Returns only the current index
 - **useCurrentRow**(dataObject) - Returns the current record
-- **useData**(dataObject, options) - Returns an array with all records currently in the
-  data object
+- **useData**(dataObject, options) - Returns an array with all records currently
+  in the data object
 - **useDataLength**(dataObject) - Returns the current number of records in the
   data object
 - **useDataWithFilter**(dataObject, filter, type) - Like useData, but loads data
@@ -72,13 +72,15 @@ state.
 
 One hook is also available for procedures.
 
-- **useProcedure**(procedure, parameters) - Returns an object containing `data`,
-  `isExecuting` and `error` properties. Executes whenever the procedure or
-  parameters arguments change.
+- **useProcedure**(procedure, parameters, options) - Returns an object
+  containing `data`, `execute`, `isExecuting` and `error` properties. Executes
+  whenever the procedure or parameters arguments change. `execute` can be used
+  to manually execute the procedure again
 
 ### useData options
 `useData` accepts a second options argument. Available options are:
-- **includeDirty** (default `true`) - Includes currently dirty data in the dataset. Disable this to optimize if the data is used many places.
+- **includeDirty** (default `true`) - Includes currently dirty data in the
+  dataset. Disable this to optimize if the data is used many places.
 
 ### Examples
 
@@ -192,18 +194,28 @@ function MyRecordComponent(props) {
 
 #### Executing a stored procedure
 
+If 'Parameter', 'OtherParam', 'ThirdParam' are not valid parameters for
+'procMyProcedure', they will be removed before executing the procedure. This way
+the procedure can be executed even if the actual parameters haven't changed. If
+'removeInvalidParameters' isn't set to true, an error will occur instead.
+
 ```jsx
 import { useProcedure } from "@olenbetong/react-data-object-connect";
 
 function MyComponent() {
-  const { data, error, isExecuting } = useProcedure(procMyProcedure, {
-    Parameter: "value",
-    OtherParam: 52,
-    ThirdParam: "Oh, hai!",
-  });
+  const { data, execute, error, isExecuting } = useProcedure(
+    procMyProcedure,
+    {
+      Parameter: "value",
+      OtherParam: 52,
+      ThirdParam: "Oh, hai!",
+    },
+    { removeInvalidParameters: true }
+  );
 
   return (
     <div>
+      <button onClick={execute}>Refresh data</button>
       {error && <div className="alert alert-danger">{error}</div>}
       {isExecuting && <Spinner />}
       {data && data.length > 0 && data[0].map(record => <RecordComponent key={record.IdentityField} {...record} />)}
@@ -330,9 +342,9 @@ import { connect, connectRow } from "@olenbetong/react-data-object-connect/es/co
 ### Browser
 
 In the `dist/iife` there are a few files you can choose to add. If you only need
-hooks, use `dataObjectHooks.min.js`, which exports all the hooks in global variable
-`dataObjectHooks`. `dataObjectConnect.min.js` exports the connect and connectRow functions
-in global variable `dataObjectConnect`.
+hooks, use `dataObjectHooks.min.js`, which exports all the hooks in global
+variable `dataObjectHooks`. `dataObjectConnect.min.js` exports the connect and
+connectRow functions in global variable `dataObjectConnect`.
 
 ## Changelog
 

@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import equals from "fast-deep-equal";
 
 function useDeepCompareMemoize(value) {
@@ -15,17 +15,33 @@ export function useDeepCompareEffect(callback, dependencies) {
   useEffect(callback, useDeepCompareMemoize(dependencies));
 }
 
-export default function useProcedure(procedure, params) {
+export default function useProcedure(procedure, params, options) {
   const [data, setData] = useState([]);
   const [error, setError] = useState(null);
   const [isExecuting, setIsExecuting] = useState(false);
+  const parameters = useDeepCompareMemoize(params);
+  const optionsRef = useDeepCompareMemoize(options);
 
-  useDeepCompareEffect(() => {
+  const execute = useCallback(() => {
     let isAborted = false;
 
-    if (params && procedure) {
+    if (parameters && procedure) {
+      const removeInvalid = optionsRef?.removeInvalidParameters ?? false;
+      let execParameters = {};
+
+      if (removeInvalid) {
+        const validParameters = procedure.getParameters();
+        for (let param of validParameters) {
+          if (param.name in parameters) {
+            execParameters[param.name] = parameters[param.name];
+          }
+        }
+      } else {
+        execParameters = parameters;
+      }
+
       setIsExecuting(true);
-      procedure.execute(params, (err, data) => {
+      procedure.execute(execParameters, (err, data) => {
         if (!isAborted) {
           setIsExecuting(false);
           if (err) {
@@ -42,8 +58,11 @@ export default function useProcedure(procedure, params) {
     return () => {
       isAborted = true;
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [procedure, params]);
+  }, [parameters, procedure, optionsRef]);
 
-  return { data, error, isExecuting };
+  useEffect(() => {
+    return execute();
+  }, [execute]);
+
+  return { data, error, execute, isExecuting };
 }

@@ -9,7 +9,7 @@ import externals from "rollup-plugin-node-externals";
 import commonjs from "rollup-plugin-commonjs";
 import replace from "rollup-plugin-replace";
 import { terser } from "rollup-plugin-terser";
-import alias from "rollup-plugin-alias";
+import alias from "@rollup/plugin-alias";
 import path from "path";
 
 const extensions = [".js", ".jsx", ".ts", ".tsx", ".mjs", ".json"];
@@ -42,6 +42,8 @@ function getBabelConfig(targets) {
     ],
     plugins: [
       "@babel/plugin-proposal-class-properties",
+      "@babel/plugin-proposal-optional-chaining",
+      "@babel/plugin-proposal-nullish-coalescing-operator",
       ["@babel/plugin-transform-runtime", { regenerator: true, useESModules: true }],
     ],
   };

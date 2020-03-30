@@ -10,15 +10,16 @@ function getCurrentData(dataObject, includeDirty) {
 }
 
 export default function useData(dataObject, options = {}) {
-  const { includeDirty = true } = options;
-  const [data, setData] = useState(getCurrentData(dataObject));
+  let { includeDirty = true } = options;
+  let [data, setData] = useState(getCurrentData(dataObject));
 
   useEffect(() => {
-    const pagingComponent = dataObject.isDynamicLoading() && dataObject.getPagingComponent();
+    let [major, minor] = (dataObject.version ?? "0.6.0").split(".");
+    let pagingComponent = dataObject.isDynamicLoading() && dataObject.getPagingComponent();
 
     function updateData() {
       if (pagingComponent) {
-        const page = pagingComponent.getCurrentPage();
+        let page = pagingComponent.getCurrentPage();
         if (pagingComponent.loadedPages()[page]) {
           setData([...getCurrentData(dataObject)]);
         }
@@ -27,12 +28,17 @@ export default function useData(dataObject, options = {}) {
       }
     }
 
-    const events = includeDirty ? dataUpdateEvents.concat(recordUpdateEvents) : dataUpdateEvents;
+    let events = includeDirty ? dataUpdateEvents.concat(recordUpdateEvents) : dataUpdateEvents;
     events.forEach(event => dataObject.attachEvent(event, updateData));
 
     if (dataObject.isDynamicLoading()) {
-      pagingComponent.attach("on", "pageChange", updateData);
-      pagingComponent.attach("on", "pageRefresh", updateData);
+      if (major === "0" && Number(minor) <= 6) {
+        pagingComponent.attach("on", "pageChange", updateData);
+        pagingComponent.attach("on", "pageRefresh", updateData);
+      } else {
+        pagingComponent.attach("pageChange", updateData);
+        pagingComponent.attach("pageRefresh", updateData);
+      }
     }
 
     updateData();
@@ -41,9 +47,14 @@ export default function useData(dataObject, options = {}) {
       dataUpdateEvents.forEach(event => dataObject.detachEvent(event, updateData));
 
       if (dataObject.isDynamicLoading()) {
-        const pagingComponent = dataObject.getPagingComponent();
-        pagingComponent.detach("on", "pageChange", updateData);
-        pagingComponent.detach("on", "pageRefresh", updateData);
+        let pagingComponent = dataObject.getPagingComponent();
+        if (major === "0" && Number(minor) <= 6) {
+          pagingComponent.detach("on", "pageChange", updateData);
+          pagingComponent.detach("on", "pageRefresh", updateData);
+        } else {
+          pagingComponent.detach("pageChange", updateData);
+          pagingComponent.detach("pageRefresh", updateData);
+        }
       }
     };
   }, [dataObject, includeDirty]);

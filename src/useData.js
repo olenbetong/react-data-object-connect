@@ -29,7 +29,7 @@ export default function useData(dataObject, options = {}) {
     }
 
     let events = includeDirty ? dataUpdateEvents.concat(recordUpdateEvents) : dataUpdateEvents;
-    events.forEach(event => dataObject.attachEvent(event, updateData));
+    events.forEach((event) => dataObject.attachEvent(event, updateData));
 
     if (dataObject.isDynamicLoading()) {
       if (major === "0" && Number(minor) <= 6) {
@@ -44,7 +44,7 @@ export default function useData(dataObject, options = {}) {
     updateData();
 
     return () => {
-      dataUpdateEvents.forEach(event => dataObject.detachEvent(event, updateData));
+      dataUpdateEvents.forEach((event) => dataObject.detachEvent(event, updateData));
 
       if (dataObject.isDynamicLoading()) {
         let pagingComponent = dataObject.getPagingComponent();

@@ -107,7 +107,7 @@ export function connect(dataObject, currentRowOnly = false) {
       deleteRow(idx) {
         const dataObject = getDataObject();
 
-        return new Promise(resolve => {
+        return new Promise((resolve) => {
           const callback = (error, data) => {
             resolve({ data, error });
           };
@@ -123,7 +123,7 @@ export function connect(dataObject, currentRowOnly = false) {
       endEdit(callback) {
         const dataObject = getDataObject();
 
-        return new Promise(resolve => {
+        return new Promise((resolve) => {
           dataObject.endEdit((error, data) => {
             "function" === typeof callback && callback(error, data);
             resolve({ data, error });
@@ -221,7 +221,7 @@ export function connect(dataObject, currentRowOnly = false) {
       refreshData(callback) {
         const dataObject = getDataObject();
 
-        return new Promise(resolve => {
+        return new Promise((resolve) => {
           dataObject.refreshDataSource((error, data) => {
             "function" === typeof callback && callback(error, data);
             resolve({ data, error });
@@ -232,7 +232,7 @@ export function connect(dataObject, currentRowOnly = false) {
       refreshRow(callback) {
         const dataObject = getDataObject();
 
-        return new Promise(resolve => {
+        return new Promise((resolve) => {
           dataObject.refreshCurrentRow((error, data) => {
             "function" === typeof callback && callback(error, data);
             resolve({ data, error });
@@ -314,8 +314,4 @@ export const properties = [
   "saveFailed",
 ];
 
-export const connectRow = dataObject =>
-  connect(
-    dataObject,
-    true,
-  );
+export const connectRow = (dataObject) => connect(dataObject, true);

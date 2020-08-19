@@ -6,12 +6,12 @@ export default function useFetchData(dataObject, filter) {
   const [shouldUpdate, setShouldUpdate] = useState(false);
   const [isLoading, setIsLoading] = useState(filter !== false);
   const refresh = useCallback(() => {
-    setShouldUpdate(shouldUpdate => !shouldUpdate);
+    setShouldUpdate((shouldUpdate) => !shouldUpdate);
   }, []);
 
   const refreshRows = useCallback(
     (filter, idField = "PrimKey") => {
-      getData(dataObject, filter).then(records => {
+      getData(dataObject, filter).then((records) => {
         let newData = [...data];
         for (let record of records) {
           for (let i = 0; i < newData.length; i++) {
@@ -34,7 +34,7 @@ export default function useFetchData(dataObject, filter) {
     if (filter !== false) {
       setIsLoading(true);
 
-      getData(dataObject, filter).then(data => {
+      getData(dataObject, filter).then((data) => {
         if (!isCancelled) {
           if (data.length > 0) {
             setData(data);

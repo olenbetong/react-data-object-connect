@@ -13,7 +13,7 @@ export default function getData(dataObject, filter) {
       whereObject: typeof filter === "object" ? filter : null,
     };
 
-    dataHandler.retrieve(filterData, function(error, data) {
+    dataHandler.retrieve(filterData, function (error, data) {
       if (error !== null) {
         reject(error);
       } else {

@@ -1,16 +1,13 @@
 /* eslint-env node */
 import { appframe } from "./package.json";
 
-import babel from "rollup-plugin-babel";
-import virtual from "rollup-plugin-virtual";
-import resolve from "rollup-plugin-node-resolve";
+import babel from "@rollup/plugin-babel";
+import virtual from "@rollup/plugin-virtual";
+import resolve from "@rollup/plugin-node-resolve";
 import fileSize from "rollup-plugin-filesize";
-import externals from "rollup-plugin-node-externals";
-import commonjs from "rollup-plugin-commonjs";
-import replace from "rollup-plugin-replace";
+import commonjs from "@rollup/plugin-commonjs";
+import replace from "@rollup/plugin-replace";
 import { terser } from "rollup-plugin-terser";
-import alias from "@rollup/plugin-alias";
-import path from "path";
 
 const extensions = [".js", ".jsx", ".ts", ".tsx", ".mjs", ".json"];
 
@@ -32,7 +29,7 @@ const productionTargets = {
 function getBabelConfig(targets) {
   const config = {
     babelrc: false,
-    runtimeHelpers: true,
+    babelHelpers: "runtime",
     exclude: "node_modules/**",
     extensions,
     presets: [
@@ -51,35 +48,11 @@ function getBabelConfig(targets) {
   return config;
 }
 
-const preactPath = path.resolve("./node_modules/preact/compat/src/index.js");
-
-function getConfig({ isProd, format, targets = productionTargets, preact = false }) {
-  const babelConfig = getBabelConfig(targets);
+function getConfig({ isProd, format, targets = productionTargets }) {
+  const babelConfig = getBabelConfig(targets, format);
 
   const plugins = [];
 
-  if (preact) {
-    plugins.push(
-      alias({
-        entries: [{ find: "react", replacement: preactPath }],
-      }),
-    );
-  }
-
-  plugins.push(
-    externals({
-      include: [
-        "@olenbetong/common",
-        "xdate",
-        "react",
-        "react-dom",
-        "preact",
-        "preact/hooks",
-        "preact/compat",
-        preactPath,
-      ],
-    }),
-  );
   plugins.push(babel(babelConfig));
   plugins.push(commonjs());
   plugins.push(
@@ -100,22 +73,21 @@ function getConfig({ isProd, format, targets = productionTargets, preact = false
   }
 
   const entries = appframe instanceof Array ? appframe : [appframe];
+  let externalLibraries = ["@olenbetong/common", "xdate", "react", "react-dom"];
 
   return entries
-    .filter(entry => entry.fileName === "hooks" || preact === false)
+    .filter(entry => entry.fileName === "hooks")
     .map(entry => {
       const fileExt = isProd ? "min.js" : "js";
       const conf = {
+        external: id => (format === "esm" && id.includes("@babel/runtime")) || externalLibraries.includes(id),
         input: `src/${entry.fileName}.js`,
         plugins,
         output: {
-          file: `dist/${format}/${entry.libraryName}${preact ? ".preact" : ""}.${fileExt}`,
+          file: `dist/${format}/${entry.libraryName}.${fileExt}`,
           format,
           name: entry.libraryName,
           globals: {
-            [preactPath]: "preactCompat",
-            "preact/hooks": "preactHooks",
-            preact: "preact",
             react: "React",
             "react-dom": "ReactDOM",
             "@olenbetong/common": "af.common",
@@ -127,16 +99,6 @@ function getConfig({ isProd, format, targets = productionTargets, preact = false
       if (format === "esm") {
         conf.plugins.push(
           virtual({
-            preact: `export default window.preact`,
-            "react/hooks": `
-            const { preactHooks } = window;
-            export {
-              useCallback: preactHoos.useCallback,
-              useEffect: preactHoos.useEffect,
-              useState: preactHoos.useState,
-              useRef: preactHoos.useRef,
-            }
-          `,
             xdate: `const { XDate } = window; export default XDate;`,
             "react-dom": `const { ReactDOM } = window; export default ReactDOM;`,
             react: `const { React } = window;
@@ -162,7 +124,6 @@ module.exports = commandLineArgs => {
     ...getConfig({ isProd, format: "esm", targets: developmentTargets }),
     ...getConfig({ isProd, format: "umd", targets: productionTargets }),
     ...getConfig({ isProd, format: "iife", targets: productionTargets }),
-    ...getConfig({ isProd, format: "iife", targets: productionTargets, preact: true }),
     ...getConfig({ isProd, format: "cjs", targets: { node: "9" } }),
   ];
 };

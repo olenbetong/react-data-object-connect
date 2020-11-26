@@ -12,6 +12,7 @@ export default function useDataLength(dataObject) {
     dataObject.attachEvent("onRecordDeleted", update);
     dataObject.attachEvent("onDataLoaded", update);
     dataObject.attachEvent("onPartialDataLoaded", update);
+    dataObject.attachEvent("onRowCountLoaded", update);
 
     update();
 
@@ -20,6 +21,7 @@ export default function useDataLength(dataObject) {
       dataObject.detachEvent("onRecordDeleted", update);
       dataObject.detachEvent("onDataLoaded", update);
       dataObject.detachEvent("onPartialDataLoaded", update);
+      dataObject.detachEvent("onRowCountLoaded", update);
     };
   }, [dataObject]);
 

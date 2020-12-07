@@ -4,6 +4,7 @@ export const dataUpdateEvents = [
   "onRecordDeleted",
   "onRecordRefreshed",
   "onAfterSave",
+  "onSaveFailed", // if saving a new record fails, it will still get a new index in the data object
   "onDataLoaded",
   "onPartialDataLoaded",
 ];

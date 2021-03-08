@@ -5,6 +5,12 @@
   "main": "./dist/umd/ReactDataObjectConnect.min.js",
   "module": "./es/index.js",
   "types": "./es/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./es/index.js",
+      "require": "./dist/cjs/index.js"
+    }
+  },
   "sideEffects": false,
   "appframe": [
     {

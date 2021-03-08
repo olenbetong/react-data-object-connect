@@ -34,6 +34,12 @@ function getConfig() {
     ...getEntryConfig({ format: "esm", isProd: false }),
     ...getEntryConfig({ format: "iife", isProd: true }),
     ...getEntryConfig({ format: "iife", isProd: false }),
+    {
+      entryPoints: ["./src/index.js"],
+      outfile: "./dist/cjs/index.js",
+      format: "cjs",
+      minify: false,
+    },
   ];
   console.log(bundles);
   let result = [];

@@ -25,7 +25,7 @@ export default function useFetchData<T>(dataObject: DataObject<T>, filter: false
   }, []);
 
   const refreshRows = useCallback(
-    (filter, idField = "PrimKey") => {
+    (filter: any, idField: keyof T = "PrimKey" as keyof T) => {
       getData(dataObject, filter).then((records) => {
         let newData = [...data];
         for (let record of records) {

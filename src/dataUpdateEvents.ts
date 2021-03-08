@@ -1,4 +1,4 @@
-import { DataObjectEvent } from "@olenbetong/data-object/types/DataObject";
+import { DataObjectEvent } from "@olenbetong/data-object";
 
 // A resusable array containing all data object events that should trigger an update
 export const dataUpdateEvents: DataObjectEvent[] = [

@@ -1,6 +1,6 @@
-import { useEffect } from "react";
-import equals from "fast-deep-equal";
 import { DataObject } from "@olenbetong/data-object";
+import { useEffect } from "react";
+import equals from "./fastDeepEqual";
 
 type FilterObjectGroup = {
   type: "group";

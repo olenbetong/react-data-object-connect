@@ -20,7 +20,7 @@ export default function useData<T>(dataObject: DataObject<T>, options: UseDataOp
 
   useEffect(() => {
     let [major, minor] = (dataObject.version ?? "0.6.0").split(".");
-    let pagingComponent = dataObject.isDynamicLoading() && dataObject.getPagingComponent();
+    let pagingComponent = dataObject.isDynamicLoading() ? dataObject.getPagingComponent() : null;
 
     function updateData() {
       if (pagingComponent) {
@@ -36,7 +36,7 @@ export default function useData<T>(dataObject: DataObject<T>, options: UseDataOp
     let events = includeDirty ? dataUpdateEvents.concat(recordUpdateEvents) : dataUpdateEvents;
     events.forEach((event) => dataObject.attachEvent(event, updateData));
 
-    if (dataObject.isDynamicLoading()) {
+    if (pagingComponent) {
       if (major === "0" && Number(minor) <= 6) {
         (pagingComponent as any).attach("on", "pageChange", updateData);
         (pagingComponent as any).attach("on", "pageRefresh", updateData);
@@ -51,7 +51,7 @@ export default function useData<T>(dataObject: DataObject<T>, options: UseDataOp
     return () => {
       dataUpdateEvents.forEach((event) => dataObject.detachEvent(event, updateData));
 
-      if (dataObject.isDynamicLoading()) {
+      if (pagingComponent) {
         let pagingComponent = dataObject.getPagingComponent();
         if (major === "0" && Number(minor) <= 6) {
           (pagingComponent as any).detach("on", "pageChange", updateData);

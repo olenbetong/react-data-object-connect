@@ -1,6 +1,4 @@
-import { DataHandler } from "../../data-object/types/DataHandler";
-import { FieldDefinition } from "../../data-object/types/DataObject";
-import DataObject from "../node_modules/@olenbetong/data-object/es/DataObject";
+import { DataHandler, DataObject, FieldDefinition } from "@olenbetong/data-object";
 
 export default class SimpleDataHandler<T> {
   dataHandler: DataHandler<T>;

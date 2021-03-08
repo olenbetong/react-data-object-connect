@@ -1,4 +1,5 @@
 import { DataHandler, DataObject } from "@olenbetong/data-object";
+import { FieldDefinition } from "@olenbetong/data-object/types";
 
 interface DataProviderHandlerConstructor {
   new <T>(options: any): DataHandler<T>;
@@ -20,7 +21,7 @@ export default function getData<T>(dataObject: DataObject<T>, filter: any): Prom
     dataSourceId: dataObject.getDataSourceId(),
     timeout: 30000,
   });
-  const fields = dataObject.getFields();
+  const fields = dataObject.getFields() as FieldDefinition[];
 
   return new Promise((resolve, reject) => {
     const filterData = {
@@ -29,7 +30,7 @@ export default function getData<T>(dataObject: DataObject<T>, filter: any): Prom
       whereObject: typeof filter === "object" ? filter : null,
     };
 
-    dataHandler.retrieve(filterData, function (error, data: T[keyof T][][]) {
+    dataHandler.retrieve(filterData, function (error: any, data: T[keyof T][][]) {
       if (error !== null) {
         reject(error);
       } else {
@@ -38,7 +39,7 @@ export default function getData<T>(dataObject: DataObject<T>, filter: any): Prom
         for (let item of data) {
           const record: Partial<T> = {};
           for (let i = 0; i < item.length; i++) {
-            record[fields[i].name] = item[i];
+            record[fields[i].name as keyof T] = item[i];
           }
           records.push(record as Required<T>);
         }

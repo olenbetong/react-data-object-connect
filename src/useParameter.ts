@@ -1,5 +1,4 @@
-import { DataObject } from "@olenbetong/data-object";
-import { RetrieveParameters } from "@olenbetong/data-object/types";
+import { DataObject, RetrieveParameters } from "@olenbetong/data-object";
 import { useEffect, useState } from "react";
 
 export default function useParameter(dataObject: DataObject<any>, parameter: keyof RetrieveParameters<any>) {

@@ -1,6 +1,7 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import equals from "fast-deep-equal";
 import { Procedure } from "@olenbetong/data-object";
+import { RequestError } from "../../data-object/types/DataHandler";
 
 function useDeepCompareMemoize<T>(value: T) {
   const ref = useRef<T>();
@@ -19,10 +20,10 @@ export function useDeepCompareEffect(callback: React.EffectCallback, dependencie
 export default function useProcedure<TParams, TResult>(
   procedure: Procedure<TParams, TResult>,
   params: TParams,
-  options,
+  options: any,
 ) {
   const [data, setData] = useState<TResult | []>([]);
-  const [error, setError] = useState(null);
+  const [error, setError] = useState<null | string | RequestError>(null);
   const [isExecuting, setIsExecuting] = useState(false);
   const parameters = useDeepCompareMemoize(params);
   const optionsRef = useDeepCompareMemoize(options);
@@ -38,7 +39,7 @@ export default function useProcedure<TParams, TResult>(
         const validParameters = procedure.getParameters();
         for (let param of validParameters) {
           if (param.name in parameters) {
-            execParameters[param.name] = parameters[param.name];
+            execParameters[param.name as keyof TParams] = parameters[param.name as keyof TParams];
           }
         }
       } else {
@@ -53,7 +54,7 @@ export default function useProcedure<TParams, TResult>(
             setError(err);
             setData([]);
           } else {
-            setData(data);
+            setData(data as TResult);
             setError(null);
           }
         }

@@ -1,26 +1,34 @@
-export default class SimpleDataHandler {
-  constructor(dataObject) {
+import { DataHandler } from "../../data-object/types/DataHandler";
+import { FieldDefinition } from "../../data-object/types/DataObject";
+import DataObject from "../node_modules/@olenbetong/data-object/es/DataObject";
+
+export default class SimpleDataHandler<T> {
+  dataHandler: DataHandler<T>;
+  dataObject: DataObject<T>;
+  fields: FieldDefinition[];
+
+  constructor(dataObject: DataObject<T>) {
     const { data } = window.af;
     this.dataObject = dataObject;
-    this.fields = dataObject.getFields();
+    this.fields = dataObject.getFields() as FieldDefinition[];
     this.dataHandler = new data.DataProviderHandler({
       dataSourceId: dataObject.getDataSourceId(),
       timeout: 30000,
     });
   }
 
-  arrayRecordToObject(record) {
-    const obj = {};
+  arrayRecordToObject(record: T[keyof T][]) {
+    const obj: Partial<T> = {};
     for (let i = 0; i < record.length; i++) {
-      obj[this.fields[i].name] = record[i];
+      obj[this.fields[i].name as keyof T] = record[i];
     }
 
-    return obj;
+    return obj as T;
   }
 
-  createRecord(record) {
+  createRecord(record: Partial<T>) {
     return new Promise((resolve, reject) => {
-      this.dataHandler.create(record, (error, data) => {
+      this.dataHandler.create(record, (error: any, data: T[keyof T][]) => {
         if (error !== null) {
           reject(error);
         } else {
@@ -30,19 +38,19 @@ export default class SimpleDataHandler {
     });
   }
 
-  deleteRecord(filter) {
+  deleteRecord(filter: Partial<T>) {
     return new Promise((resolve, reject) => {
-      this.dataHandler.destroy(filter, (error, data) => {
+      this.dataHandler.destroy(filter, (error: any, data: boolean) => {
         if (error !== null) {
           reject(error);
         } else {
-          resolve(this.arrayRecordToObject(data));
+          resolve(data);
         }
       });
     });
   }
 
-  getData(filter) {
+  getData(filter: any) {
     return new Promise((resolve, reject) => {
       const filterData = {
         filterString: "",
@@ -50,7 +58,7 @@ export default class SimpleDataHandler {
         whereObject: typeof filter === "object" ? filter : null,
       };
 
-      this.dataHandler.retrieve(filterData, (error, data) => {
+      this.dataHandler.retrieve(filterData, (error: any, data: T[keyof T][][]) => {
         if (error !== null) {
           reject(error);
         } else {
@@ -66,9 +74,9 @@ export default class SimpleDataHandler {
     });
   }
 
-  updateRecord(record) {
+  updateRecord(record: Partial<T>) {
     return new Promise((resolve, reject) => {
-      this.dataHandler.update(record, (error, data) => {
+      this.dataHandler.update(record, (error: any, data: T[keyof T][]) => {
         if (error !== null) {
           reject(error);
         } else {

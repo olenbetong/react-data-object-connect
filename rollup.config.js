@@ -76,11 +76,11 @@ function getConfig({ isProd, format, targets = productionTargets }) {
   let externalLibraries = ["@olenbetong/common", "xdate", "react", "react-dom"];
 
   return entries
-    .filter(entry => entry.fileName === "hooks")
-    .map(entry => {
+    .filter((entry) => entry.fileName === "hooks")
+    .map((entry) => {
       const fileExt = isProd ? "min.js" : "js";
       const conf = {
-        external: id => (format === "esm" && id.includes("@babel/runtime")) || externalLibraries.includes(id),
+        external: (id) => (format === "esm" && id.includes("@babel/runtime")) || externalLibraries.includes(id),
         input: `src/${entry.fileName}.js`,
         plugins,
         output: {
@@ -117,7 +117,7 @@ function getConfig({ isProd, format, targets = productionTargets }) {
     });
 }
 
-module.exports = commandLineArgs => {
+module.exports = (commandLineArgs) => {
   const isProd = commandLineArgs.configProd === true;
 
   return [

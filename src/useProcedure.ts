@@ -13,7 +13,7 @@ function useDeepCompareMemoize<T>(value: T) {
 }
 
 export function useDeepCompareEffect(callback: React.EffectCallback, dependencies: React.DependencyList) {
-  useEffect(callback, useDeepCompareMemoize(dependencies));
+  useEffect(callback, useDeepCompareMemoize(dependencies)); // eslint-disable-line react-hooks/exhaustive-deps
 }
 
 export default function useProcedure<TParams, TResult>(

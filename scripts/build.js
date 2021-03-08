@@ -17,8 +17,12 @@ function getEntryConfig({ format, isProd }) {
       outfile: `./dist/${format}/${entry.libraryName}.${fileExt}`,
       format,
       minify: isProd,
-      external: ["react", "react-dom"],
+      // external: ["react", "react-dom"],
     };
+
+    if (format === "iife") {
+      conf.globalName = entry.libraryName;
+    }
 
     return conf;
   });
@@ -31,7 +35,7 @@ function getConfig() {
     ...getEntryConfig({ format: "iife", isProd: true }),
     ...getEntryConfig({ format: "iife", isProd: false }),
   ];
-
+  console.log(bundles);
   let result = [];
 
   bundles.forEach((entry) => {

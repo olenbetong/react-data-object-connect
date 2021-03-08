@@ -4,6 +4,7 @@
   "description": "React HOC used to give a React component data from an Appframe data object",
   "main": "./dist/umd/ReactDataObjectConnect.min.js",
   "module": "./es/index.js",
+  "types": "./es/index.d.ts",
   "sideEffects": false,
   "appframe": [
     {

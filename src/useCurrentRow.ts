@@ -1,5 +1,4 @@
-import { DataObject } from "@olenbetong/data-object";
-import { DataObjectEvent } from "@olenbetong/data-object/types/DataObject";
+import { DataObject, DataObjectEvent } from "@olenbetong/data-object";
 import { useCallback, useEffect, useState } from "react";
 import { dataUpdateEvents, recordUpdateEvents } from "./dataUpdateEvents";
 

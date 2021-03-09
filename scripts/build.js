@@ -41,7 +41,6 @@ function getConfig() {
       minify: false,
     },
   ];
-  console.log(bundles);
   let result = [];
 
   bundles.forEach((entry) => {

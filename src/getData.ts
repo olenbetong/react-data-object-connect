@@ -1,5 +1,4 @@
-import { DataHandler, DataObject } from "@olenbetong/data-object";
-import { FieldDefinition } from "@olenbetong/data-object/types";
+import { DataHandler, DataObject, FieldDefinition } from "@olenbetong/data-object";
 
 interface DataProviderHandlerConstructor {
   new <T>(options: any): DataHandler<T>;

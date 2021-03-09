@@ -1,26 +1,12 @@
-import { DataObject } from "@olenbetong/data-object";
+import { DataObject, FilterObject } from "@olenbetong/data-object";
 import { useEffect } from "react";
 import equals from "./fastDeepEqual";
-
-type FilterObjectGroup = {
-  type: "group";
-  mode: "and" | "or";
-  items: Array<FilterObjectGroup | FilterObjectExpression>;
-};
-
-type FilterObjectExpression = {
-  type: "expression";
-  column: string;
-  operator: string;
-  value: string;
-  valueType: string;
-};
 
 type FilterType = "filterString" | "whereClause" | "filterObject" | "whereObject";
 
 export default function useFilter(
   dataObject: DataObject<any>,
-  filter: false | string | FilterObjectGroup,
+  filter: false | string | FilterObject,
   type: FilterType = "filterString",
 ) {
   useEffect(() => {

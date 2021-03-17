@@ -3,7 +3,7 @@ import useData from "./useData";
 import useFilter from "./useFilter";
 
 type UseDataWithFilterOptions = {
-  filter: string | FilterObject;
+  filter: false | string | FilterObject;
   type: "filterString" | "whereClause" | "filterObject" | "whereObject";
 };
 

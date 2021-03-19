@@ -4,9 +4,16 @@ import equals from "./fastDeepEqual";
 
 type FilterType = "filterString" | "whereClause" | "filterObject" | "whereObject";
 
+type UseFilterOptions = {
+  filter: false | string | FilterObject;
+  type: "filterString" | "whereClause" | "filterObject" | "whereObject";
+};
+
+type FilterOrOptions = false | string | FilterObject | UseFilterOptions;
+
 export default function useFilter(
   dataObject: DataObject<any>,
-  filter: false | string | FilterObject,
+  filter: FilterOrOptions,
   type: FilterType = "filterString",
 ) {
   useEffect(() => {

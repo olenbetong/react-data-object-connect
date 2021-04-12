@@ -21,7 +21,7 @@ function isOptions(filterOrOptions: FilterOrOptions): filterOrOptions is UseData
 
 export default function useDataWithFilter<T>(
   dataObject: DataObject<T>,
-  filterOrOptions: string | FilterOrOptions,
+  filterOrOptions: string | FilterOrOptions = "",
   typeParam: FilterType = "filterString",
 ) {
   let filter: FilterObject | string | false;

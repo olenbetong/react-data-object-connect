@@ -1,14 +1,47 @@
-import { DataHandler, DataObject, FieldDefinition } from "@olenbetong/data-object";
-
-interface DataProviderHandlerConstructor {
-  new <T>(options: any): DataHandler<T>;
-}
+import {
+  DataHandler,
+  DataObject,
+  DataHandlerFactory,
+  FieldDefinition,
+  Procedure,
+  DataProviderHandler,
+} from "@olenbetong/data-object";
 
 declare global {
   interface Window {
     af: {
+      article: {
+        dataObjects: Record<string, DataObject<any>>;
+        procedures: Record<string, Procedure<any, any>>;
+        hostName: string;
+        i18n: Record<string, string>;
+        id: string;
+      };
+      common?: {
+        getLocalizedString?: (string: string) => string;
+      };
+      controls?: {
+        alert?: (message: string, callback?: () => void) => void;
+        confirm?: (options: {
+          title: string;
+          message: string;
+          buttons: string[];
+          callback: (button: number) => void;
+        }) => void;
+      };
       data: {
-        DataProviderHandler: DataProviderHandlerConstructor;
+        [index: string]: DataHandlerFactory;
+        DataProviderHandler: { new <T>(options: any): DataProviderHandler<T> };
+      } & { version?: string };
+      DataObject?: { new <T>(options: any): DataObject<T> };
+      Procedure?: { new <T, V>(options: any): Procedure<T, V> };
+      userSession?: {
+        culture: string;
+        domain: string;
+        expired: (callback: () => void) => void;
+        isDeveloper: boolean;
+        login: string;
+        uiculture: string;
       };
     };
   }

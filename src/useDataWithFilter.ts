@@ -1,5 +1,5 @@
 import { DataObject, FilterObject } from "@olenbetong/data-object";
-import { FilterOrOptions, FilterType, isOptions } from "filter";
+import { FilterOrOptions, FilterType, isOptions } from "./filter";
 import useData from "./useData";
 import useFilter from "./useFilter";
 

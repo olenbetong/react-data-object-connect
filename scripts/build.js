@@ -1,11 +1,11 @@
 /* eslint-env node */
-const { startService } = require("esbuild");
-const gzipSize = require("gzip-size");
-const fs = require("fs-extra");
-const chalk = require("chalk");
-const filesize = require("filesize");
-const stripAnsi = require("strip-ansi");
-const pkg = require("../package.json");
+import esbuild from "esbuild";
+import gzipSize from "gzip-size";
+import fs from "fs-extra";
+import chalk from "chalk";
+import filesize from "filesize";
+import stripAnsi from "strip-ansi";
+import pkg from "../package.json";
 
 function getEntryConfig({ format, isProd }) {
   const entries = Array.isArray(pkg.appframe) ? pkg.appframe : [pkg.appframe];
@@ -78,35 +78,29 @@ function getDifferenceLabel(currentSize, previousSize) {
 }
 
 async function build() {
-  let service = await startService();
+  let entries = getConfig();
+  let sizes = {};
+  for (let entry of entries) {
+    sizes[entry.outfile] = fs.existsSync(entry.outfile) ? await gzipSize.file(entry.outfile) : 0;
+  }
 
-  try {
-    let entries = getConfig();
-    let sizes = {};
-    for (let entry of entries) {
-      sizes[entry.outfile] = fs.existsSync(entry.outfile) ? await gzipSize.file(entry.outfile) : 0;
-    }
+  fs.emptyDirSync("./dist");
 
-    fs.emptyDirSync("./dist");
+  await Promise.all(entries.map((entry) => esbuild.build(entry)));
 
-    await Promise.all(entries.map((entry) => service.build(entry)));
+  let maxLabelWidth = 0;
+  for (let entry of entries) {
+    entry.sizeBefore = sizes[entry.outfile];
+    entry.sizeAfter = await gzipSize.file(entry.outfile);
+    let difference = entry.sizeBefore ? getDifferenceLabel(entry.sizeAfter, entry.sizeBefore) : 0;
+    entry.sizeLabel = filesize(entry.sizeAfter) + (difference ? ` (${difference})` : "");
+    maxLabelWidth = Math.max(maxLabelWidth, stripAnsi(entry.sizeLabel).length);
+  }
 
-    let maxLabelWidth = 0;
-    for (let entry of entries) {
-      entry.sizeBefore = sizes[entry.outfile];
-      entry.sizeAfter = await gzipSize.file(entry.outfile);
-      let difference = entry.sizeBefore ? getDifferenceLabel(entry.sizeAfter, entry.sizeBefore) : 0;
-      entry.sizeLabel = filesize(entry.sizeAfter) + (difference ? ` (${difference})` : "");
-      maxLabelWidth = Math.max(maxLabelWidth, stripAnsi(entry.sizeLabel).length);
-    }
+  entries = entries.sort((a, b) => b.sizeAfter - a.sizeAfter);
 
-    entries = entries.sort((a, b) => b.sizeAfter - a.sizeAfter);
-
-    for (let entry of entries) {
-      console.log(`  ${entry.sizeLabel.padEnd(maxLabelWidth, " ")}  ${chalk.dim(entry.outfile)}`);
-    }
-  } finally {
-    service.stop();
+  for (let entry of entries) {
+    console.log(`  ${entry.sizeLabel.padEnd(maxLabelWidth, " ")}  ${chalk.dim(entry.outfile)}`);
   }
 }
 

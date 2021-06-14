@@ -5,6 +5,7 @@
   "main": "./dist/umd/ReactDataObjectConnect.min.js",
   "module": "./es/index.js",
   "types": "./es/index.d.ts",
+  "type": "module",
   "exports": {
     ".": {
       "import": "./es/index.js",
@@ -39,7 +40,7 @@
   "scripts": {
     "build": "npm run build:tsc && npm run build:esbuild",
     "build:tsc": "rm -rf ./es && tsc",
-    "build:esbuild": "rm -rf ./dist && node ./scripts/build.js",
+    "build:esbuild": "rm -rf ./dist && node --experimental-json-modules ./scripts/build.js",
     "build:test": "rollup --config",
     "build:prod": "rollup --config --configProd",
     "publish:test": "npx appframe publish --mode test --config appframe.config.js",

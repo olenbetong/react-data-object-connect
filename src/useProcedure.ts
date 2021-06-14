@@ -46,7 +46,7 @@ export default function useProcedure<TParams, TResult>(
       }
 
       setIsExecuting(true);
-      procedure.execute(execParameters as TParams, (err: any, data: TResult) => {
+      procedure.execute(execParameters as TParams, (err: any, data: TResult | null | undefined) => {
         if (!isAborted) {
           setIsExecuting(false);
           if (err) {

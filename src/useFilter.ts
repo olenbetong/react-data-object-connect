@@ -1,22 +1,25 @@
 import { DataObject, FilterObject } from "@olenbetong/data-object";
+import { FilterOrOptions, FilterType, isOptions } from "filter";
 import { useEffect } from "react";
 import equals from "./fastDeepEqual";
 
-type FilterType = "filterString" | "whereClause" | "filterObject" | "whereObject";
-
-type UseFilterOptions = {
-  filter: false | string | FilterObject;
-  type: "filterString" | "whereClause" | "filterObject" | "whereObject";
-};
-
-type FilterOrOptions = false | string | FilterObject | UseFilterOptions;
-
 export default function useFilter(
   dataObject: DataObject<any>,
-  filter: FilterOrOptions,
-  type: FilterType = "filterString",
+  filterOrOptions: FilterOrOptions,
+  typeParam: FilterType = "filterString",
 ) {
   useEffect(() => {
+    let type: FilterType;
+    let filter: FilterObject | string | false;
+    
+    if (isOptions(filterOrOptions)) {
+      filter = filterOrOptions.filter;
+      type = filterOrOptions.type ?? "filterString";
+    } else {
+      filter = filterOrOptions;
+      type = typeParam;
+    }
+
     const current = dataObject.getParameter(type);
 
     if (filter !== false) {
@@ -25,5 +28,5 @@ export default function useFilter(
         dataObject.refreshDataSource();
       }
     }
-  }, [dataObject, filter, type]);
+  }, [dataObject, filterOrOptions, typeParam]);
 }

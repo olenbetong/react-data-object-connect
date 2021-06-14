@@ -1,23 +1,7 @@
 import { DataObject, FilterObject } from "@olenbetong/data-object";
+import { FilterOrOptions, FilterType, isOptions } from "filter";
 import useData from "./useData";
 import useFilter from "./useFilter";
-
-type UseDataWithFilterOptions = {
-  filter: false | string | FilterObject;
-  type: "filterString" | "whereClause" | "filterObject" | "whereObject";
-};
-
-type FilterType = "filterString" | "whereClause" | "filterObject" | "whereObject";
-
-type FilterOrOptions = false | string | FilterObject | UseDataWithFilterOptions;
-
-function isOptions(filterOrOptions: FilterOrOptions): filterOrOptions is UseDataWithFilterOptions {
-  return (
-    filterOrOptions !== false &&
-    typeof filterOrOptions !== "string" &&
-    !["group", "expression"].includes(filterOrOptions.type)
-  );
-}
 
 export default function useDataWithFilter<T>(
   dataObject: DataObject<T>,

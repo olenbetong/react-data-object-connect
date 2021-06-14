@@ -1,7 +1,10 @@
 import { DataObject, RetrieveParameters } from "@olenbetong/data-object";
 import { useEffect, useState } from "react";
 
-export default function useParameter(dataObject: DataObject<any>, parameter: keyof RetrieveParameters<any>) {
+export default function useParameter<T, P extends keyof RetrieveParameters<T>>(
+  dataObject: DataObject<T>,
+  parameter: P,
+): RetrieveParameters<T>[P] {
   const [value, setValue] = useState(() => dataObject.getParameter(parameter));
 
   useEffect(() => {

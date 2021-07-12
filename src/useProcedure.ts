@@ -16,10 +16,14 @@ export function useDeepCompareEffect(callback: React.EffectCallback, dependencie
   useEffect(callback, useDeepCompareMemoize(dependencies)); // eslint-disable-line react-hooks/exhaustive-deps
 }
 
+type useProcedureOptions = {
+  removeInvalidParameters?: boolean;
+}
+
 export default function useProcedure<TParams, TResult>(
   procedure: Procedure<TParams, TResult>,
-  params: TParams,
-  options: any,
+  params: TParams | false,
+  options?: useProcedureOptions,
 ) {
   const [data, setData] = useState<TResult | []>([]);
   const [error, setError] = useState<null | string | RequestError>(null);

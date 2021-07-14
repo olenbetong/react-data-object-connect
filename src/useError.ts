@@ -2,13 +2,19 @@ import { DataObject } from "@olenbetong/data-object";
 import { useEffect, useState } from "react";
 
 export default function useError(dataObject: DataObject<any>) {
-  const [loadError, setError] = useState(null);
+  const [loadError, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    dataObject.attachEvent("onDataLoadFailed", setError);
+    function handleError(event?: CustomEvent<string | null>) {
+      if (event&&event.detail) {
+        setError(event.detail);
+      }
+    }
+
+    dataObject.attachEvent("onDataLoadFailed", handleError);
 
     return () => {
-      dataObject.detachEvent("onDataLoadFailed", setError);
+      dataObject.detachEvent("onDataLoadFailed", handleError);
     };
   }, [dataObject]);
 

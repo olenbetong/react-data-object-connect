@@ -12,6 +12,7 @@ export type FilterOrOptions = false | string | FilterObject | FilterParameter;
 export function isOptions(filterOrOptions: FilterOrOptions): filterOrOptions is FilterParameter {
   return (
     filterOrOptions !== false &&
+    filterOrOptions !== null &&
     typeof filterOrOptions !== "string" &&
     !["group", "expression"].includes(filterOrOptions.type)
   );

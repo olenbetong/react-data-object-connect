@@ -40,11 +40,7 @@
   "scripts": {
     "build": "npm run build:tsc && npm run build:esbuild",
     "build:tsc": "rm -rf ./es && tsc",
-    "build:esbuild": "rm -rf ./dist && node --experimental-json-modules ./scripts/build.js",
-    "build:test": "rollup --config",
-    "build:prod": "rollup --config --configProd",
-    "publish:test": "npx appframe publish --mode test --config appframe.config.js",
-    "publish:prod": "npx appframe publish --mode production --config appframe.config.js",
+    "build:esbuild": "rm -rf ./dist && node ./scripts/build.js",
     "prepack": "npm run build"
   },
   "repository": {

@@ -5,7 +5,13 @@ import fs from "fs-extra";
 import chalk from "chalk";
 import filesize from "filesize";
 import stripAnsi from "strip-ansi";
-import pkg from "../package.json";
+import { readFile } from "node:fs/promises";
+
+async function importJson(path) {
+  return JSON.parse(await readFile(new URL(path, import.meta.url)));
+}
+
+const pkg = await importJson("../package.json");
 
 function getEntryConfig({ format, isProd }) {
   const entries = Array.isArray(pkg.appframe) ? pkg.appframe : [pkg.appframe];
@@ -49,7 +55,11 @@ function getConfig() {
       bundle: true,
       target: "es2017",
       format: "esm",
-      define: { "process.env.NODE_ENV": '"production"', __DEV__: 0, __VERSION__: `"${pkg.version}"` },
+      define: {
+        "process.env.NODE_ENV": '"production"',
+        __DEV__: 0,
+        __VERSION__: `"${pkg.version}"`,
+      },
       sourcemap: entry.minify ?? false,
       ...entry,
     };
@@ -81,7 +91,9 @@ async function build() {
   let entries = getConfig();
   let sizes = {};
   for (let entry of entries) {
-    sizes[entry.outfile] = fs.existsSync(entry.outfile) ? await gzipSize.file(entry.outfile) : 0;
+    sizes[entry.outfile] = fs.existsSync(entry.outfile)
+      ? await gzipSize.file(entry.outfile)
+      : 0;
   }
 
   fs.emptyDirSync("./dist");
@@ -92,15 +104,22 @@ async function build() {
   for (let entry of entries) {
     entry.sizeBefore = sizes[entry.outfile];
     entry.sizeAfter = await gzipSize.file(entry.outfile);
-    let difference = entry.sizeBefore ? getDifferenceLabel(entry.sizeAfter, entry.sizeBefore) : 0;
-    entry.sizeLabel = filesize(entry.sizeAfter) + (difference ? ` (${difference})` : "");
+    let difference = entry.sizeBefore
+      ? getDifferenceLabel(entry.sizeAfter, entry.sizeBefore)
+      : 0;
+    entry.sizeLabel =
+      filesize(entry.sizeAfter) + (difference ? ` (${difference})` : "");
     maxLabelWidth = Math.max(maxLabelWidth, stripAnsi(entry.sizeLabel).length);
   }
 
   entries = entries.sort((a, b) => b.sizeAfter - a.sizeAfter);
 
   for (let entry of entries) {
-    console.log(`  ${entry.sizeLabel.padEnd(maxLabelWidth, " ")}  ${chalk.dim(entry.outfile)}`);
+    console.log(
+      `  ${entry.sizeLabel.padEnd(maxLabelWidth, " ")}  ${chalk.dim(
+        entry.outfile
+      )}`
+    );
   }
 }
 

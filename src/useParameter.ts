@@ -3,7 +3,7 @@ import {
   ParameterUpdatedValue,
   RetrieveParameters,
 } from "@olenbetong/data-object";
-import equal from "fast-deep-equal";
+import equal from "./fastDeepEqual";
 import { useRef } from "react";
 import { useEffect, useState } from "react";
 

@@ -1,5 +1,3 @@
-import { isRequestError } from "isRequestError";
-
 import {
   DataHandler,
   DataHandlerFactory,
@@ -10,6 +8,8 @@ import {
   RequestError,
   RetrieveResponse,
 } from "@olenbetong/data-object";
+
+import { isRequestError } from "./isRequestError";
 
 declare global {
   interface Window {

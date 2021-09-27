@@ -6,7 +6,7 @@ import useFilter from "./useFilter";
 export default function useDataWithFilter<T>(
   dataObject: DataObject<T>,
   filterOrOptions: string | FilterOrOptions = "",
-  typeParam: FilterType = "filterString",
+  typeParam: FilterType = "filterString"
 ) {
   let filter: FilterObject | string | false;
   let type: FilterType;

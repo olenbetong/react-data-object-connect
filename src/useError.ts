@@ -6,7 +6,7 @@ export default function useError(dataObject: DataObject<any>) {
 
   useEffect(() => {
     function handleError(event?: CustomEvent<string | null>) {
-      if (event&&event.detail) {
+      if (event && event.detail) {
         setError(event.detail);
       }
     }

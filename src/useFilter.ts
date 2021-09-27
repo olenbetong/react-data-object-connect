@@ -6,12 +6,12 @@ import equals from "./fastDeepEqual";
 export default function useFilter(
   dataObject: DataObject<any>,
   filterOrOptions: FilterOrOptions,
-  typeParam: FilterType = "filterString",
+  typeParam: FilterType = "filterString"
 ) {
   useEffect(() => {
     let type: FilterType;
     let filter: FilterObject | string | false;
-    
+
     if (isOptions(filterOrOptions)) {
       filter = filterOrOptions.filter;
       type = filterOrOptions.type ?? "filterString";
@@ -23,7 +23,10 @@ export default function useFilter(
     const current = dataObject.getParameter(type);
 
     if (filter !== false) {
-      if (!equals(current, filter) || (!dataObject.isDataLoaded() && !dataObject.isDataLoading())) {
+      if (
+        !equals(current, filter) ||
+        (!dataObject.isDataLoaded() && !dataObject.isDataLoading())
+      ) {
         dataObject.setParameter(type, filter);
         dataObject.refreshDataSource();
       }

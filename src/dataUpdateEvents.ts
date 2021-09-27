@@ -11,4 +11,7 @@ export const dataUpdateEvents: DataObjectEvent[] = [
   "onPartialDataLoaded",
 ];
 
-export const recordUpdateEvents: DataObjectEvent[] = ["onFieldChanged", "onCancelEdit"];
+export const recordUpdateEvents: DataObjectEvent[] = [
+  "onFieldChanged",
+  "onCancelEdit",
+];

@@ -16,7 +16,10 @@ type FilterObjectExpression = {
   valueType: string;
 };
 
-export default function useFetchData<T>(dataObject: DataObject<T>, filter: false | FilterObjectGroup | string) {
+export default function useFetchData<T>(
+  dataObject: DataObject<T>,
+  filter: false | FilterObjectGroup | string
+) {
   const [data, setData] = useState<T[]>([]);
   const [shouldUpdate, setShouldUpdate] = useState(false);
   const [isLoading, setIsLoading] = useState(filter !== false);
@@ -40,7 +43,7 @@ export default function useFetchData<T>(dataObject: DataObject<T>, filter: false
         setData(newData);
       });
     },
-    [dataObject, data],
+    [dataObject, data]
   );
 
   useEffect(() => {

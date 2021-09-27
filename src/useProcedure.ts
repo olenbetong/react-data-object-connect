@@ -12,18 +12,21 @@ function useDeepCompareMemoize<T>(value: T) {
   return ref.current;
 }
 
-export function useDeepCompareEffect(callback: React.EffectCallback, dependencies: React.DependencyList) {
+export function useDeepCompareEffect(
+  callback: React.EffectCallback,
+  dependencies: React.DependencyList
+) {
   useEffect(callback, useDeepCompareMemoize(dependencies)); // eslint-disable-line react-hooks/exhaustive-deps
 }
 
 type useProcedureOptions = {
   removeInvalidParameters?: boolean;
-}
+};
 
 export default function useProcedure<TParams, TResult>(
   procedure: Procedure<TParams, TResult>,
   params: TParams | false,
-  options?: useProcedureOptions,
+  options?: useProcedureOptions
 ) {
   const [data, setData] = useState<TResult | []>([]);
   const [error, setError] = useState<null | string | RequestError>(null);
@@ -42,7 +45,8 @@ export default function useProcedure<TParams, TResult>(
         const validParameters = procedure.getParameters();
         for (let param of validParameters) {
           if (param.name in parameters) {
-            execParameters[param.name as keyof TParams] = parameters[param.name as keyof TParams];
+            execParameters[param.name as keyof TParams] =
+              parameters[param.name as keyof TParams];
           }
         }
       } else {
@@ -50,18 +54,21 @@ export default function useProcedure<TParams, TResult>(
       }
 
       setIsExecuting(true);
-      procedure.execute(execParameters as TParams, (err: any, data: TResult | null | undefined) => {
-        if (!isAborted) {
-          setIsExecuting(false);
-          if (err) {
-            setError(err);
-            setData([]);
-          } else {
-            setData(data as TResult);
-            setError(null);
+      procedure.execute(
+        execParameters as TParams,
+        (err: any, data: TResult | null | undefined) => {
+          if (!isAborted) {
+            setIsExecuting(false);
+            if (err) {
+              setError(err);
+              setData([]);
+            } else {
+              setData(data as TResult);
+              setError(null);
+            }
           }
         }
-      });
+      );
     }
 
     return () => {

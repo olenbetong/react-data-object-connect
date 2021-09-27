@@ -2,8 +2,12 @@ import { DataObject } from "@olenbetong/data-object";
 import { useEffect, useState } from "react";
 
 export default function usePaging(dataObject: DataObject<any>) {
-  const [page, setPage] = useState(() => dataObject.getPagingComponent().getCurrentPage());
-  const [pageCount, setPageCount] = useState(() => dataObject.getPagingComponent().getPageCount());
+  const [page, setPage] = useState(() =>
+    dataObject.getPagingComponent().getCurrentPage()
+  );
+  const [pageCount, setPageCount] = useState(() =>
+    dataObject.getPagingComponent().getPageCount()
+  );
 
   useEffect(() => {
     let [major, minor] = (dataObject.version ?? "0.6.0").split(".");

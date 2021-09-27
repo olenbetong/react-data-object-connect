@@ -34,15 +34,19 @@ export default function equal(a, b) {
       return true;
     }
 
-    if (a.constructor === RegExp) return a.source === b.source && a.flags === b.flags;
-    if (a.valueOf !== Object.prototype.valueOf) return a.valueOf() === b.valueOf();
-    if (a.toString !== Object.prototype.toString) return a.toString() === b.toString();
+    if (a.constructor === RegExp)
+      return a.source === b.source && a.flags === b.flags;
+    if (a.valueOf !== Object.prototype.valueOf)
+      return a.valueOf() === b.valueOf();
+    if (a.toString !== Object.prototype.toString)
+      return a.toString() === b.toString();
 
     keys = Object.keys(a);
     length = keys.length;
     if (length !== Object.keys(b).length) return false;
 
-    for (i = length; i-- !== 0; ) if (!Object.prototype.hasOwnProperty.call(b, keys[i])) return false;
+    for (i = length; i-- !== 0; )
+      if (!Object.prototype.hasOwnProperty.call(b, keys[i])) return false;
 
     for (i = length; i-- !== 0; ) {
       var key = keys[i];

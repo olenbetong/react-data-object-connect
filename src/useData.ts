@@ -2,11 +2,16 @@ import { CompatDataObject, DataObject } from "@olenbetong/data-object";
 import { useEffect, useState } from "react";
 import { dataUpdateEvents, recordUpdateEvents } from "./dataUpdateEvents";
 
-function getCurrentData<T>(dataObject: DataObject<T>, includeDirty: boolean): T[] {
+function getCurrentData<T>(
+  dataObject: DataObject<T>,
+  includeDirty: boolean
+): T[] {
   if (dataObject.isDynamicLoading()) {
     return dataObject.getPagingComponent().getCurrentData() || [];
   } else {
-    return includeDirty ? (dataObject as CompatDataObject<T>).getDirtyData() : dataObject.getData();
+    return includeDirty
+      ? (dataObject as CompatDataObject<T>).getDirtyData()
+      : dataObject.getData();
   }
 }
 
@@ -14,13 +19,18 @@ type UseDataOptions = {
   includeDirty?: boolean;
 };
 
-export default function useData<T>(dataObject: DataObject<T>, options: UseDataOptions = {}) {
+export default function useData<T>(
+  dataObject: DataObject<T>,
+  options: UseDataOptions = {}
+) {
   let { includeDirty = false } = options;
   let [data, setData] = useState(getCurrentData(dataObject, includeDirty));
 
   useEffect(() => {
     let [major, minor] = (dataObject.version ?? "0.6.0").split(".");
-    let pagingComponent = dataObject.isDynamicLoading() ? dataObject.getPagingComponent() : null;
+    let pagingComponent = dataObject.isDynamicLoading()
+      ? dataObject.getPagingComponent()
+      : null;
 
     function updateData() {
       if (pagingComponent) {
@@ -33,7 +43,9 @@ export default function useData<T>(dataObject: DataObject<T>, options: UseDataOp
       }
     }
 
-    let events = includeDirty ? dataUpdateEvents.concat(recordUpdateEvents) : dataUpdateEvents;
+    let events = includeDirty
+      ? dataUpdateEvents.concat(recordUpdateEvents)
+      : dataUpdateEvents;
     events.forEach((event) => dataObject.attachEvent(event, updateData));
 
     if (pagingComponent) {
@@ -49,7 +61,9 @@ export default function useData<T>(dataObject: DataObject<T>, options: UseDataOp
     updateData();
 
     return () => {
-      dataUpdateEvents.forEach((event) => dataObject.detachEvent(event, updateData));
+      dataUpdateEvents.forEach((event) =>
+        dataObject.detachEvent(event, updateData)
+      );
 
       if (pagingComponent) {
         let pagingComponent = dataObject.getPagingComponent();

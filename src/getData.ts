@@ -1,10 +1,14 @@
+import { isRequestError } from "isRequestError";
+
 import {
   DataHandler,
-  DataObject,
   DataHandlerFactory,
+  DataObject,
+  DataProviderHandler,
   FieldDefinition,
   Procedure,
-  DataProviderHandler,
+  RequestError,
+  RetrieveResponse,
 } from "@olenbetong/data-object";
 
 declare global {
@@ -47,7 +51,8 @@ declare global {
   }
 }
 
-const isodate = /^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2}):(\d{2})(?:\.(\d{1,7}))?Z?$/;
+const isodate =
+  /^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2}):(\d{2})(?:\.(\d{1,7}))?Z?$/;
 function dateReviver(value: any) {
   // New method of parsing dates - much faster
   if (typeof value === "string") {
@@ -60,7 +65,10 @@ function dateReviver(value: any) {
   return value;
 }
 
-export default function getData<T>(dataObject: DataObject<T>, filter: any): Promise<Array<T>> {
+export default function getData<T>(
+  dataObject: DataObject<T>,
+  filter: any
+): Promise<Array<T>> {
   const { data } = window.af;
   const dataHandler: DataHandler<T> = new data.DataProviderHandler({
     dataSourceId: dataObject.getDataSourceId(),
@@ -75,22 +83,29 @@ export default function getData<T>(dataObject: DataObject<T>, filter: any): Prom
       whereObject: typeof filter === "object" ? filter : null,
     };
 
-    dataHandler.retrieve(filterData, function (error: any, data: T[keyof T][][]) {
-      if (error !== null) {
-        reject(error);
-      } else {
-        const records: Array<T> = [];
+    dataHandler.retrieve(
+      filterData,
+      (
+        error: any,
+        data: RequestError | RetrieveResponse<T> | null | undefined
+      ) => {
+        if (error !== null || !data || isRequestError(data)) {
+          reject(error);
+        } else {
+          const records: Array<T> = [];
+          const dataArray = Array.isArray(data) ? data : data.data;
 
-        for (let item of data) {
-          const record: Partial<T> = {};
-          for (let i = 0; i < item.length; i++) {
-            record[fields[i].name as keyof T] = dateReviver(item[i]);
+          for (let item of dataArray) {
+            const record: Partial<T> = {};
+            for (let i = 0; i < item.length; i++) {
+              record[fields[i].name as keyof T] = dateReviver(item[i]);
+            }
+            records.push(record as Required<T>);
           }
-          records.push(record as Required<T>);
-        }
 
-        resolve(records);
+          resolve(records);
+        }
       }
-    });
+    );
   });
 }

@@ -1,4 +1,12 @@
-import { DataHandler, DataObject, FieldDefinition } from "@olenbetong/data-object";
+import { isRequestError } from "isRequestError";
+
+import {
+  DataHandler,
+  DataObject,
+  FieldDefinition,
+  RequestError,
+  RetrieveResponse,
+} from "@olenbetong/data-object";
 
 export default class SimpleDataHandler<T> {
   dataHandler: DataHandler<T>;
@@ -26,25 +34,31 @@ export default class SimpleDataHandler<T> {
 
   createRecord(record: Partial<T>) {
     return new Promise((resolve, reject) => {
-      this.dataHandler.create(record, (error: any, data: T[keyof T][]) => {
-        if (error !== null) {
-          reject(error);
-        } else {
-          resolve(this.arrayRecordToObject(data));
+      this.dataHandler.create(
+        record,
+        (error: any, data: RequestError | T[keyof T][] | undefined | null) => {
+          if (error !== null || !data || isRequestError(data)) {
+            reject(error ?? data);
+          } else {
+            resolve(this.arrayRecordToObject(data));
+          }
         }
-      });
+      );
     });
   }
 
   deleteRecord(filter: Partial<T>) {
     return new Promise((resolve, reject) => {
-      this.dataHandler.destroy(filter, (error: any, data: boolean) => {
-        if (error !== null) {
-          reject(error);
-        } else {
-          resolve(data);
+      this.dataHandler.destroy(
+        filter,
+        (error: any, data: RequestError | boolean | undefined | null) => {
+          if (error !== null || !data || isRequestError(data)) {
+            reject(error ?? data);
+          } else {
+            resolve(data);
+          }
         }
-      });
+      );
     });
   }
 
@@ -56,31 +70,41 @@ export default class SimpleDataHandler<T> {
         whereObject: typeof filter === "object" ? filter : null,
       };
 
-      this.dataHandler.retrieve(filterData, (error: any, data: T[keyof T][][]) => {
-        if (error !== null) {
-          reject(error);
-        } else {
-          const records = [];
+      this.dataHandler.retrieve(
+        filterData,
+        (
+          error: any,
+          data: RequestError | RetrieveResponse<T> | undefined | null
+        ) => {
+          if (error !== null || !data || isRequestError(data)) {
+            reject(error ?? data);
+          } else {
+            const records = [];
+            const dataArray = Array.isArray(data) ? data : data.data;
 
-          for (let item of data) {
-            records.push(this.arrayRecordToObject(item));
+            for (let item of dataArray) {
+              records.push(this.arrayRecordToObject(item));
+            }
+
+            resolve(records);
           }
-
-          resolve(records);
         }
-      });
+      );
     });
   }
 
   updateRecord(record: Partial<T>) {
     return new Promise((resolve, reject) => {
-      this.dataHandler.update(record, (error: any, data: T[keyof T][]) => {
-        if (error !== null) {
-          reject(error);
-        } else {
-          resolve(this.arrayRecordToObject(data));
+      this.dataHandler.update(
+        record,
+        (error: any, data: RequestError | T[keyof T][] | undefined | null) => {
+          if (error !== null || !data || isRequestError(data)) {
+            reject(error ?? data);
+          } else {
+            resolve(this.arrayRecordToObject(data));
+          }
         }
-      });
+      );
     });
   }
 }

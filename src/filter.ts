@@ -1,7 +1,7 @@
-import { FilterObject } from "@olenbetong/data-object";
+import { Filter } from "@olenbetong/data-object";
 
 export type FilterParameter = {
-  filter: false | string | FilterObject;
+  filter: false | string | Filter;
   type: "filterString" | "whereClause" | "filterObject" | "whereObject";
 };
 
@@ -11,7 +11,7 @@ export type FilterType =
   | "filterObject"
   | "whereObject";
 
-export type FilterOrOptions = false | string | FilterObject | FilterParameter;
+export type FilterOrOptions = false | string | Filter | FilterParameter;
 
 export function isOptions(
   filterOrOptions: FilterOrOptions

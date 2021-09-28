@@ -1,4 +1,4 @@
-import { DataObject, FilterObject } from "@olenbetong/data-object";
+import { DataObject, Filter } from "@olenbetong/data-object";
 import { FilterOrOptions, FilterType, isOptions } from "./filter";
 import useData from "./useData";
 import useFilter from "./useFilter";
@@ -8,7 +8,7 @@ export default function useDataWithFilter<T>(
   filterOrOptions: string | FilterOrOptions = "",
   typeParam: FilterType = "filterString"
 ) {
-  let filter: FilterObject | string | false;
+  let filter: Filter | string | false;
   let type: FilterType;
   let options = {};
 

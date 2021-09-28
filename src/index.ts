@@ -23,5 +23,6 @@ export { default as useParameter } from "./useParameter";
 export { default as usePermissions } from "./usePermissions";
 export { default as useProcedure } from "./useProcedure";
 export { default as useStatus } from "./useStatus";
+export * from "./filter";
 
 export { default as SimpleDataHandler } from "./dataHandler";

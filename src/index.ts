@@ -1,8 +1,3 @@
-export {
-  connect,
-  connectRow,
-  properties as connectedProperties,
-} from "./connect";
 export { default as getData } from "./getData";
 
 export { default as useCurrentIndex } from "./useCurrentIndex";

@@ -23,7 +23,7 @@ type useProcedureOptions = {
   removeInvalidParameters?: boolean;
 };
 
-export default function useProcedure<TParams, TResult>(
+export function useProcedure<TParams, TResult>(
   procedure: Procedure<TParams, TResult>,
   params: TParams | false,
   options?: useProcedureOptions

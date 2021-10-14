@@ -1,5 +1,5 @@
 import { DataObject, Filter } from "@olenbetong/data-object";
-import useFetchData from "./useFetchData";
+import { useFetchData } from "./useFetchData";
 
 type FetchRecordStatus<T> = {
   record: Partial<T>;
@@ -7,7 +7,7 @@ type FetchRecordStatus<T> = {
   isLoading: boolean;
 };
 
-export default function useFetchRecord<T>(
+export function useFetchRecord<T>(
   dataObject: DataObject<T>,
   filter: false | string | Filter
 ): FetchRecordStatus<T> {

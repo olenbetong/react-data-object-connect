@@ -1,8 +1,8 @@
 import { DataObject, Filter } from "@olenbetong/data-object";
 import { useCallback, useEffect, useState } from "react";
-import getData from "./getData";
+import { getData } from "./getData";
 
-export default function useFetchData<T>(
+export function useFetchData<T>(
   dataObject: DataObject<T>,
   filter: false | Filter | string
 ) {

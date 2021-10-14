@@ -19,7 +19,7 @@ type UseDataOptions = {
   includeDirty?: boolean;
 };
 
-export default function useData<T>(
+export function useData<T>(
   dataObject: DataObject<T>,
   options: UseDataOptions = {}
 ) {

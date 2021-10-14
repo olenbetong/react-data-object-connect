@@ -2,7 +2,7 @@ import { DataObject, DataObjectEvent } from "@olenbetong/data-object";
 import { useCallback, useEffect, useState } from "react";
 import { dataUpdateEvents, recordUpdateEvents } from "./dataUpdateEvents";
 
-export default function useCurrentRow<T>(dataObject: DataObject<T>) {
+export function useCurrentRow<T>(dataObject: DataObject<T>) {
   const [record, setRecord] = useState(dataObject.currentRow() || {});
   const updateRecord = useCallback(
     () => setRecord(dataObject.currentRow()),

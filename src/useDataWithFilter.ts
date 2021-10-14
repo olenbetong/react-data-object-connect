@@ -1,9 +1,9 @@
 import { DataObject, Filter } from "@olenbetong/data-object";
 import { FilterOrOptions, FilterType, isOptions } from "./filter";
-import useData from "./useData";
-import useFilter from "./useFilter";
+import { useData } from "./useData";
+import { useFilter } from "./useFilter";
 
-export default function useDataWithFilter<T>(
+export function useDataWithFilter<T>(
   dataObject: DataObject<T>,
   filterOrOptions: string | FilterOrOptions = "",
   typeParam: FilterType = "filterString"

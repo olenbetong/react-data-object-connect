@@ -7,7 +7,7 @@ import equal from "./fastDeepEqual";
 import { useRef } from "react";
 import { useEffect, useState } from "react";
 
-export default function useParameter<T, P extends keyof RetrieveParameters<T>>(
+export function useParameter<T, P extends keyof RetrieveParameters<T>>(
   dataObject: DataObject<T>,
   parameter: P
 ): RetrieveParameters<T>[P] {

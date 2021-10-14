@@ -1,7 +1,7 @@
 import { DataObject } from "@olenbetong/data-object";
 import { useEffect, useState } from "react";
 
-export default function useDirty(dataObject: DataObject<any>) {
+export function useDirty(dataObject: DataObject<any>) {
   const [isDirty, setDirty] = useState(dataObject.isDirty() || false);
 
   useEffect(() => {

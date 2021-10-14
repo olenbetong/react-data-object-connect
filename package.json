@@ -15,10 +15,6 @@
   "sideEffects": false,
   "appframe": [
     {
-      "fileName": "connect",
-      "libraryName": "dataObjectConnect"
-    },
-    {
       "fileName": "hooks",
       "libraryName": "dataObjectHooks"
     },

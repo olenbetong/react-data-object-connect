@@ -1,5 +1,5 @@
 import { DataObject, FilterObject } from "@olenbetong/data-object";
-import { FilterOrOptions, FilterType, isOptions } from "./filter";
+import { FilterOrOptions, FilterType, isOptions } from "./filter.js";
 import { useEffect } from "react";
 import equals from "./fastDeepEqual.js";
 

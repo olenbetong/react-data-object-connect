@@ -2,8 +2,8 @@ import React from "react";
 
 import { DataObject } from "@olenbetong/data-object";
 
-import { useDataObject } from "./context";
-import { useCurrentRow } from "./useCurrentRow";
+import { useDataObject } from "./context.js";
+import { useCurrentRow } from "./useCurrentRow.js";
 
 export function setDataObjectField<T, K extends keyof T>(
   dataObject: DataObject<T>,

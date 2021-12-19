@@ -1,11 +1,12 @@
+import { useEffect, useRef, useState } from "react";
+
 import {
   DataObject,
   ParameterUpdatedValue,
   RetrieveParameters,
 } from "@olenbetong/data-object";
+
 import equal from "./fastDeepEqual.js";
-import { useRef } from "react";
-import { useEffect, useState } from "react";
 
 export function useParameter<T, P extends keyof RetrieveParameters<T>>(
   dataObject: DataObject<T>,

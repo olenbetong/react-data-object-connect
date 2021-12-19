@@ -1,7 +1,7 @@
 import { DataObject } from "@olenbetong/data-object";
 import { useEffect, useState } from "react";
 
-export default function usePermissions(dataObject: DataObject<any>) {
+export function usePermissions(dataObject: DataObject<any>) {
   const [allowDelete, setAllowDelete] = useState(dataObject.isDeleteAllowed());
   const [allowInsert, setAllowInsert] = useState(dataObject.isInsertAllowed());
   const [allowUpdate, setAllowUpdate] = useState(dataObject.isUpdateAllowed());

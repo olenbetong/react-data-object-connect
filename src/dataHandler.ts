@@ -8,7 +8,7 @@ import {
   RetrieveResponse,
 } from "@olenbetong/data-object";
 
-export default class SimpleDataHandler<T> {
+export class SimpleDataHandler<T> {
   dataHandler: DataHandler<T>;
   dataObject: DataObject<T>;
   fields: FieldDefinition[];

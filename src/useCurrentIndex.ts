@@ -1,7 +1,7 @@
 import { DataObject } from "@olenbetong/data-object";
 import { useEffect, useState } from "react";
 
-export default function useCurrentIndex(dataObject: DataObject<any>) {
+export function useCurrentIndex(dataObject: DataObject<any>) {
   const [index, setIndex] = useState(dataObject.getCurrentIndex());
 
   useEffect(() => {

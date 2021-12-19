@@ -1,7 +1,7 @@
 import { DataObject } from "@olenbetong/data-object";
 import { useEffect, useState } from "react";
 
-export default function useDataLength(dataObject: DataObject<any>) {
+export function useDataLength(dataObject: DataObject<any>) {
   const [length, setLength] = useState(() => dataObject.getDataLength());
 
   useEffect(() => {

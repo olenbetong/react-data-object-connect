@@ -3,7 +3,7 @@ import { FilterOrOptions, FilterType, isOptions } from "./filter";
 import { useEffect } from "react";
 import equals from "./fastDeepEqual.js";
 
-export default function useFilter(
+export function useFilter(
   dataObject: DataObject<any>,
   filterOrOptions: FilterOrOptions,
   typeParam: FilterType = "filterString"

@@ -1,7 +1,7 @@
 import { DataObject } from "@olenbetong/data-object";
 import { useEffect, useState } from "react";
 
-export default function useLoading(dataObject: DataObject<any>) {
+export function useLoading(dataObject: DataObject<any>) {
   const [isLoading, setLoading] = useState(dataObject.isDataLoading());
 
   function setIsLoading() {

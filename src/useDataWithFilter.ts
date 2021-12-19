@@ -1,14 +1,14 @@
-import { DataObject, FilterObject } from "@olenbetong/data-object";
+import { DataObject, Filter } from "@olenbetong/data-object";
 import { FilterOrOptions, FilterType, isOptions } from "./filter.js";
-import useData from "./useData.js";
-import useFilter from "./useFilter.js";
+import { useData } from "./useData.js";
+import { useFilter } from "./useFilter.js";
 
-export default function useDataWithFilter<T>(
+export function useDataWithFilter<T>(
   dataObject: DataObject<T>,
   filterOrOptions: string | FilterOrOptions = "",
   typeParam: FilterType = "filterString"
 ) {
-  let filter: FilterObject | string | false;
+  let filter: Filter | string | false;
   let type: FilterType;
   let options = {};
 

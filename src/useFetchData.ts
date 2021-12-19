@@ -1,24 +1,10 @@
-import { DataObject } from "@olenbetong/data-object";
+import { DataObject, Filter } from "@olenbetong/data-object";
 import { useCallback, useEffect, useState } from "react";
-import getData from "./getData.js";
+import { getData } from "./getData.js";
 
-type FilterObjectGroup = {
-  type: "group";
-  mode: "and" | "or";
-  items: Array<FilterObjectGroup | FilterObjectExpression>;
-};
-
-type FilterObjectExpression = {
-  type: "expression";
-  column: string;
-  operator: string;
-  value: string;
-  valueType: string;
-};
-
-export default function useFetchData<T>(
+export function useFetchData<T>(
   dataObject: DataObject<T>,
-  filter: false | FilterObjectGroup | string
+  filter: false | Filter | string
 ) {
   const [data, setData] = useState<T[]>([]);
   const [shouldUpdate, setShouldUpdate] = useState(false);
@@ -29,7 +15,7 @@ export default function useFetchData<T>(
 
   const refreshRows = useCallback(
     (filter: any, idField: keyof T = "PrimKey" as keyof T) => {
-      getData(dataObject, filter).then((records) => {
+      getData(dataObject, filter).then((records: any) => {
         let newData = [...data];
         for (let record of records) {
           for (let i = 0; i < newData.length; i++) {

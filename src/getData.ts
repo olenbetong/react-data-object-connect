@@ -1,55 +1,12 @@
+import { isRequestError } from "./isRequestError.js";
+
 import {
   DataHandler,
-  DataHandlerFactory,
   DataObject,
-  DataProviderHandler,
   FieldDefinition,
-  Procedure,
   RequestError,
   RetrieveResponse,
 } from "@olenbetong/data-object";
-
-import { isRequestError } from "./isRequestError.js";
-
-declare global {
-  interface Window {
-    af: {
-      article: {
-        dataObjects: Record<string, DataObject<any>>;
-        procedures: Record<string, Procedure<any, any>>;
-        hostName: string;
-        i18n: Record<string, string>;
-        id: string;
-      };
-      common?: {
-        getLocalizedString?: (string: string) => string;
-      };
-      controls?: {
-        alert?: (message: string, callback?: () => void) => void;
-        confirm?: (options: {
-          title: string;
-          message: string;
-          buttons: string[];
-          callback: (button: number) => void;
-        }) => void;
-      };
-      data: {
-        [index: string]: DataHandlerFactory;
-        DataProviderHandler: { new <T>(options: any): DataProviderHandler<T> };
-      } & { version?: string };
-      DataObject?: { new <T>(options: any): DataObject<T> };
-      Procedure?: { new <T, V>(options: any): Procedure<T, V> };
-      userSession?: {
-        culture: string;
-        domain: string;
-        expired: (callback: () => void) => void;
-        isDeveloper: boolean;
-        login: string;
-        uiculture: string;
-      };
-    };
-  }
-}
 
 const isodate =
   /^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2}):(\d{2})(?:\.(\d{1,7}))?Z?$/;
@@ -65,7 +22,7 @@ function dateReviver(value: any) {
   return value;
 }
 
-export default function getData<T>(
+export function getData<T>(
   dataObject: DataObject<T>,
   filter: any
 ): Promise<Array<T>> {

@@ -1,7 +1,7 @@
 import { DataObject } from "@olenbetong/data-object";
 import { useEffect, useState } from "react";
 
-export default function useError(dataObject: DataObject<any>) {
+export function useError(dataObject: DataObject<any>) {
   const [loadError, setError] = useState<string | null>(null);
 
   useEffect(() => {

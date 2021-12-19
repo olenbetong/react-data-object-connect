@@ -1,6 +1,6 @@
 {
   "name": "@olenbetong/react-data-object-connect",
-  "version": "4.10.19",
+  "version": "5.0.1",
   "description": "React HOC used to give a React component data from an Appframe data object",
   "main": "./dist/umd/ReactDataObjectConnect.min.js",
   "module": "./es/index.js",
@@ -14,10 +14,6 @@
   },
   "sideEffects": false,
   "appframe": [
-    {
-      "fileName": "connect",
-      "libraryName": "dataObjectConnect"
-    },
     {
       "fileName": "hooks",
       "libraryName": "dataObjectHooks"
@@ -57,7 +53,9 @@
   "license": "MIT",
   "devDependencies": {
     "@olenbetong/appframe-cli": "^3.13.0",
-    "@types/react": "^17.0.3",
+    "@types/node": "^16.10.9",
+    "@types/react": "^17.0.29",
+    "@types/react-dom": "^17.0.9",
     "@typescript-eslint/eslint-plugin": "^4.16.1",
     "@typescript-eslint/parser": "^4.16.1",
     "babel-eslint": "^10.1.0",
@@ -76,12 +74,9 @@
     "strip-ansi": "^7.0.0",
     "typescript": "^4.2.3"
   },
-  "peerDependencies": {
-    "react": "^16.7.0 || ^17.0.0",
-    "react-dom": "^16.7.0 || ^17.0.0"
-  },
   "dependencies": {
-    "@olenbetong/data-object": "^1.0.0-alpha.19",
-    "preact": "^10.5.5"
+    "@olenbetong/data-object": "^1.0.0-alpha.37",
+    "react": "^17.0.0",
+    "react-dom": "^17.0.0"
   }
 }

@@ -1,6 +1,6 @@
 import { DataObject } from "@olenbetong/data-object";
 import { useCallback, useEffect, useState } from "react";
-import getData from "./getData";
+import getData from "./getData.js";
 
 type FilterObjectGroup = {
   type: "group";

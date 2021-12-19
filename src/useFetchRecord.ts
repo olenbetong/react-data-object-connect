@@ -1,5 +1,5 @@
 import { DataObject } from "@olenbetong/data-object";
-import useFetchData from "./useFetchData";
+import useFetchData from "./useFetchData.js";
 
 type FilterObjectGroup = {
   type: "group";

@@ -1,1 +1,1 @@
-export { default } from "./useData";
+export { default } from "./useData.js";

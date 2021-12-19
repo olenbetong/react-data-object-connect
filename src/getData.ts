@@ -9,7 +9,7 @@ import {
   RetrieveResponse,
 } from "@olenbetong/data-object";
 
-import { isRequestError } from "./isRequestError";
+import { isRequestError } from "./isRequestError.js";
 
 declare global {
   interface Window {

@@ -1,1 +1,1 @@
-export { default } from "./useDataWithFilter";
+export { default } from "./useDataWithFilter.js";

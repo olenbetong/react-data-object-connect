@@ -1,7 +1,7 @@
 import { DataObject, FilterObject } from "@olenbetong/data-object";
-import { FilterOrOptions, FilterType, isOptions } from "./filter";
-import useData from "./useData";
-import useFilter from "./useFilter";
+import { FilterOrOptions, FilterType, isOptions } from "./filter.js";
+import useData from "./useData.js";
+import useFilter from "./useFilter.js";
 
 export default function useDataWithFilter<T>(
   dataObject: DataObject<T>,

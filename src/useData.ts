@@ -1,6 +1,6 @@
 import { CompatDataObject, DataObject } from "@olenbetong/data-object";
 import { useEffect, useState } from "react";
-import { dataUpdateEvents, recordUpdateEvents } from "./dataUpdateEvents";
+import { dataUpdateEvents, recordUpdateEvents } from "./dataUpdateEvents.js";
 
 function getCurrentData<T>(
   dataObject: DataObject<T>,

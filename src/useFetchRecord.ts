@@ -1,5 +1,5 @@
 import { DataObject, Filter } from "@olenbetong/data-object";
-import { useFetchData } from "./useFetchData";
+import { useFetchData } from "./useFetchData.js";
 
 type FetchRecordStatus<T> = {
   record: Partial<T>;

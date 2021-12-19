@@ -1,6 +1,6 @@
 import { DataObject, DataObjectEvent } from "@olenbetong/data-object";
 import { useCallback, useEffect, useState } from "react";
-import { dataUpdateEvents, recordUpdateEvents } from "./dataUpdateEvents";
+import { dataUpdateEvents, recordUpdateEvents } from "./dataUpdateEvents.js";
 
 export function useCurrentRow<T>(dataObject: DataObject<T>) {
   const [record, setRecord] = useState(dataObject.currentRow() || {});

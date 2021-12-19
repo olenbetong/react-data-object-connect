@@ -1,6 +1,6 @@
 import { DataObject, Filter } from "@olenbetong/data-object";
 import { useCallback, useEffect, useState } from "react";
-import { getData } from "./getData";
+import { getData } from "./getData.js";
 
 export function useFetchData<T>(
   dataObject: DataObject<T>,
@@ -15,7 +15,7 @@ export function useFetchData<T>(
 
   const refreshRows = useCallback(
     (filter: any, idField: keyof T = "PrimKey" as keyof T) => {
-      getData(dataObject, filter).then((records) => {
+      getData(dataObject, filter).then((records: any) => {
         let newData = [...data];
         for (let record of records) {
           for (let i = 0; i < newData.length; i++) {

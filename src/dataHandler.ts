@@ -1,4 +1,4 @@
-import { isRequestError } from "./isRequestError";
+import { isRequestError } from "./isRequestError.js";
 
 import {
   DataHandler,

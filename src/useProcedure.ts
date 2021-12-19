@@ -1,6 +1,6 @@
 import { RequestError, Procedure } from "@olenbetong/data-object";
-import React, { useCallback, useEffect, useRef, useState } from "react";
-import equals from "./fastDeepEqual";
+import { useCallback, useEffect, useRef, useState } from "react";
+import equals from "./fastDeepEqual.js";
 
 function useDeepCompareMemoize<T>(value: T) {
   const ref = useRef<T>();

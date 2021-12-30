@@ -20,9 +20,27 @@ export function useDeepCompareEffect(
 }
 
 type useProcedureOptions = {
+  /**
+   * If true, any parameter that does not exist in the procedure will be
+   * removed before the parameters are sent to the procedure. Otherwise,
+   * the procedure will be called with the parameters as they are which
+   * will result in an error if some of the parameters are invalid.
+   */
   removeInvalidParameters?: boolean;
 };
 
+/**
+ * Executes the given procedure whenever the parameters change. If false is
+ * passed instead of a parameters object, the procedure will not be called.
+ *
+ * @param procedure Procedure to execute
+ * @param params Parameters to pass to the procedure. If false, the procedure
+ * will not be called.
+ * @param options Options to control how the procedure is executed
+ * @returns Data returned from the procedure, a method to force a new procedure call,
+ * an error if the procedure fails, and a boolean indicating if the procedure is
+ * currently executing.
+ */
 export function useProcedure<TParams, TResult>(
   procedure: Procedure<TParams, TResult>,
   params: TParams | false,

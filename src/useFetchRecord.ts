@@ -7,6 +7,14 @@ type FetchRecordStatus<T> = {
   isLoading: boolean;
 };
 
+/**
+ * Uses the same logic as useFetchData, but returns only the first record of the data.
+ * If no records are found, an empty object is returned.
+ *
+ * @param dataObject Data object to get a record from
+ * @param filter Filter to use when fetching data
+ * @returns The first record mathing the filter, or an empty object if no record matches
+ */
 export function useFetchRecord<T>(
   dataObject: DataObject<T>,
   filter: false | string | Filter

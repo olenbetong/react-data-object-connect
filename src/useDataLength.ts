@@ -1,6 +1,12 @@
 import { DataObject } from "@olenbetong/data-object";
 import { useEffect, useState } from "react";
 
+/**
+ * Hooks to return the number of records in the data object.
+ *
+ * @param dataObject Data object to get record count from
+ * @returns Number of records in the data object
+ */
 export function useDataLength(dataObject: DataObject<any>) {
   const [length, setLength] = useState(() => dataObject.getDataLength());
 

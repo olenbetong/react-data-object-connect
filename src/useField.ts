@@ -5,6 +5,15 @@ import { DataObject } from "@olenbetong/data-object";
 import { useDataObject } from "./context.js";
 import { useCurrentRow } from "./useCurrentRow.js";
 
+/**
+ * Attempts to set a value of a field in the data object. The value
+ * can be an event from a HTML input, or the value itself.
+ * The function will attempt to convert the value to the type of the field.
+ *
+ * @param dataObject Data object to set the fields value in
+ * @param field Field to set the value of
+ * @param passedValue The passed value to set the field to
+ */
 export function setDataObjectField<T, K extends keyof T>(
   dataObject: DataObject<T>,
   field: K,
@@ -17,8 +26,7 @@ export function setDataObjectField<T, K extends keyof T>(
   if (
     passedValue && // because null has type "object"
     typeof passedValue === "object" &&
-    "target" in passedValue &&
-    passedValue.target
+    passedValue["target"]
   ) {
     let elem = passedValue.target;
     if (elem.type === "checkbox") {
@@ -64,6 +72,13 @@ export type useFieldRetunValue<T> = {
   onChange: (evt: React.ChangeEvent<HTMLInputElement>, newValue?: T) => void;
 };
 
+/**
+ * Returns the needed properties to bind a field to an input element.
+ *
+ * @param fieldName Field to bind to
+ * @param dataObject Data object to bind to. Tries to get a data object from context if not given.
+ * @returns value and onChange designed for HTML input fields
+ */
 export function useField<T, K extends keyof T>(
   fieldName: K,
   dataObject?: DataObject<T>

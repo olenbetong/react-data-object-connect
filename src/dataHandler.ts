@@ -4,6 +4,7 @@ import {
   DataHandler,
   DataObject,
   FieldDefinition,
+  Filter,
   RequestError,
   RetrieveResponse,
 } from "@olenbetong/data-object";
@@ -62,7 +63,7 @@ export class SimpleDataHandler<T> {
     });
   }
 
-  getData(filter: any) {
+  getData(filter: Filter | string) {
     return new Promise((resolve, reject) => {
       const filterData = {
         filterString: "",

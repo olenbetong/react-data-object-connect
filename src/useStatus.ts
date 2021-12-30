@@ -1,6 +1,14 @@
 import { DataObject } from "@olenbetong/data-object";
 import { useEffect, useState } from "react";
 
+/**
+ * Returns whether the data object is currently saving changes to a record,
+ * or deleting a record. The states are returned in separate booleans isSaving
+ * and isDeleting.
+ *
+ * @param dataObject Data object to get saving and deleting status from
+ * @returns Whether the data object is currently saving or deleting a record
+ */
 export function useStatus(dataObject: DataObject<any>) {
   const [isSaving, setIsSaving] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);

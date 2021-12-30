@@ -1,6 +1,12 @@
 import { DataObject } from "@olenbetong/data-object";
 import { useEffect, useState } from "react";
 
+/**
+ * Hook to return the dirty status of the current record in the data object.
+ *
+ * @param dataObject Data object to get dirty status from
+ * @returns A boolean indicating whether the data in the current record is dirty
+ */
 export function useDirty(dataObject: DataObject<any>) {
   const [isDirty, setDirty] = useState(dataObject.isDirty() || false);
 

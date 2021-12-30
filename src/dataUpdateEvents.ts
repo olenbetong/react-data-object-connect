@@ -1,6 +1,8 @@
 import { DataObjectEvent } from "@olenbetong/data-object";
 
-// A resusable array containing all data object events that should trigger an update
+/**
+ * A list of events that modifies the list of records in the data object.
+ */
 export const dataUpdateEvents: DataObjectEvent[] = [
   "onRecordCreated",
   "onRecordDeleted",
@@ -11,6 +13,9 @@ export const dataUpdateEvents: DataObjectEvent[] = [
   "onPartialDataLoaded",
 ];
 
+/**
+ * A list of events that modifies the current record in the data object.
+ */
 export const recordUpdateEvents: DataObjectEvent[] = [
   "onFieldChanged",
   "onCancelEdit",

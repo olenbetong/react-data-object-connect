@@ -1,6 +1,13 @@
 import { DataObject } from "@olenbetong/data-object";
 import { useEffect, useState } from "react";
 
+/**
+ * Returns whether the user is currently allowed to delete, insert or update
+ * records in the data object.
+ *
+ * @param dataObject Data object to get permission status from
+ * @returns Delete, insert and update permission of the data object
+ */
 export function usePermissions(dataObject: DataObject<any>) {
   const [allowDelete, setAllowDelete] = useState(dataObject.isDeleteAllowed());
   const [allowInsert, setAllowInsert] = useState(dataObject.isInsertAllowed());

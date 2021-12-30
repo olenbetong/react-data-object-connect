@@ -15,7 +15,7 @@ npm install @olenbetong/react-data-object-connect
 or include the IIFE build in a script
 
 ```html
-<script src="https://unpkg.com/@olenbetong/react-data-object-connect@4.7.0/dist/iife/dataObjectHooks.min.js"></script>
+<script src="https://unpkg.com/@olenbetong/react-data-object-connect@latest/dist/iife/dataObjectHooks.min.js"></script>
 ```
 
 ## Hooks

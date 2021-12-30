@@ -1,6 +1,12 @@
 import { DataObject } from "@olenbetong/data-object";
 import { useEffect, useState } from "react";
 
+/**
+ * Hook to return the loading status of the data object.
+ *
+ * @param dataObject Data object to get the loading status from
+ * @returns A boolean indicating whether the data object is currently loading data
+ */
 export function useLoading(dataObject: DataObject<any>) {
   const [isLoading, setLoading] = useState(dataObject.isDataLoading());
 

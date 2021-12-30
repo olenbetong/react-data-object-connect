@@ -2,6 +2,16 @@ import { DataObject, Filter } from "@olenbetong/data-object";
 import { useCallback, useEffect, useState } from "react";
 import { getData } from "./getData.js";
 
+/**
+ * Hook that uses the data handler of a data object to fetch data from the server,
+ * without saving the data to the data object.
+ *
+ * @param dataObject Data object to fetch data from
+ * @param filter Filter to use when fetching data
+ * @returns An object containing the loaded data, a function to reload the data,
+ * a function to refresh only rows that match a given filter, and the loading
+ * status of the data.
+ */
 export function useFetchData<T>(
   dataObject: DataObject<T>,
   filter: false | Filter | string
@@ -58,8 +68,26 @@ export function useFetchData<T>(
 
   return {
     data,
+    /**
+     * Forces a refresh of the data, even if the filter has not changed.
+     */
     refresh,
+    /**
+     * Fetches data mathing the given filter. Instead of replacing the data in the
+     * state of the hook, it will attempt to match the fetched records with the existing
+     * records, and only update the updated records. Any other records will remain
+     * unchanged, and will still be returned from the hook.
+     *
+     * This can be used to update rows that have been edited with a filter like
+     * `[PrimKey] = 'primkey of an updated record'`.
+     *
+     * @param filter Filter to use when fetching data
+     * @param idField Field that should be used to match records with the existing data
+     */
     refreshRows,
+    /**
+     * A boolean indicating if the data is currently being loaded.
+     */
     isLoading,
   };
 }

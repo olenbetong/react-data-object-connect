@@ -8,6 +8,13 @@ import {
 
 import equal from "./fastDeepEqual.js";
 
+/**
+ * Returns the value of a parameter in the data object.
+ *
+ * @param dataObject Data object to get the parameter value from
+ * @param parameter The parameter to get from the data object
+ * @returns The current value of the given parameter
+ */
 export function useParameter<T, P extends keyof RetrieveParameters<T>>(
   dataObject: DataObject<T>,
   parameter: P

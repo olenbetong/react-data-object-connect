@@ -1,6 +1,12 @@
 import { DataObject } from "@olenbetong/data-object";
 import { useEffect, useState } from "react";
 
+/**
+ * Returns the necessary data to control the paging of the data object.
+ *
+ * @param dataObject Data object to control the paging of
+ * @returns The current page, number of pages and a method to change the page
+ */
 export function usePaging(dataObject: DataObject<any>) {
   const [page, setPage] = useState(() =>
     dataObject.getPagingComponent().getCurrentPage()

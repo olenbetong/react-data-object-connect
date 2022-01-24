@@ -103,9 +103,6 @@ export function useField<T, K extends keyof T>(
             target: { value: T[K] | null };
           },
       newValue?: T[K]
-    ) => {
-      let value = newValue ?? evt.target.value;
-      setDataObjectField(dataSource, fieldName, value);
-    },
+    ) => setDataObjectField(dataSource, fieldName, newValue ?? evt),
   };
 }

@@ -70,7 +70,9 @@ export function setDataObjectField<T, K extends keyof T>(
 export type useFieldRetunValue<T> = {
   value: T | null;
   onChange: (
-    evt: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+    evt:
+      | React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+      | { target: { value: T | null } },
     newValue?: T
   ) => void;
 };
@@ -95,7 +97,11 @@ export function useField<T, K extends keyof T>(
   return {
     value: currentRow[fieldName],
     onChange: (
-      evt: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+      evt:
+        | React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+        | {
+            target: { value: T[K] | null };
+          },
       newValue?: T[K]
     ) => {
       let value = newValue ?? evt.target.value;

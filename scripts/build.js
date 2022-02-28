@@ -1,6 +1,6 @@
 /* eslint-env node */
 import esbuild from "esbuild";
-import gzipSize from "gzip-size";
+import { gzipSizeFromFile } from "gzip-size";
 import fs from "fs-extra";
 import chalk from "chalk";
 import filesize from "filesize";
@@ -92,7 +92,7 @@ async function build() {
   let sizes = {};
   for (let entry of entries) {
     sizes[entry.outfile] = fs.existsSync(entry.outfile)
-      ? await gzipSize.file(entry.outfile)
+      ? await gzipSizeFromFile(entry.outfile)
       : 0;
   }
 
@@ -103,7 +103,7 @@ async function build() {
   let maxLabelWidth = 0;
   for (let entry of entries) {
     entry.sizeBefore = sizes[entry.outfile];
-    entry.sizeAfter = await gzipSize.file(entry.outfile);
+    entry.sizeAfter = await gzipSizeFromFile(entry.outfile);
     let difference = entry.sizeBefore
       ? getDifferenceLabel(entry.sizeAfter, entry.sizeBefore)
       : 0;

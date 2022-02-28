@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import { DataObject } from "@olenbetong/data-object";
 
@@ -6,21 +6,12 @@ import { useDataObject } from "./context.js";
 import { useCurrentRow } from "./useCurrentRow.js";
 
 /**
- * Attempts to set a value of a field in the data object. The value
- * can be an event from a HTML input, or the value itself.
- * The function will attempt to convert the value to the type of the field.
+ * Attempts to get a value of a field from a passed value. Can be a value, or
+ * an event from a HTML input element.
  *
- * @param dataObject Data object to set the fields value in
- * @param field Field to set the value of
- * @param passedValue The passed value to set the field to
+ * @param passedValue The passed value to get the value from
  */
-export function setDataObjectField<T, K extends keyof T>(
-  dataObject: DataObject<T>,
-  field: K,
-  passedValue: any
-) {
-  const fieldDefinition = dataObject.getFields(field);
-
+export function getDataObjectFieldValue(passedValue: any): any {
   let value;
 
   if (
@@ -39,6 +30,26 @@ export function setDataObjectField<T, K extends keyof T>(
   } else {
     value = passedValue;
   }
+
+  return value;
+}
+
+/**
+ * Attempts to set a value of a field in the data object. The value
+ * can be an event from a HTML input, or the value itself.
+ * The function will attempt to convert the value to the type of the field.
+ *
+ * @param dataObject Data object to set the fields value in
+ * @param field Field to set the value of
+ * @param passedValue The passed value to set the field to
+ */
+export function setDataObjectField<T, K extends keyof T>(
+  dataObject: DataObject<T>,
+  field: K,
+  passedValue: any
+) {
+  const fieldDefinition = dataObject.getFields(field);
+  let value = getDataObjectFieldValue(passedValue);
 
   if (
     fieldDefinition != null &&
@@ -85,7 +96,7 @@ export type useFieldRetunValue<T> = {
  * @param dataObject Data object to bind to. Tries to get a data object from context if not given.
  * @returns value and onChange designed for HTML input fields
  */
-export function useField<T, K extends keyof T>(
+export function useField<T = any, K extends keyof T = any>(
   fieldName: K,
   dataObject?: DataObject<T>
 ): useFieldRetunValue<T[K]> {
@@ -95,10 +106,29 @@ export function useField<T, K extends keyof T>(
   }
   let currentRow = useCurrentRow(dataSource);
   let [error, setError] = useState<null | string>(null);
+  let [faultyValue, setFaultyValue] = useState<any>(null);
+
+  useEffect(() => {
+    function handleReset() {
+      setFaultyValue(null);
+      setError(null);
+    }
+    dataSource.attachEvent("onAfterSave", handleReset);
+    dataSource.attachEvent("onCancelEdit", handleReset);
+    dataSource.attachEvent("onRecordRefreshed", handleReset);
+    dataSource.attachEvent("onCurrentIndexChanged", handleReset);
+
+    return () => {
+      dataSource.detachEvent("onAfterSave", handleReset);
+      dataSource.detachEvent("onCancelEdit", handleReset);
+      dataSource.detachEvent("onRecordRefreshed", handleReset);
+      dataSource.detachEvent("onCurrentIndexChanged", handleReset);
+    };
+  }, [dataSource]);
 
   return {
     error,
-    value: currentRow[fieldName],
+    value: faultyValue ?? currentRow[fieldName],
     onChange: (
       evt:
         | React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -110,7 +140,9 @@ export function useField<T, K extends keyof T>(
       try {
         setDataObjectField(dataSource, fieldName, newValue ?? evt);
         setError(null);
+        setFaultyValue(null);
       } catch (error) {
+        setFaultyValue(getDataObjectFieldValue(newValue ?? evt));
         if (error && (error as any).message) {
           setError((error as any).message);
         } else {

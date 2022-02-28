@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 
 import { DataObject } from "@olenbetong/data-object";
 
@@ -68,6 +68,7 @@ export function setDataObjectField<T, K extends keyof T>(
 }
 
 export type useFieldRetunValue<T> = {
+  error: string | null;
   value: T | null;
   onChange: (
     evt:
@@ -93,8 +94,10 @@ export function useField<T, K extends keyof T>(
     dataSource = dataObject;
   }
   let currentRow = useCurrentRow(dataSource);
+  let [error, setError] = useState<null | string>(null);
 
   return {
+    error,
     value: currentRow[fieldName],
     onChange: (
       evt:
@@ -103,6 +106,16 @@ export function useField<T, K extends keyof T>(
             target: { value: T[K] | null };
           },
       newValue?: T[K]
-    ) => setDataObjectField(dataSource, fieldName, newValue ?? evt),
+    ) => {
+      try {
+        setDataObjectField(dataSource, fieldName, newValue ?? evt);
+      } catch (error) {
+        if (error && (error as any).message) {
+          setError((error as any).message);
+        } else {
+          setError(error as string);
+        }
+      }
+    },
   };
 }

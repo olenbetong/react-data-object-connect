@@ -109,6 +109,7 @@ export function useField<T, K extends keyof T>(
     ) => {
       try {
         setDataObjectField(dataSource, fieldName, newValue ?? evt);
+        setError(null);
       } catch (error) {
         if (error && (error as any).message) {
           setError((error as any).message);

@@ -78,15 +78,25 @@ export function setDataObjectField<T, K extends keyof T>(
   dataObject.currentRow(field, value);
 }
 
-export type useFieldRetunValue<T> = {
+export type useFieldRetunValue<T, V> = {
+  dataObject: DataObject<T>;
   error: string | null;
-  value: T | null;
+  value: V | null;
+  /**
+   * Keydown event handler for the input field. Will cancel
+   * the current field value when escape is pressed.
+   */
+  onKeyDown: (evt: React.KeyboardEvent<HTMLInputElement>) => void;
   onChange: (
     evt:
       | React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-      | { target: { value: T | null } },
-    newValue?: T
+      | { target: { value: V | null } },
+    newValue?: V
   ) => void;
+  /**
+   * Reset the value to what is currently stored in the data object
+   */
+  reset: () => void;
 };
 
 /**
@@ -99,7 +109,7 @@ export type useFieldRetunValue<T> = {
 export function useField<T = any, K extends keyof T = any>(
   fieldName: K,
   dataObject?: DataObject<T>
-): useFieldRetunValue<T[K]> {
+): useFieldRetunValue<T, T[K]> {
   let dataSource = useDataObject() as DataObject<T>;
   if (dataObject) {
     dataSource = dataObject;
@@ -127,8 +137,15 @@ export function useField<T = any, K extends keyof T = any>(
   }, [dataSource]);
 
   return {
+    dataObject: dataSource,
     error,
     value: faultyValue ?? currentRow[fieldName],
+    onKeyDown: (evt: React.KeyboardEvent<HTMLInputElement>) => {
+      if (evt.key === "Escape" && dataSource.isDirty(fieldName as string)) {
+        evt.stopPropagation();
+        dataSource.cancelField(fieldName);
+      }
+    },
     onChange: (
       evt:
         | React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -149,6 +166,9 @@ export function useField<T = any, K extends keyof T = any>(
           setError(error as string);
         }
       }
+    },
+    reset: () => {
+      dataSource.cancelField(fieldName);
     },
   };
 }

@@ -53,9 +53,13 @@ export function DataObjectProvider<T>({
   );
 
   if (enableKeyboard) {
-    <DataObjectContext.Provider value={dataObject}>
-      <div onKeyDown={handleKeyDown}>{children}</div>
-    </DataObjectContext.Provider>;
+    return (
+      <DataObjectContext.Provider value={dataObject}>
+        <div tabIndex={0} role="none" onKeyDown={handleKeyDown}>
+          {children}
+        </div>
+      </DataObjectContext.Provider>
+    );
   }
 
   return (

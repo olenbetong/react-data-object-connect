@@ -1,5 +1,5 @@
 import { DataObject } from "@olenbetong/data-object";
-import React, { createContext, useContext } from "react";
+import React, { createContext, useCallback, useContext, useMemo } from "react";
 
 export type DataObjectContextValue<T> = DataObject<T>;
 
@@ -16,14 +16,48 @@ export type DataObjectProviderProps<T> = {
     | React.ReactChild
     | React.ReactChildren
     | React.ReactNode
-    | React.ReactNodeArray;
+    | React.ReactNode[];
   dataObject: DataObject<T>;
+  /**
+   * If true, children will be rendered inside a div element.
+   * This element will catch keydown events for save (Ctrl+S) and cancel (Escape)
+   */
+  enableKeyboard?: boolean;
 };
 
 export function DataObjectProvider<T>({
   children,
   dataObject,
+  enableKeyboard = false,
 }: DataObjectProviderProps<T>) {
+  let handleKeyDown = useCallback(
+    async (evt: React.KeyboardEvent<HTMLInputElement>) => {
+      if (evt.key === "Escape" && dataObject.isDirty()) {
+        evt.stopPropagation();
+        dataObject.cancelEdit();
+      } else if (evt.ctrlKey && evt.key === "s") {
+        try {
+          evt.stopPropagation();
+          evt.preventDefault();
+          await dataObject.endEdit();
+        } catch (error) {
+          if (error && "message" in (error as any)) {
+            alert((error as any).message);
+          } else {
+            alert(String(error));
+          }
+        }
+      }
+    },
+    [dataObject]
+  );
+
+  if (enableKeyboard) {
+    <DataObjectContext.Provider value={dataObject}>
+      <div onKeyDown={handleKeyDown}>{children}</div>
+    </DataObjectContext.Provider>;
+  }
+
   return (
     <DataObjectContext.Provider value={dataObject}>
       {children}

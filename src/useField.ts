@@ -141,11 +141,17 @@ export function useField<T = any, K extends keyof T = any>(
     error,
     value: faultyValue ?? currentRow[fieldName],
     onKeyDown: (evt: React.KeyboardEvent<HTMLInputElement>) => {
-      if (evt.key === "Escape" && dataSource.isDirty(fieldName as string)) {
-        evt.stopPropagation();
-        dataSource.cancelField(fieldName);
-        setFaultyValue(null);
-        setError(null);
+      if (evt.key === "Escape") {
+        if (
+          dataSource.isDirty(fieldName as string) ||
+          faultyValue !== null ||
+          error !== null
+        ) {
+          evt.stopPropagation();
+          dataSource.cancelField(fieldName);
+          setFaultyValue(null);
+          setError(null);
+        }
       }
     },
     onChange: (

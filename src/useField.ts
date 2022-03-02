@@ -144,6 +144,8 @@ export function useField<T = any, K extends keyof T = any>(
       if (evt.key === "Escape" && dataSource.isDirty(fieldName as string)) {
         evt.stopPropagation();
         dataSource.cancelField(fieldName);
+        setFaultyValue(null);
+        setError(null);
       }
     },
     onChange: (
@@ -168,6 +170,8 @@ export function useField<T = any, K extends keyof T = any>(
       }
     },
     reset: () => {
+      setFaultyValue(null);
+      setError(null);
       dataSource.cancelField(fieldName);
     },
   };

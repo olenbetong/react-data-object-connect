@@ -24,9 +24,14 @@ export async function getData<T>(
   dataObject: DataObject<T>,
   filter: any
 ): Promise<Array<T>> {
+  const [version = "0.0.0", prerelease = "alpha.48"] =
+    af.data.version?.split("-") ?? [];
+  const [preid, preversion] = prerelease.split(".");
+  const useLegacyHandler =
+    version === "1.0.0" && preid === "alpha" && Number(preversion) <= 49;
   const dataHandler: DataHandler<T> = new af.data.DataProviderHandler({
     dataSourceId: dataObject.getDataSourceId(),
-    fields: dataObject.getFields(),
+    fields: useLegacyHandler ? undefined : dataObject.getFields(),
     timeout: 30000,
   });
   const fields = dataObject.getFields() as FieldDefinition[];

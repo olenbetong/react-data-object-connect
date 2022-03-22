@@ -4,8 +4,6 @@ import {
   DataHandler,
   DataObject,
   FieldDefinition,
-  RequestError,
-  RetrieveResponse,
 } from "@olenbetong/data-object";
 
 const isodate =
@@ -22,47 +20,41 @@ function dateReviver(value: any) {
   return value;
 }
 
-export function getData<T>(
+export async function getData<T>(
   dataObject: DataObject<T>,
   filter: any
 ): Promise<Array<T>> {
-  const { data } = window.af;
-  const dataHandler: DataHandler<T> = new data.DataProviderHandler({
+  const dataHandler: DataHandler<T> = new af.data.DataProviderHandler({
     dataSourceId: dataObject.getDataSourceId(),
+    fields: dataObject.getFields(),
     timeout: 30000,
   });
   const fields = dataObject.getFields() as FieldDefinition[];
 
-  return new Promise((resolve, reject) => {
-    const filterData = {
-      filterString: "",
-      whereClause: typeof filter === "string" ? filter : "",
-      whereObject: typeof filter === "object" ? filter : null,
-    };
+  const filterData = {
+    filterString: "",
+    whereClause: typeof filter === "string" ? filter : "",
+    whereObject: typeof filter === "object" ? filter : null,
+  };
 
-    dataHandler.retrieve(
-      filterData,
-      (
-        error: any,
-        data: RequestError | RetrieveResponse<T> | null | undefined
-      ) => {
-        if (error !== null || !data || isRequestError(data)) {
-          reject(error);
-        } else {
-          const records: Array<T> = [];
-          const dataArray = Array.isArray(data) ? data : data.data;
+  let result = await dataHandler.retrieve(filterData);
+  if (isRequestError(result)) {
+    throw Error(result.error);
+  }
 
-          for (let item of dataArray) {
-            const record: Partial<T> = {};
-            for (let i = 0; i < item.length; i++) {
-              record[fields[i].name as keyof T] = dateReviver(item[i]);
-            }
-            records.push(record as Required<T>);
-          }
-
-          resolve(records);
-        }
+  let data = Array.isArray(result) ? result : result.data;
+  if (data.length && Array.isArray(data[0])) {
+    // Legacy data handler that returns array of values instead of objects
+    for (let i = 0; i < data.length; i++) {
+      let record = data[i] as unknown as T[keyof T][];
+      let objRecord: Partial<T> = {};
+      for (let j = 0; j < record.length; j++) {
+        objRecord[fields[j].name as keyof T] = dateReviver(record[j]);
       }
-    );
-  });
+
+      data[i] = objRecord as T;
+    }
+  }
+
+  return data;
 }

@@ -5,8 +5,6 @@ import {
   DataObject,
   FieldDefinition,
   Filter,
-  RequestError,
-  RetrieveResponse,
 } from "@olenbetong/data-object";
 
 export class SimpleDataHandler<T> {
@@ -33,79 +31,66 @@ export class SimpleDataHandler<T> {
     return obj as T;
   }
 
-  createRecord(record: Partial<T>) {
-    return new Promise((resolve, reject) => {
-      this.dataHandler.create(
-        record,
-        (error: any, data: RequestError | T[keyof T][] | undefined | null) => {
-          if (error !== null || !data || isRequestError(data)) {
-            reject(error ?? data);
-          } else {
-            resolve(this.arrayRecordToObject(data));
-          }
-        }
-      );
-    });
+  async createRecord(record: Partial<T>) {
+    let result = await this.dataHandler.create(record);
+    if (isRequestError(result)) {
+      throw Error(result.error);
+    }
+
+    if (Array.isArray(result)) {
+      // Legacy data handler
+      return this.arrayRecordToObject(result as unknown as T[keyof T][]);
+    }
+
+    return result;
   }
 
-  deleteRecord(filter: Partial<T>) {
-    return new Promise((resolve, reject) => {
-      this.dataHandler.destroy(
-        filter,
-        (error: any, data: RequestError | boolean | undefined | null) => {
-          if (error !== null || !data || isRequestError(data)) {
-            reject(error ?? data);
-          } else {
-            resolve(data);
-          }
-        }
-      );
-    });
+  async deleteRecord(filter: Partial<T>) {
+    let result = await this.dataHandler.destroy(filter);
+
+    if (isRequestError(result)) {
+      throw Error(result.error);
+    }
+
+    return result;
   }
 
-  getData(filter: Filter | string) {
-    return new Promise((resolve, reject) => {
-      const filterData = {
-        filterString: "",
-        whereClause: typeof filter === "string" ? filter : "",
-        whereObject: typeof filter === "object" ? filter : null,
-      };
+  async getData(filter: Filter | string) {
+    const filterData = {
+      filterString: "",
+      whereClause: typeof filter === "string" ? filter : "",
+      whereObject: typeof filter === "object" ? filter : null,
+    };
 
-      this.dataHandler.retrieve(
-        filterData,
-        (
-          error: any,
-          data: RequestError | RetrieveResponse<T> | undefined | null
-        ) => {
-          if (error !== null || !data || isRequestError(data)) {
-            reject(error ?? data);
-          } else {
-            const records = [];
-            const dataArray = Array.isArray(data) ? data : data.data;
+    let result = await this.dataHandler.retrieve(filterData);
 
-            for (let item of dataArray) {
-              records.push(this.arrayRecordToObject(item));
-            }
+    if (isRequestError(result)) {
+      throw Error(result.error);
+    }
 
-            resolve(records);
-          }
-        }
-      );
-    });
+    let data = Array.isArray(result) ? result : result.data;
+    if (data.length && Array.isArray(data[0])) {
+      // Legacy data handler that returns array of values instead of objects
+      for (let i = 0; i < data.length; i++) {
+        let record = data[i] as unknown as T[keyof T][];
+        data[i] = this.arrayRecordToObject(record);
+      }
+    }
+
+    return data;
   }
 
-  updateRecord(record: Partial<T>) {
-    return new Promise((resolve, reject) => {
-      this.dataHandler.update(
-        record,
-        (error: any, data: RequestError | T[keyof T][] | undefined | null) => {
-          if (error !== null || !data || isRequestError(data)) {
-            reject(error ?? data);
-          } else {
-            resolve(this.arrayRecordToObject(data));
-          }
-        }
-      );
-    });
+  async updateRecord(record: Partial<T>) {
+    let result = await this.dataHandler.update(record);
+    if (isRequestError(result)) {
+      throw Error(result.error);
+    }
+
+    if (Array.isArray(result)) {
+      // Legacy data handler
+      return this.arrayRecordToObject(result as unknown as T[keyof T][]);
+    }
+
+    return result;
   }
 }

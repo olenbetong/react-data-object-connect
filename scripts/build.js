@@ -6,6 +6,7 @@ import chalk from "chalk";
 import filesize from "filesize";
 import stripAnsi from "strip-ansi";
 import { readFile } from "node:fs/promises";
+import GlobalsPlugin from "esbuild-plugin-globals";
 
 async function importJson(path) {
   return JSON.parse(await readFile(new URL(path, import.meta.url)));
@@ -23,7 +24,13 @@ function getEntryConfig({ format, isProd }) {
       outfile: `./dist/${format}/${entry.libraryName}.${fileExt}`,
       format,
       minify: isProd,
-      // external: ["react", "react-dom"],
+      external: ["react", "react-dom"],
+      plugins: [
+        GlobalsPlugin({
+          react: "React",
+          "react-dom": "ReactDOM",
+        }),
+      ],
     };
 
     if (format === "iife") {
@@ -41,6 +48,7 @@ function getConfig() {
     ...getEntryConfig({ format: "iife", isProd: true }),
     ...getEntryConfig({ format: "iife", isProd: false }),
     {
+      external: ["react", "react-dom"],
       entryPoints: ["./src/index.js"],
       outfile: "./dist/cjs/index.js",
       format: "cjs",

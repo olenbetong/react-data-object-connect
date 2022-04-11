@@ -1,5 +1,6 @@
-import { useDataObject } from "context";
 import { useState } from "react";
+
+import { useDataObject } from "./context.js";
 
 export type useRefreshRowButtonReturnValue = {
   /**

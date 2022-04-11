@@ -1,5 +1,5 @@
-import { useDataObject } from "context";
-import { useStatus } from "useStatus";
+import { useDataObject } from "./context.js";
+import { useStatus } from "./useStatus.js";
 
 export type useDeleteButtonReturnValue = {
   /**

@@ -1,6 +1,6 @@
-import { useDataObject } from "context";
-import { useDirty } from "useDirty";
-import { useStatus } from "useStatus";
+import { useDataObject } from "./context.js";
+import { useDirty } from "./useDirty.js";
+import { useStatus } from "./useStatus.js";
 
 export type useSaveButtonReturnValue = {
   /**

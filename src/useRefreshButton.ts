@@ -1,5 +1,5 @@
-import { useDataObject } from "context";
-import { useLoading } from "useLoading";
+import { useDataObject } from "./context.js";
+import { useLoading } from "./useLoading.js";
 
 export type useRefreshButtonReturnValue = {
   /**

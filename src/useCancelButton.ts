@@ -1,4 +1,4 @@
-import { useDataObject } from "context";
+import { useDataObject } from "./context.js";
 
 /**
  * Simple hook to connect a button to the cancelEdit method

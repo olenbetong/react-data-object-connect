@@ -1,6 +1,6 @@
 # React Data Object Connect
 
-Hooks to connect AppframeWeb data objects to React components. 
+Hooks to connect AppframeWeb data objects to React components.
 
 ## Getting Started
 
@@ -20,7 +20,9 @@ or include the IIFE build in a script
 
 ## Hooks
 
-If using a React with hooks, there are also data object hooks available.
+### Data object hooks
+
+These hooks connects to event of a data object and returns the current state
 
 - **useCurrentIndex**(dataObject) - Returns only the current index
 - **useCurrentRow**(dataObject) - Returns the current record
@@ -45,6 +47,8 @@ If using a React with hooks, there are also data object hooks available.
   parameter
 - **usePermissions**(dataObject) - Returns booleans indicating if the user can
   delete, insert or update records
+- **useStatus**(dataObject) - Returns an object with `isSaving` and `isDeleting`
+  state booleans.
 
 The above hooks uses the data objects internal state to pass data to the
 components. If you do not want to depend on the data objects current row or data
@@ -65,11 +69,41 @@ One hook is also available for procedures.
   whenever the procedure or parameters arguments change. `execute` can be used
   to manually execute the procedure again
 
-### useData options
+#### useData options
+
 `useData` accepts a second options argument. Available options are:
+
 - **includeDirty** (default `true`) - Includes currently dirty data in the
   dataset. Disable this to optimize if the data is used many places.
 
+### Data binding
+
+This package also includes some hooks that wrap the data object hooks, and return
+what is necessary to bind buttons and inputs to the data object.
+
+These hooks do not take a data object as a parameter, but instead uses the
+`useDataObject` hook that returns the data object in the nearest `DataObjectProvider`
+context provider.
+
+- **DataObjectProvider** - Context provider for the context used by the data binding hooks
+- **useField**(field) - Returns everything needed to bind and input to the current row of a data object:
+  - `dataObject`: The data object the field will be bound to
+  - `error`: Any error that occurs when validating/saving the change
+  - `value`: The current value including unsaved changes
+  - `onKeyDown`: An onKeyDown event handler that will cancel changes to the field when Escape is pressed, and stop event propagation
+  - `setValue`: Method to set a new value in the field
+  - `onChange`: An onChange event handler that tries to get the value from the event target and then calls `setValue`. Also accepts a second parameter where the new value can be passed. The second parameter will always be preferred over the event target.
+  - `reset`: Cancels any changes to the field, and removes the error.
+- **useCancelButton**() - Returns an object with a `cancelEdit` method that calls `cancelEdit` on the context data object
+- **useDeleteButton**(prompt?: string) - Returns an object with an `isDeleting` state boolean, and a `deleteRow` method. The delete row method
+  can take an index to specify which row to delete. If no index is given, the current row will be deleted. The prompt before deleting
+  the row can be specified in the hook argument.
+- **useRefreshButton**() - Returns an object with a `loading` state boolean and a `refresh` method taht will refresh the context data object
+- **useRefreshRowButton**() - Returns an object with a `loading` state boolean and a `refreshRow` method that will refresh a single row in
+  the context data object. An index can be passed to the method to indicate which row should be refreshed. If no index is given, the current
+  row will be refreshed.
+- **useSaveButton**() - Returns an object with a `isSaving` state boolean, a `dirty` state boolean, and a `save` method that will call
+  `endEdit` on the context data object.
 ### Examples
 
 #### Getting all state from the data object
@@ -100,7 +134,8 @@ function MyFunctionComponent(props) {
   const error = useError(dsMyDataObject);
   const isLoading = useLoading(dsMyDataObject);
   const { isDeleting, isSaving } = useStatus(dsMyDataObject);
-  const { allowDelete, allowInsert, allowUpdate } = usePermissions(dsMyDataObject);
+  const { allowDelete, allowInsert, allowUpdate } =
+    usePermissions(dsMyDataObject);
   const filter = useParameter(dsMyDataObject, "filterString");
 
   return (
@@ -108,7 +143,7 @@ function MyFunctionComponent(props) {
       {isLoading && <i className="fa fa-spin fa-spinner" />}
       {error && <Error message={error} />}
       <MyEditor {...myRecord} isDirty={isDirty} />
-      {myRecords.map(record => (
+      {myRecords.map((record) => (
         <ListItem {...item} />
       ))}
       There are {count} records matching {filter}
@@ -122,7 +157,10 @@ Automatically getting data with a given filter.
 If you want to conditionally load data, you may set the filter to `false`.
 
 ```jsx
-import { useDataWithFilter, useLoading } from "@olenbetong/react-data-object-connect";
+import {
+  useDataWithFilter,
+  useLoading,
+} from "@olenbetong/react-data-object-connect";
 
 function MyComponent({ someId }) {
   const isLoading = useLoading(dsMyDataObject);
@@ -131,7 +169,7 @@ function MyComponent({ someId }) {
   return (
     <div>
       {isLoading && <i className="fa fa-spin fa-spinner" />}
-      {data.map(record => (
+      {data.map((record) => (
         <ListItem {...record} />
       ))}
     </div>
@@ -150,23 +188,35 @@ data (defaults to PrimKey). If the refreshRows fetches records that are not in
 the current set, they will not be added.
 
 ```jsx
-import { useFetchData, useFetchRecord } from "@olenbetong/react-data-object-connect";
+import {
+  useFetchData,
+  useFetchRecord,
+} from "@olenbetong/react-data-object-connect";
 
 function MyFunctionComponent(props) {
-  const { isLoading, data, refresh, refreshRows } = useFetchData(dsMyDataObject, `[EntityCategory] = 1`);
+  const { isLoading, data, refresh, refreshRows } = useFetchData(
+    dsMyDataObject,
+    `[EntityCategory] = 1`
+  );
 
   return (
     <div>
       {isLoading && <i className="fa fa-spin fa-spinner" />}
-      {data.map(data => (
-        <ListItem {...item} onRefresh={refreshRows(`[PrimKey] = '${item.PrimKey}'`, "PrimKey")} />
+      {data.map((data) => (
+        <ListItem
+          {...item}
+          onRefresh={refreshRows(`[PrimKey] = '${item.PrimKey}'`, "PrimKey")}
+        />
       ))}
     </div>
   );
 }
 
 function MyRecordComponent(props) {
-  const { isLoading, record, refresh } = useFetchRecord(dsMyDataObject, `[EntityID] = ${props.id}`);
+  const { isLoading, record, refresh } = useFetchRecord(
+    dsMyDataObject,
+    `[EntityID] = ${props.id}`
+  );
 
   return (
     <div>
@@ -206,7 +256,11 @@ function MyComponent() {
       <button onClick={execute}>Refresh data</button>
       {error && <div className="alert alert-danger">{error}</div>}
       {isExecuting && <Spinner />}
-      {data && data.length > 0 && data[0].map(record => <RecordComponent key={record.IdentityField} {...record} />)}
+      {data &&
+        data.length > 0 &&
+        data[0].map((record) => (
+          <RecordComponent key={record.IdentityField} {...record} />
+        ))}
     </div>
   );
 }
@@ -226,7 +280,10 @@ function PagingComponent() {
         Previous
       </button>
       Page {page + 1} of {pageCount}
-      <button onClick={() => changePage(page + 1)} disabled={page + 1 >= pageCount}>
+      <button
+        onClick={() => changePage(page + 1)}
+        disabled={page + 1 >= pageCount}
+      >
         pagecount
       </button>
     </div>

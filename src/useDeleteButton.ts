@@ -9,8 +9,14 @@ export type useDeleteButtonReturnValue = {
   /**
    * The click function used to delete the current row. If a number is passed, the row
    * with that index will be deleted. Otherwise, the current row will be deleted.
+   * @deprecated Use `deleteRow` instead
    */
   onClick: (index?: number) => Promise<void>;
+  /**
+   * Deletes a row on the data object found in the context. If an index is given,
+   * deletes the row at the given index. Otherwise, deletes the current row.
+   */
+  deleteRow: (index?: number) => Promise<void>;
 };
 
 /**
@@ -40,5 +46,6 @@ export function useDeleteButton(prompt?: string): useDeleteButtonReturnValue {
   return {
     isDeleting,
     onClick: handleDelete,
+    deleteRow: handleDelete,
   };
 }

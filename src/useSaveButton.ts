@@ -16,8 +16,14 @@ export type useSaveButtonReturnValue = {
   /**
    * An onClick method to pass to the button. Triggers endEdit, and displays
    * any error in an alert dialog.
+   * @deprectated Use the 'save' method instead.
    */
   onClick: () => Promise<void>;
+  /**
+   * Saves the current record in the data object found in the context.
+   * If an error occurs, displays an alert dialog.
+   */
+  save: () => Promise<void>;
 };
 
 /**
@@ -41,5 +47,6 @@ export function useSaveButton(): useSaveButtonReturnValue {
     dirty,
     isSaving,
     onClick: handleSave,
+    save: handleSave,
   };
 }

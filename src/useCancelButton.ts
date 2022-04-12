@@ -16,6 +16,15 @@ export function useCancelButton() {
   }
 
   return {
+    /**
+     * onClick function that can be passed to a button.
+     * @deprecated Use the 'cancelEdit' method instead.
+     */
     onClick: handleCancel,
+    /**
+     * Cancels edit on the current row of the data object found
+     * in the context.
+     */
+    cancelEdit: handleCancel,
   };
 }

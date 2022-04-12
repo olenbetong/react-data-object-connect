@@ -10,8 +10,15 @@ export type useRefreshRowButtonReturnValue = {
   /**
    * A function that can be passed to the button which refreshes the current
    * row, or if an index is passed, refreshes the row at that index.
+   * @deprecated Use `refreshRow` instead.
    */
   onClick: (index?: number) => Promise<void>;
+  /**
+   * Refreshes a row in the data object found in the context. If an index is
+   * passed, refreshes the row at that index, otherwise refreshes the current
+   * row.
+   */
+  refreshRow: (index?: number) => Promise<void>;
 };
 
 /**
@@ -41,5 +48,6 @@ export function useRefreshRowButton(): useRefreshRowButtonReturnValue {
   return {
     loading,
     onClick: handleRefresh,
+    refreshRow: handleRefresh,
   };
 }

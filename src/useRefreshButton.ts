@@ -8,8 +8,13 @@ export type useRefreshButtonReturnValue = {
   loading: boolean;
   /**
    * A function that refreshes the data object from the data provider context.
+   * @deprecated Use `refresh` instead.
    */
   onClick: () => Promise<void>;
+  /**
+   * Refreshes the data object found in the data provider context.
+   */
+  refresh: () => Promise<void>;
 };
 
 /**
@@ -23,5 +28,6 @@ export function useRefreshButton(): useRefreshButtonReturnValue {
   return {
     loading,
     onClick: () => dataObject.refreshDataSource(),
+    refresh: () => dataObject.refreshDataSource(),
   };
 }

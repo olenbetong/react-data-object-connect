@@ -73,8 +73,8 @@ One hook is also available for procedures.
 
 `useData` accepts a second options argument. Available options are:
 
-- **includeDirty** (default `true`) - Includes currently dirty data in the
-  dataset. Disable this to optimize if the data is used many places.
+- **includeDirty** (default `false`) - Includes currently dirty data in the
+  dataset. Enabling this can potentially be expensive performance-wise.
 
 ### Data binding
 

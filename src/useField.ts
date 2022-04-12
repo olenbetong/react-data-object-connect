@@ -81,6 +81,7 @@ export function setDataObjectField<T, K extends keyof T>(
 export type useFieldRetunValue<T, V> = {
   dataObject: DataObject<T>;
   error: string | null;
+  setValue: (value: V) => void;
   value: V | null;
   /**
    * Keydown event handler for the input field. Will cancel
@@ -136,6 +137,21 @@ export function useField<T = any, K extends keyof T = any>(
     };
   }, [dataSource]);
 
+  function setValue(value: T[K]) {
+    try {
+      setDataObjectField(dataSource, fieldName, value);
+      setError(null);
+      setFaultyValue(null);
+    } catch (error) {
+      setFaultyValue(getDataObjectFieldValue(value));
+      if (error && (error as any).message) {
+        setError((error as any).message);
+      } else {
+        setError(error as string);
+      }
+    }
+  }
+
   return {
     dataObject: dataSource,
     error,
@@ -154,6 +170,7 @@ export function useField<T = any, K extends keyof T = any>(
         }
       }
     },
+    setValue,
     onChange: (
       evt:
         | React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -162,18 +179,7 @@ export function useField<T = any, K extends keyof T = any>(
           },
       newValue?: T[K]
     ) => {
-      try {
-        setDataObjectField(dataSource, fieldName, newValue ?? evt);
-        setError(null);
-        setFaultyValue(null);
-      } catch (error) {
-        setFaultyValue(getDataObjectFieldValue(newValue ?? evt));
-        if (error && (error as any).message) {
-          setError((error as any).message);
-        } else {
-          setError(error as string);
-        }
-      }
+      setValue(newValue ?? (evt as any));
     },
     reset: () => {
       setFaultyValue(null);

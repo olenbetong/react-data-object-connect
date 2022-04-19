@@ -12,11 +12,7 @@ export function useDataObject<T = { PrimKey: string }>(): DataObject<T> {
 }
 
 export type DataObjectProviderProps<T> = {
-  children:
-    | React.ReactChild
-    | React.ReactChildren
-    | React.ReactNode
-    | React.ReactNode[];
+  children: React.ReactNode | React.ReactNode[];
   dataObject: DataObject<T>;
   /**
    * If true, children will be rendered inside a div element.

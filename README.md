@@ -1,3 +1,5 @@
+**Package is deprecated. Use @olenbetong/appframe-react instead**
+
 # React Data Object Connect
 
 Hooks to connect AppframeWeb data objects to React components.
